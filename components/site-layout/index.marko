@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+<head>
+    <title>${data.title ? data.title + ' | Marko' : 'Marko'}</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="./favicon.png" />
+    <script>
+        var scalingBodyFont = false;
+
+        function scaleBodyFont() {
+            document.documentElement.style.fontSize = Math.pow(Math.min(window.innerWidth, window.innerHeight), 0.3)*15+'%';
+            scalingBodyFont = false;
+        }
+
+        window.addEventListener('resize', function() {
+            requestAnimationFrame(scaleBodyFont);
+        });
+
+        scaleBodyFont();
+    </script>
+</head>
+<body class=data.class>
+    <site-header/>
+    <div class="content">
+        <include(data.renderBody)/>
+    </div>
+    <site-footer if(data.footer !== false)/>
+</body>
+</html>

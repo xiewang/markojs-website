@@ -1,0 +1,15 @@
+.site-menu {
+    flex-direction:row;
+}
+.site-menu a {
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:3em;
+    padding:1.5em;
+    text-decoration: none;
+    color:#595959;
+}
+.site-menu a:hover {
+    text-decoration: underline;
+}

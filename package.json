@@ -1,0 +1,16 @@
+{
+  "name": "markojs-website",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "github-flavored-markdown": "^1.0.1",
+    "headspace": "^0.1.1",
+    "marko": "^4.0.0-rc.2",
+    "new-marko-app": "github:mlrawlings/new-marko-app"
+  },
+  "scripts": {
+    "start": "marko-app start",
+    "build": "marko-app build",
+    "eject": "marko-app eject"
+  }
+}
