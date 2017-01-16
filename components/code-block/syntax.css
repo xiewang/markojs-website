@@ -6,7 +6,7 @@ pre .comment .markup.link {
   color: #86909c;
 }
 pre .entity.name.type {
-  color: #ffac29;
+  color: #fbc923;
 }
 pre .entity.other.inherited-class {
   color: #a4dc48;
@@ -38,16 +38,16 @@ pre .storage.modifier.import {
   color: #cbd3dc;
 }
 pre .constant {
-  color: #fbc923;
+  color: #ffac29;
 }
 pre .constant.variable {
-  color: #fbc923;
+  color: #ffac29;
 }
 pre .constant.character.escape {
   color: #66d0d6;
 }
 pre .constant.numeric {
-  color: #fbc923;
+  color: #ffac29;
 }
 pre .constant.other.color {
   color: #66d0d6;
@@ -108,7 +108,7 @@ pre .punctuation.section.inner-class {
   color: #cbd3dc;
 }
 pre .support.class {
-  color: #ffac29;
+  color: #fbc923;
 }
 pre .support.type {
   color: #66d0d6;
@@ -128,7 +128,7 @@ pre .entity.name.function {
 }
 pre .entity.name.class,
 pre .entity.name.type.class {
-  color: #ffac29;
+  color: #fbc923;
 }
 pre .entity.name.section {
   color: #70cbf2;
@@ -137,13 +137,13 @@ pre .entity.name.tag {
   color: #ef4560;
 }
 pre .entity.other.attribute-name {
-  color: #fbc923;
+  color: #fbc923; /*fbc923*/
 }
 pre .entity.other.attribute-name.id {
   color: #70cbf2;
 }
 pre .meta.class {
-  color: #ffac29;
+  color: #fbc923;
 }
 pre .meta.class.body {
   color: #cbd3dc;
