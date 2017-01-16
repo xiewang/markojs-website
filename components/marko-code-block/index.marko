@@ -1,13 +1,11 @@
-var isHtml = state.syntax === 'html';
-
 <div.marko-code-block>
     <button.switch-syntax on-click('changeSyntax')>
         switch syntax
     </button>
-    <div.code ref="html" style={ display:isHtml ? 'block' : 'none'}>
+    <div.code.html>
         $!{data.html}
     </div>
-    <div.code ref="concise" style={ display:isHtml ? 'none' : 'block'}>
+    <div.code.concise>
         $!{data.concise}
     </div>
 </div>

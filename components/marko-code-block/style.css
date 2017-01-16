@@ -7,6 +7,16 @@
     width:100%;
 }
 
+.marko-code-block .code.html,
+body.concise .marko-code-block .code.concise {
+    display:block;
+}
+
+.marko-code-block .code.concise,
+body.concise .marko-code-block .code.html {
+    display:none;
+}
+
 .marko-code-block .switch-syntax {
     font-size: 0.8em;
     position:absolute;

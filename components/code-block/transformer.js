@@ -40,6 +40,15 @@ module.exports = function(el, context) {
 
     context.addDependency(require.resolve('./syntax.css'));
 
+    if(!context.data.markoSyntaxScriptAdded) {
+        el.insertSiblingBefore(builder.html(builder.literal(`<script>
+            if(localStorage.syntax === 'concise') {
+                document.body.classList.add('concise');
+            }
+        </script>`)));
+        context.data.markoSyntaxScriptAdded = true;
+    }
+
     if(scopeName === 'text.marko') {
         try {
             var concise = highlighter.highlightSync({
@@ -59,3 +68,4 @@ module.exports = function(el, context) {
 
     el.replaceWith(builder.html(builder.literal(html)));
 }
+
