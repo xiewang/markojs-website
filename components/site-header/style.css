@@ -11,6 +11,7 @@
     width:100%;
     border-bottom:1px solid #fff;
     transition:all 0.3s;
+    z-index:10;
 }
 .site-header.headspace--hidden {
     transform:translate3d(0, -5em, 0); /* y value should be -1 * height */
