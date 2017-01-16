@@ -12,10 +12,10 @@ pre .entity.other.inherited-class {
   color: #a4dc48;
 }
 pre .keyword {
-  color: #a078dd;
+  color: #7783e8;
 }
 pre .keyword.control {
-  color: #a078dd;
+  color: #7783e8;
 }
 pre .keyword.operator {
   color: #cbd3dc;
@@ -27,11 +27,11 @@ pre .keyword.other.unit {
   color: #fbc923;
 }
 pre .storage {
-  color: #a078dd;
+  color: #7783e8;
 }
 pre .storage.type.annotation,
 pre .storage.type.primitive {
-  color: #a078dd;
+  color: #7783e8;
 }
 pre .storage.modifier.package,
 pre .storage.modifier.import {
@@ -96,7 +96,7 @@ pre .punctuation.definition.bold {
   font-weight: bold;
 }
 pre .punctuation.definition.italic {
-  color: #a078dd;
+  color: #7783e8;
   font-style: italic;
 }
 pre .punctuation.section.embedded {
@@ -162,7 +162,7 @@ pre .meta.require {
   color: #70cbf2;
 }
 pre .meta.selector {
-  color: #a078dd;
+  color: #7783e8;
 }
 pre .meta.separator {
   background-color: #373b41;
@@ -190,13 +190,13 @@ pre .markup.bold {
   font-weight: bold;
 }
 pre .markup.changed {
-  color: #a078dd;
+  color: #7783e8;
 }
 pre .markup.deleted {
   color: #ef516f;
 }
 pre .markup.italic {
-  color: #a078dd;
+  color: #7783e8;
   font-style: italic;
 }
 pre .markup.heading {
