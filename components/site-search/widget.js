@@ -1,12 +1,4 @@
 module.exports = {
-    onMount() {
-        var input = this.getEl('input');
-        document.body.addEventListener('keydown', function(e) {
-            if(e.target === document.body) {
-                input.focus();
-            }
-        });
-    },
     focus(e) {
         var input = this.getEl('input');
         if(e.target != input) {
