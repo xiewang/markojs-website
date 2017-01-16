@@ -5,6 +5,10 @@
   "dependencies": {
     "headspace": "^0.1.1",
     "highlights": "^1.4.1",
+    "language-css": "github:atom/language-css",
+    "language-html": "github:atom/language-html",
+    "language-javascript": "github:atom/language-javascript",
+    "language-marko": "github:marko-js/atom-language-marko",
     "marked": "^0.3.6",
     "marko": "^4.0.0-rc.2",
     "marko-prettyprint": "^1.2.1",

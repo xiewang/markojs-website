@@ -2,10 +2,18 @@ var Highlights = require('highlights');
 var prettyprint = require('marko-prettyprint');
 var highlighter = new Highlights();
 
-highlighter.registry.loadGrammarSync(require.resolve('./grammars/css.cson'));
-highlighter.registry.loadGrammarSync(require.resolve('./grammars/javascript.cson'));
-highlighter.registry.loadGrammarSync(require.resolve('./grammars/html.cson'));
-highlighter.registry.loadGrammarSync(require.resolve('./grammars/marko.cson'));
+highlighter.requireGrammarsSync({
+    modulePath: require.resolve('language-css/package.json')
+});
+highlighter.requireGrammarsSync({
+    modulePath: require.resolve('language-javascript/package.json')
+});
+highlighter.requireGrammarsSync({
+    modulePath: require.resolve('language-html/package.json')
+});
+highlighter.requireGrammarsSync({
+    modulePath: require.resolve('language-marko/package.json')
+});
 
 module.exports = function(el, context) {
     var builder = context.builder;
