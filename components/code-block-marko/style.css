@@ -24,14 +24,14 @@ body.concise .marko-code-block .code.html {
     right:0.4em;
     padding:1em;
     border:0;
-    background-color:rgba(80,80,80,0.8);
-    color:#eee;
+    background-color:rgba(78,80,82,0.8);
+    color:#eceef0;
     cursor:pointer;
     outline:0;
 }
 
 .marko-code-block .switch-syntax:hover {
-    background-color:rgba(100,100,100,0.9);
+    background-color:rgba(98,100,102,0.9);
     color:#fff;
 }
 

@@ -7,7 +7,7 @@
     justify-content:space-between;
     align-items:center;
     background-color:#fff;
-    height:5em;
+    height:4.5em;
     width:100%;
     border-bottom:1px solid #fff;
     transition:all 0.3s;
@@ -15,7 +15,7 @@
     z-index:10;
 }
 .site-header.headspace--hidden {
-    transform:translate3d(0, -5em, 0); /* y value should be -1 * height */
+    transform:translate3d(0, -4.5em, 0); /* y value should be -1 * height */
 }
 .site-header.headspace--fixed {
     position:fixed;
@@ -23,11 +23,12 @@
 
 .site-header.headspace--fixed,
 body:not(.home) .site-header {
-    border-bottom-color:#ddd;
-    box-shadow: 0 0 0.7em rgba(0,0,0,0.15);
+    border-bottom-color:#dbdddf;
+    box-shadow: 0 0 0.7em rgba(0,5,10,0.15);
 }
 
 .site-logo {
-    height:2em;
+    height:2.2em;
     margin-left:2em;
+    display:block;
 }

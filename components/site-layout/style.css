@@ -8,7 +8,7 @@ html {
     padding: 0;
 }
 body {
-    color:#393939;
+    color:#37393b;
     margin:0;
     padding:0;
     text-align: center;
@@ -18,7 +18,7 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding-top:5em;
+    padding-top:4.5em;
     line-height:1.6em;
 }
 
@@ -33,13 +33,13 @@ h1, h2, h3, h4, h5, h6 {
 h1 {
   font-size:2.6em;
   font-weight:400;
-  border-bottom:1px solid #f4f4f4;
+  border-bottom:1px solid #f2f4f6;
 }
 
 h2 {
   font-size:2.1em;
   font-weight:400;
-  border-bottom:1px solid #f4f4f4;
+  border-bottom:1px solid #f2f4f6;
 }
 
 h3 {
@@ -72,11 +72,11 @@ a:hover {
 }
 
 blockquote {
-    border-left: 3px solid #ddd;
+    border-left: 3px solid #dbdddf;
     margin: 0;
     margin-left: -3px;
     padding: 1em;
-    background: #f8f8f8;
+    background: #f6f8fa;
 }
 
 blockquote p:first-child {
@@ -95,7 +95,7 @@ blockquote p:last-child {
     margin-left: -1.1em;
     padding:0 0.3em;
     opacity:0;
-    color:#eee;
+    color:#eceef0;
 }
 
 .anchor:hover {
@@ -133,15 +133,15 @@ pre, code {
 }
 
 code {
-  background:#f4f4f4;
+  background:#f2f4f6;
   padding:0.1em 0.3em;
   border-radius:0.2em;
   color:#d04;
 }
 
 pre {
-  color:#ddd;
-  background-color:#292929;
+  color:#dbdddf;
+  background-color:#27292b;
   width:100%;
   padding:1em;
   border-radius:0.2em;
