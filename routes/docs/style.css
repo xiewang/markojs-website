@@ -15,10 +15,17 @@
 
 .doc-container {
     flex:1;
+    width:100%;
 }
 
 .doc-sidebar {
     text-align:left;
     list-style-type:none;
     padding:0;
+}
+
+@media (max-width:45em) {
+    .doc-sidebar {
+        display: none;
+    }
 }
