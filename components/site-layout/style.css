@@ -71,6 +71,62 @@ a:hover {
   text-decoration: underline;
 }
 
+blockquote {
+    border-left: 3px solid #ddd;
+    margin: 0;
+    margin-left: -3px;
+    padding: 1em;
+    background: #f8f8f8;
+}
+
+blockquote p:first-child {
+  margin-top:0;
+}
+
+blockquote p:last-child {
+  margin-bottom:0;
+}
+
+.anchor {
+    display: inline-block;
+    cursor: pointer;
+    position: absolute;
+    text-align: center;
+    margin-left: -1.1em;
+    padding:0 0.3em;
+    opacity:0;
+    color:#eee;
+}
+
+.anchor:hover {
+  color:#09d;
+}
+
+h1:hover a.anchor,
+h2:hover a.anchor,
+h3:hover a.anchor,
+h4:hover a.anchor,
+h5:hover a.anchor,
+h6:hover a.anchor {
+    opacity:1;
+}
+
+.anchor .header-link {
+    display: inline-block;
+    font-family: FontAwesome;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 0.5em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-size: 1em;
+}
+
+.anchor .header-link:before {
+    content: "#";
+    font-weight: 600;
+}
+
 pre, code {
   font-family: Monaco, Menlo, Consolas, monospace;
   font-size:0.85em;
