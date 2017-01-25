@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const template = require('./index.marko');
-const markdownToTemplate = require('~/util/markdown').toTemplate;
+const markdownToTemplate = require('./util/markdown').toTemplate;
 const docsDir = path.join(process.cwd(), 'node_modules', 'marko', 'docs');
 const docs = fs.readdirSync(docsDir).filter(doc => /\.md$/.test(doc)).map(doc => doc.slice(0, -3));
 
