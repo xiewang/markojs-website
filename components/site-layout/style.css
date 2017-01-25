@@ -139,6 +139,19 @@ code {
   color:#d04;
 }
 
+h1 code,
+h2 code,
+h3 code,
+h4 code,
+h5 code,
+h6 code {
+    color:#57595a;
+}
+
+blockquote code {
+    background:#fff;
+}
+
 pre {
   color:#dbdddf;
   background-color:#27292b;
