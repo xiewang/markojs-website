@@ -1,5 +1,14 @@
 <site-layout title="Docs">
-    <div.doc-content>
-        <include(data.markdown)/>
+    <div.doc-layout>
+        <ul.doc-sidebar>
+            <li for(doc in data.docs)>
+                <a href="/docs/${doc}">${doc}</a>
+            </li>
+        </ul>
+        <div.doc-container>
+            <div.doc-content>
+                <include(data.doc)/>
+            </div>
+        </div>
     </div>
 </site-layout>

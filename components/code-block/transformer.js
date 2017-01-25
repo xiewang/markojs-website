@@ -51,19 +51,35 @@ module.exports = function(el, context) {
 
     if(scopeName === 'text.marko') {
         try {
-            var concise = highlighter.highlightSync({
-                fileContents: prettyprint(code, {
-                    filename:'template.marko',
-                    syntax:'concise'
-                }),
-                scopeName: scopeName
-            });
+            var next = el.container.getNextSibling(el);
+            var nextIsCodeBlock = next && next.tagName === 'code-block';
+            var nextLang = nextIsCodeBlock && next.getAttributeValue('lang').value;
+            var nextIsMarko = nextLang === 'marko';
+            var concise;
 
-            var markoCodeBlock = context.createNodeForEl('marko-code-block');
+            if (nextIsMarko) {
+                concise = highlighter.highlightSync({
+                    fileContents: next.body.firstChild.argument.value,
+                    scopeName: scopeName
+                });
+                next.detach();
+            } else {
+                concise = highlighter.highlightSync({
+                    fileContents: prettyprint(code, {
+                        filename:'template.marko',
+                        syntax:'concise'
+                    }),
+                    scopeName: scopeName
+                });
+            }
+
+            var markoCodeBlock = context.createNodeForEl('code-block-marko');
             markoCodeBlock.setAttributeValue('html', builder.literal(html));
             markoCodeBlock.setAttributeValue('concise', builder.literal(concise));
             return el.replaceWith(markoCodeBlock);
-        } catch(e) {}
+        } catch(e) {
+            console.error(e);
+        }
     }
 
     el.replaceWith(builder.html(builder.literal(html)));

@@ -38,13 +38,20 @@ exports.toTemplate = function renderMarkdown(filepath) {
         return `<code-block lang="${lang}">${code}</code-block>`;
     };
 
-    var html = marked(markdown, {
+    var html = '-----\n' + marked(markdown, {
         renderer: markedRenderer
-    });
+    }) + '\n-----\n';
 
     var templateVirtualPath = path.join(process.cwd(), path.basename(filepath));
 
-    return marko.load(templateVirtualPath, html, { writeToDisk:false });
+    try {
+        var template = marko.load(templateVirtualPath, html, { writeToDisk:false })
+    } catch(e) {
+        console.log(html);
+        throw e;
+    }
+
+    return template;
 };
 
 function getAnchorName(title) {
