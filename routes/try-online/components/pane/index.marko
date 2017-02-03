@@ -1,0 +1,60 @@
+import app from '~/routes/try-online/app';
+
+class {
+    onInput(input) {
+        var focusedFile = input.focusedFile;
+        var activeIndex = this.state && this.state.activeIndex;
+
+        this.state = {
+            files: input.files,
+            activeIndex: activeIndex == null ? 0 : activeIndex,
+            focusedIndex: -1
+        }
+
+        this.state.focusedIndex = -1;
+
+        this.state.files.forEach((file, i) => {
+            if (file.path === focusedFile) {
+                this.state.activeIndex = i;
+                this.state.focusedIndex = i;
+            }
+        });
+    }
+
+    handleTabClick(index) {
+        app.focusFile(this.state.files[index].path);
+    }
+}
+
+<div.pane>
+    <div.tabs>
+        <ul.tabs>
+            <for(i, file in state.files)>
+                <li.tab class=[state.focusedIndex === i && 'focused', state.activeIndex === i && 'active']
+                    on-click('handleTabClick', i)
+                    ref='body-'+file.path>
+
+                    <if(file.preview)>
+                        <span.tab-label>${file.name} (Preview)</span>
+                    </if>
+                    <else>
+                        <span.tab-label>${file.name}</span>
+                    </else>
+
+                </li>
+            </for>
+        </ul>
+    </div>
+    <div.bodies>
+        <for(i, file in state.files)>
+            <div.pane-body class=[state.focusedIndex === i && 'focused', state.activeIndex === i && 'active']>
+                <if(file.preview)>
+                    <preview file=file no-update ref='preview-'+file.path />
+                </if>
+                <else>
+                    <editor file=file no-update ref='editor-'+file.path />
+                </else>
+            </div>
+        </for>
+    </div>
+</div>

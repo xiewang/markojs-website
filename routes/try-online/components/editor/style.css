@@ -1,0 +1,48 @@
+@import url('codemirror/lib/codemirror.css');
+@import url('./theme.css');
+/*.editor > textarea {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #282c34;
+    border: 0;
+    color: #d7dae0;
+    outline: none;
+    font-family: monospace;
+    padding: 5px;
+}*/
+
+div.editor .CodeMirror pre {
+    font-family: Monaco,Menlo,Consolas,monospace;
+    font-size: 0.85em;
+}
+
+div.editor .CodeMirror-linenumber {
+    font-family: Monaco,Menlo,Consolas,monospace;
+    font-size: 0.85em;
+}
+
+/*.app-codemirror {
+    border: 1px solid #eee;
+}
+
+.app-codemirror-auto-resize .CodeMirror {
+    height: auto;
+}
+
+.app-codemirror-auto-resize .CodeMirror-scroll {
+    overflow-y: hidden;
+    overflow-x: auto;
+}
+
+.CodeMirror pre {
+    line-height: 1.25;
+}
+
+.app-codemirror.hidden {
+    display: none;
+}
+
+.app-codemirror.app-codemirror-fullscreen {
+    height: 100%;
+}*/

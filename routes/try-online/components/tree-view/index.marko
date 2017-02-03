@@ -1,0 +1,70 @@
+import app from '~/routes/try-online/app';
+import path from 'path';
+
+static {
+    function isFocusedFile(file, state) {
+        return state.focusedFile === file.path;
+    }
+
+    function isFocusedDir(dir, state) {
+        if (!state.focusedDirectory) {
+            return false;
+        }
+        return dir.path === state.focusedDirectory || state.focusedDirectory.startsWith(dir.path + '/');
+    }
+}
+
+class {
+    onInput(input) {
+        this.state = {
+            rootDir: input.rootDir,
+            focusedFile: input.focusedFile,
+            focusedDirectory: input.focusedDirectory
+        }
+    }
+
+    handleFileClick(dirPath, event) {
+        app.focusFile(dirPath);
+        event.stopPropagation();
+    }
+}
+
+<macro render-file-li(file)>
+    <li.file class={focused: isFocusedFile(file, state)} on-click('handleFileClick', file.path)>
+        <span>
+            ${file.name}
+        </span>
+    </li>
+</macro>
+
+<macro render-dir-li(dir)>
+    <li.dir class={focused: isFocusedDir(dir, state)} on-click('handleFileClick', dir.path)>
+        <label>
+            ${dir.name}
+        </label>
+        <if(dir.files)>
+            <ul>
+                <for(file in dir.files)>
+                    <render-li(file)/>
+                </for>
+            </ul>
+        </if>
+    </li>
+</macro>
+
+<macro render-li(file)>
+    <if(file.isDirectory())>
+        <render-dir-li(file)/>
+    </if>
+    <else>
+        <render-file-li(file)/>
+    </else>
+</macro>
+
+<div.tree-view>
+    <ul>
+        <for(file in state.rootDir.files)>
+            <render-li(file)/>
+        </for>
+    </ul>
+</div>

@@ -1,0 +1,33 @@
+import vmodules from '~/routes/try-online/app/vmodules';
+import app from '~/routes/try-online/app';
+
+static {
+    function getTemplate(file) {
+        var module = vmodules.loadFile(file.path);
+        return module.exports;
+    }
+}
+
+class {
+    onInput(input) {
+        this.state = {
+            file: input.file
+        };
+    }
+
+    onMount() {
+        this.subscribeTo(app)
+            .on('file:modified', (file) => {
+                if (file.path === this.state.file.path) {
+                    var template = getTemplate(file);
+                    template.renderSync().replaceChildrenOf(this.el);
+                }
+            });
+    }
+}
+
+var file = state.file;
+
+<div.preview>
+    <include(getTemplate(file))/>
+</div>

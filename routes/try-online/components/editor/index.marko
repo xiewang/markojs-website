@@ -1,0 +1,74 @@
+import app from '~/routes/try-online/app';
+
+static {
+    var CodeMirror;
+
+    if (typeof window !== 'undefined') {
+        CodeMirror = require('codemirror');
+        require('codemirror-atom-modes').registerGrammars([
+                require('language-css/grammars/css.cson'),
+                require('language-javascript/grammars/javascript.cson'),
+                {
+                    grammar: require('language-marko/grammars/marko.cson'),
+                    options: {
+                        scopeTranslations: {
+                            'meta.section.marko-placeholder': 'strong',
+                            'meta.section.marko-attribute': 'strong',
+                            'support.function.marko-tag': 'strong tag',
+                            'support.function.marko-attribute': 'strong attribute'
+                        }
+                    }
+                }
+            ], CodeMirror);
+    }
+}
+
+class {
+    onInput(input) {
+        this.state = {
+            file: input.file
+        };
+    }
+
+    onMount() {
+        var code = this.state.file.text;
+
+        var codeMirrorConfig = {
+            value: code || '',
+            mode: "Marko",
+            lineNumbers: true,
+            readOnly: false,
+            indentUnit: 4
+        };
+
+        codeMirrorConfig.theme = 'marko';
+
+        /*jshint newcap: false */
+        this.codeMirror = CodeMirror(this.el, codeMirrorConfig);
+
+        this.codeMirror.setSize("100%", "100%");
+
+        this.codeMirror.on('change', (editor) => {
+            var file = this.state.file;
+            var source = editor.getValue();
+            app.updateFile(file.path, source);
+        });
+    }
+
+    /*
+    handleInput() {
+        var file = this.state.file;
+        var source = this.getEl('textarea').value;
+        app.updateFile(file.path, source);
+    }
+    */
+}
+
+var file = state.file;
+
+<div.editor>
+    <!-- <textarea style={width: '100%', height: '100%'}
+        on-input('handleInput')
+        ref='textarea'
+        >${file.text}</textarea> -->
+</div>
