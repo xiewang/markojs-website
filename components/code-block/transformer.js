@@ -1,5 +1,7 @@
+var fs = require('fs');
 var Highlights = require('highlights');
 var prettyprint = require('marko-prettyprint');
+var resolveFrom = require('resolve-from');
 var highlighter = new Highlights();
 
 highlighter.requireGrammarsSync({
@@ -17,10 +19,20 @@ highlighter.requireGrammarsSync({
 
 module.exports = function(el, context) {
     var builder = context.builder;
-    var code = el.body.firstChild.argument.value;
-    var lang = el.getAttributeValue('lang').value;
+    var file = el.argument;
     var scopeName;
     var html;
+    var code;
+    var lang;
+
+    if (file) {
+        file = resolveFrom(context.dirname, eval(file));
+        code = fs.readFileSync(file, 'utf-8');
+        lang = file.slice(file.lastIndexOf('.')+1);
+    } else {
+        code = el.body.firstChild.argument.value;
+        lang = el.getAttributeValue('lang').value;
+    }
 
     if (lang === 'js' || lang === 'javascript' || lang === 'json') {
         scopeName = 'source.js';
@@ -49,7 +61,7 @@ module.exports = function(el, context) {
         context.data.markoSyntaxScriptAdded = true;
     }
 
-    if(scopeName === 'text.marko') {
+    if(scopeName === 'text.marko' && !el.getAttribute('no-switch')) {
         try {
             var next = el.container.getNextSibling(el);
             var nextIsCodeBlock = next && next.tagName === 'code-block';

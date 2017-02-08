@@ -6,7 +6,7 @@ module.exports = {
         var beforeScroll = document.body.scrollTop;
         var beforePosition = this.el.offsetTop;
 
-        header.save();
+        header.pause();
 
         if(localStorage.syntax === 'concise') {
             localStorage.syntax = 'html';
@@ -21,6 +21,6 @@ module.exports = {
 
         document.body.scrollTop = afterScroll;
 
-        header.reset();
+        header.resume();
     }
 }

@@ -2,14 +2,15 @@ var fs = require('fs');
 var path = require('path');
 var marko = require('marko');
 var marked = require('marked');
-var anchorCache = {};
+var TOC = require('./toc');
 
 exports.toTemplate = function renderMarkdown(filepath) {
     var markdown = fs.readFileSync(filepath, 'utf-8');
     markdown = markdown.replace(/\</g, '&lt;').replace(/\$/g, '&#36;').replace(/https?:\/\/markojs\.com\//g, '/');
 
     var markedRenderer = new marked.Renderer();
-    var toc = [];
+    var toc = TOC.create();
+    var anchorCache = {};
 
     markedRenderer.table = function(header, body) {
         var output = '<table class="markdown-table">';
@@ -25,7 +26,9 @@ exports.toTemplate = function renderMarkdown(filepath) {
     };
 
     markedRenderer.heading = function(text, level) {
-        var anchorName = getAnchorName(text);
+        var anchorName = getAnchorName(text, anchorCache);
+
+        toc.addHeading(text, anchorName, level);
 
         return `<h${level} id="${anchorName}">` +
             `<a name="${anchorName}" class="anchor" href="#${anchorName}">` +
@@ -51,10 +54,12 @@ exports.toTemplate = function renderMarkdown(filepath) {
         throw e;
     }
 
+    template.toc = toc.toHTML();
+
     return template;
 };
 
-function getAnchorName(title) {
+function getAnchorName(title, anchorCache) {
     var anchorName = title.replace(/[ \-]+/g, '-').replace(/[^A-Z0-9\-]+/gi, '').toLowerCase();
     var repeat = anchorCache[anchorName] != null ? ++anchorCache[anchorName] : (anchorCache[anchorName] = 0);
     if(repeat) {

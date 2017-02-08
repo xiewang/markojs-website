@@ -4,6 +4,8 @@
     color:#86888a;
     padding:2em;
     border-top:1px solid #dbdddf;
+    align-items: center;
+    position: relative;
 }
 
 .site-footer span {

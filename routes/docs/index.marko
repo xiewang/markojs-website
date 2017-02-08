@@ -1,13 +1,10 @@
-<site-layout title="Docs">
+<site-layout title="Docs" footer=false>
     <div.doc-layout>
-        <ul.doc-sidebar>
-            <li for(doc in data.docs)>
-                <a href="/docs/${doc}">${doc}</a>
-            </li>
-        </ul>
+        <doc-sidebar name=input.name docs=input.docs toc=input.toc />
         <div.doc-container>
             <div.doc-content>
-                <include(data.doc)/>
+                <include(input.doc)/>
+                <site-footer/>
             </div>
         </div>
     </div>

@@ -1,5 +1,6 @@
 .site-search {
     flex-direction: row;
+    align-items: center;
     height:2em;
     width:3.75em;
     padding:0.5em;

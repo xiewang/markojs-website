@@ -1,47 +1,133 @@
 <header.home-header>
-    <h1>
-        Marko makes building<br>
-        user interfaces simple
-    </h1>
-    <a.get-started href="/docs/get-started">
-        Get started
-    </a>
+    <img.logo src="./logo.png"/>
+    <div.header-content>
+        <img.logo-text src="./marko-text.png"/>
+        <h1>
+            a friendly (and fast!) UI library that makes
+            building web apps fun
+        </h1>
+        <div.actions>
+            <a.button.get-started href="/docs/get-started">
+                <span>Get started</span>
+            </a>
+            <a.button.github href="https://github.com/marko-js/marko">
+                <img src="./github.png"/>
+                <span.text>GitHub</span>
+                <span.stars>1,726</span>
+            </a>
+        </div>
+    </div>
 </header>
 
-<style>
+style {
     .home-header {
         background-color:#fff;
         width:100%;
-        padding:2em 0;
+        padding:3em 2em;
+        justify-content:center;
+        align-items:flex-start;
+        flex-direction:row;
+    }
+
+    .home-header .header-content {
+        align-items:flex-start;
     }
 
     .home-header h1 {
-        font-size:3.1em;
+        font-size:2em;
         font-weight:300;
-        margin:0.25em;
-        line-height:1.4em;
-        border:0;
-    }
-
-    .home-header h2 {
-        color:#444;
-        font-size:1.5em;
         margin:0;
+        padding:0;
         border:0;
+        color:#46484a;
+        margin-bottom:0.5em;
+        max-width:17em;
     }
 
-    .home-header h2 img {
-        height:1em;
-        margin-bottom:-0.2em;
+    .home-header img.logo {
+        height:8em;
+        margin-right:2em;
+        margin-top:1.5em;
     }
 
-    .get-started {
-        display:inline-block;
-        margin:1em;
-        padding:1em 2em;
-        background-color:#d04;
-        color:#fff;
+    .home-header img.logo-text {
+        height:4.8em;
+        margin-bottom:0.2em;
+    }
+
+    .home-header .actions {
+        flex-direction:row;
+    }
+
+    .home-header .actions .button {
+        display:flex;
+        flex-direction:row;
+        align-items:center;
+        justify-content:space-between;
+        padding:0.75em;
         text-decoration:none;
         border-radius:0.2em;
+        margin-left:1em;
     }
-</style>
+
+    .home-header .actions .button:first-child {
+        margin-left:0;
+    }
+
+    .home-header .actions .button.get-started {
+        background-color:#d04;
+        color:#fff;
+        padding-left:2em;
+        padding-right:2em;
+    }
+
+    .home-header .actions .button.get-started:hover {
+        background-color:#ffc400;
+    }
+
+    .home-header .actions .button.github {
+        border:1px solid #a4a6a8;
+        color:#343638;
+    }
+
+    .home-header .actions .button.github:hover {
+        background-color:#f4f6f8;
+    }
+
+    .home-header .actions .button.github img {
+        height:1.5em;
+        display:block;
+        margin-right:0.75em;
+    }
+
+    .home-header .actions .button.github .text {
+        margin-right:0.75em;
+    }
+
+    .home-header .actions .button.github .stars {
+        color:#545658;
+        font-size:0.9em;
+    }
+    .home-header .actions .button.github .stars:after {
+        content:"\2605";
+        color:#ffc400;
+    }
+
+    @media (max-width:45em) {
+        .home-header {
+            flex-direction:column;
+            align-items:center;
+        }
+        .home-header .header-content {
+            align-items:center;
+        }
+        .home-header h1 {
+            text-align:center;
+            margin-top:0.5em;
+        }
+        .home-header img.logo {
+            margin:0;
+            margin-bottom:1em;
+        }
+    }
+}

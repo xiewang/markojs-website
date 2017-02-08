@@ -1,5 +1,5 @@
 .site-header {
-    position:absolute;
+    position:fixed;
     top:0;
     left:0;
     right:0;
@@ -11,14 +11,15 @@
     width:100%;
     border-bottom:1px solid #fff;
     transition:all 0.3s;
-    transition-delay: 20ms;
     z-index:10;
+    transform:translate3d(0, 1px, 0);
 }
 .site-header.headspace--hidden {
     transform:translate3d(0, -4.5em, 0); /* y value should be -1 * height */
 }
 .site-header.headspace--fixed {
     position:fixed;
+    transform:translate3d(0, -1px, 0);
 }
 
 .site-header.headspace--fixed,

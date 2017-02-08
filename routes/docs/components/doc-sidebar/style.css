@@ -1,0 +1,92 @@
+.doc-sidebar {
+    width:16em;
+    margin-right:2em;
+    position: absolute;
+    padding:2.5em;
+    top:0; left:0; bottom:0;
+    overflow:auto;
+    transform:translateY(4.5em);
+}
+
+.doc-sidebar-spacer {
+    width:16em;
+    flex-basis: 16em;
+    flex-shrink: 0;
+}
+
+.doc-sidebar.fixed {
+    position:fixed;
+    bottom:4.5em;
+}
+
+.doc-sidebar.no-header {
+    transform:translateY(0);
+    bottom:0;
+}
+
+.doc-sidebar.transition {
+    transition: transform 0.3s;
+}
+
+.doc-sidebar .section {
+    font-size:0.75em;
+    font-weight: 600;
+    color:#d04;
+    line-height: 1em;
+    margin-bottom: 0.5em;
+}
+
+.doc-sidebar .section:not(:first-child) {
+    margin-top: 1.5em;
+}
+
+.doc-sidebar ul {
+    margin:0;
+    padding:0;
+    list-style-type:none;
+}
+
+.doc-sidebar ul a {
+    color:#76787a;
+    display:block;
+    position: relative;
+}
+
+.doc-sidebar ul a.selected {
+    color:#27292b;
+}
+
+.doc-sidebar ul a.selected:before {
+    content:'';
+    height:100%;
+    position: absolute;
+    top:0;
+    left:-0.5em;
+    border-left:2px solid #ffc400;
+}
+
+.doc-sidebar ul.toc {
+    font-size:0.9em;
+    margin-left:1rem;
+
+}
+.doc-sidebar ul.toc a {
+    color:#87898b;
+}
+
+.doc-sidebar ul a:hover,
+.doc-sidebar ul.toc a:hover {
+    color:#27292b;
+    text-decoration: none;
+}
+
+.doc-sidebar ul.toc ul {
+    display:none;
+}
+
+@media (max-width:45em) {
+    .doc-sidebar,
+    .doc-sidebar-spacer {
+        display: none;
+    }
+}

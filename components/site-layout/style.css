@@ -11,23 +11,20 @@ body {
     color:#37393b;
     margin:0;
     padding:0;
-    text-align: center;
     font-family:-apple-system, BlinkMacSystemFont, 'SF UI Text', 'Helvetica Neue', 'Roboto', 'Arial Nova', 'Segoe UI', 'Arial', sans-serif;
     min-height:100%;
     display:flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
     padding-top:4.5em;
-    line-height:1.6em;
+    line-height:1.6;
 }
 
 h1, h2, h3, h4, h5, h6 {
     color:#191919;
-    line-height:1.25em;
-    margin-top:1.5rem;
-    margin-bottom:1rem;
-    padding:0;
+    line-height:1.25;
+    padding-top:1.5rem;
+    padding-bottom:1rem;
+    margin:0;
 }
 
 h1 {
@@ -62,7 +59,29 @@ h6 {
   font-weight:600;
 }
 
-a {
+pre, code {
+  font-family: Monaco, Menlo, Consolas, monospace;
+  font-size:0.85em;
+}
+
+code {
+  background:#f2f4f6;
+  padding:0.1em 0.3em;
+  border-radius:0.2em;
+  color:#d04;
+}
+
+h1 code,
+h2 code,
+h3 code,
+h4 code,
+h5 code,
+h6 code {
+    color:#57595a;
+}
+
+a,
+a code {
   color:#09d;
   text-decoration: none;
 }
@@ -127,27 +146,6 @@ h6:hover a.anchor {
     font-weight: 600;
 }
 
-pre, code {
-  font-family: Monaco, Menlo, Consolas, monospace;
-  font-size:0.85em;
-}
-
-code {
-  background:#f2f4f6;
-  padding:0.1em 0.3em;
-  border-radius:0.2em;
-  color:#d04;
-}
-
-h1 code,
-h2 code,
-h3 code,
-h4 code,
-h5 code,
-h6 code {
-    color:#57595a;
-}
-
 blockquote code {
     background:#fff;
 }
@@ -179,6 +177,6 @@ pre .line {
 header, footer, section, div, nav {
     display:flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    justify-content: flex-start;
+    align-items: stretch;
 }

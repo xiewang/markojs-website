@@ -1,0 +1,33 @@
+static function formatName(name) {
+    name = name.replace(/^\d+-/, '').split('-').join(' ');
+    name = name[0].toUpperCase() + name.slice(1);
+    return name;
+}
+
+<div.doc-sidebar>
+    <span.section>INTRODUCTION</span>
+    <ul>
+        <li for(doc in input.docs)>
+            $ var selected = doc === input.name;
+            <a class={ selected } href="/docs/${doc}">
+                ${formatName(doc)}
+            </a>
+            <if(selected)>
+                $!{input.toc}
+            </if>
+        </li>
+    </ul>
+    <span.section>ADVANCED TOPICS</span>
+    <ul>
+        <li for(doc in input.docs)>
+            <a href="/docs/${doc}">${doc}</a>
+        </li>
+    </ul>
+    <span.section>API REFERENCE</span>
+    <ul>
+        <li for(doc in input.docs)>
+            <a href="/docs/${doc}">${doc}</a>
+        </li>
+    </ul>
+</div>
+<div.doc-sidebar-spacer/>

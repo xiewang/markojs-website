@@ -11,7 +11,8 @@ exports.params = docs.map(doc => ({ name:doc }));
 exports.handler = (req, res) => {
     let name = req.params.name;
     let doc = markdownToTemplate(path.join(docsDir, name+'.md'));
+    let toc = doc.toc;
 
     let $global = { dependencies: doc.getDependencies() };
-    res.marko(template, { $global, doc, docs });
+    res.marko(template, { $global, name, doc, toc, docs });
 }

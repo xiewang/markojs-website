@@ -1,5 +1,6 @@
 .site-menu {
     flex-direction:row;
+    align-items: center;
 }
 .site-menu a {
     display:flex;

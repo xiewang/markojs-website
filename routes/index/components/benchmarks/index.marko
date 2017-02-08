@@ -1,0 +1,39 @@
+import benchData from './data';
+
+class {
+    constructor() {
+        this.state = {
+            index:0
+        }
+    }
+    cycle() {
+        this.state.index = (this.state.index+1) % benchData.length;
+    }
+}
+
+<h2.benchmark-title>Re<strong>marko</strong>able performance across the board</h2>
+<button on-click('cycle')>Switch benchmarks</button>
+<div.benchmarks>
+    $ var max = Math.max.apply(null, benchData.map(r => r.max));
+    $ var benchmark = benchData[state.index];
+    $ var width = 80 / benchmark.results.length + '%';
+    $ var localMax = (max+benchmark.max)/2;
+    <for(environment in benchmark.results)>
+        <benchmark-chart max=localMax width=width environment=environment results=environment.results/>
+    </for>
+</div>
+
+style {
+    .benchmarks {
+        flex-direction:row;
+        justify-content:space-between;
+        width:100%;
+        padding:2em;
+    }
+    h2.benchmark-title {
+        margin-bottom:2em;
+    }
+    h2.benchmark-title strong {
+        color:#d04;
+    }
+}

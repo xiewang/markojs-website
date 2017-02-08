@@ -7,25 +7,16 @@
 
 .doc-layout {
     flex-direction:row;
-    justify-content:flex-start;
-    align-items:flex-start;
     width:100%;
     padding:2em;
 }
 
 .doc-container {
     flex:1;
+    /*align-items: center;*/
     width:100%;
 }
 
-.doc-sidebar {
-    text-align:left;
-    list-style-type:none;
-    padding:0;
-}
-
-@media (max-width:45em) {
-    .doc-sidebar {
-        display: none;
-    }
+.doc-container h1:first-child {
+    padding-top:0;
 }
