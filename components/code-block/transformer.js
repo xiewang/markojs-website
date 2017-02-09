@@ -52,13 +52,46 @@ module.exports = function(el, context) {
 
     context.addDependency(require.resolve('./syntax.css'));
 
-    if(!context.data.markoSyntaxScriptAdded) {
+    if (!context.data.markoSyntaxScriptAdded) {
         el.insertSiblingBefore(builder.html(builder.literal(`<script>
             if(localStorage.syntax === 'concise') {
                 document.body.classList.add('concise');
             }
         </script>`)));
         context.data.markoSyntaxScriptAdded = true;
+    }
+
+
+
+    var prev = getPreviousNonWhitespaceNode(el);
+    var prevIsParagraph = prev && prev.tagName === 'p';
+    var innerNode = getSingleInnerNode(prev);
+    var innerIsLiteralText = innerNode && innerNode.type === 'Text' && innerNode.argument.type === 'Literal';
+    var innerIsFileName = innerIsLiteralText && /^[\w-]+\.[\w-]+$/.test(innerNode.argument.value);
+
+    if (innerIsFileName) {
+        var fileNameDiv = context.createNodeForEl('div');
+        fileNameDiv.setAttributeValue('class', builder.literal('code-block-filename'));
+        fileNameDiv.appendChild(innerNode);
+        prev.replaceWith(fileNameDiv);
+    }
+
+    function getPreviousNonWhitespaceNode(node) {
+        var prev = node.container.getPreviousSibling(node);
+        while(prev.type === 'Text' && prev.argument.type === 'Literal' && /^\s*$/.test(prev.argument.value)) {
+            prev = prev.container.getPreviousSibling(prev);
+        }
+        return prev;
+    }
+
+    function getSingleInnerNode(node) {
+        var next = node.firstChild;
+        while (next) {
+            if (node.body.length != 1) return;
+            node = next;
+            next = node.firstChild;
+        }
+        return node;
     }
 
     if(scopeName === 'text.marko' && !el.getAttribute('no-switch')) {

@@ -8,11 +8,11 @@ const docs = fs.readdirSync(docsDir).filter(doc => /\.md$/.test(doc)).map(doc =>
 exports.path = '/docs/:name';
 exports.params = docs.map(doc => ({ name:doc }));
 
-exports.handler = (req, res) => {
-    let name = req.params.name;
+exports.handler = (input, out) => {
+    let name = input.params.name;
     let doc = markdownToTemplate(path.join(docsDir, name+'.md'));
     let toc = doc.toc;
 
     let $global = { dependencies: doc.getDependencies() };
-    res.marko(template, { $global, name, doc, toc, docs });
+    template.render({ $global, name, doc, toc, docs }, out);
 }

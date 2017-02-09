@@ -1,5 +1,5 @@
 .site-header {
-    position:fixed;
+    position:absolute;
     top:0;
     left:0;
     right:0;
@@ -14,12 +14,12 @@
     z-index:10;
     transform:translate3d(0, 1px, 0);
 }
-.site-header.headspace--hidden {
-    transform:translate3d(0, -4.5em, 0); /* y value should be -1 * height */
-}
 .site-header.headspace--fixed {
     position:fixed;
     transform:translate3d(0, -1px, 0);
+}
+.site-header.headspace--hidden {
+    transform:translate3d(0, -4.5em, 0); /* y value should be -1 * height */
 }
 
 .site-header.headspace--fixed,

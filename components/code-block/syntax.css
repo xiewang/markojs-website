@@ -1,3 +1,31 @@
+.code-block-filename {
+  font-size:0.75em;
+  line-height: 1;
+  background-color: #27292b;
+  color:#bbbdbf;
+  padding:0.4em 0.6em;
+  display:table;
+  margin-bottom:-1em;
+  padding-bottom: 1em;
+  border-top-left-radius: 0.3em;
+  border-top-right-radius: 0.3em;
+  font-weight: 300;
+  border-top:2px solid #09d;
+}
+
+pre.editor {
+  color:#dbdddf;
+  background-color:#27292b;
+  width:100%;
+  padding:1em;
+  border-radius:0.2em;
+  overflow:auto;
+}
+
+pre.editor .line {
+  display: block;
+}
+
 pre .comment {
   color: #86909c;
   font-style: italic;

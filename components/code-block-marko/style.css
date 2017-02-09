@@ -20,9 +20,9 @@ body.concise .marko-code-block .code.html {
 .marko-code-block .switch-syntax {
     font-size: 0.8em;
     position:absolute;
-    top:1.5em;
+    top:0.4em;
     right:0.4em;
-    padding:1em;
+    padding:0.9em;
     border:0;
     background-color:rgba(78,80,82,0.8);
     color:#eceef0;

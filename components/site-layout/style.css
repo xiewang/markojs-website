@@ -23,7 +23,6 @@ h1, h2, h3, h4, h5, h6 {
     color:#191919;
     line-height:1.25;
     padding-top:1.5rem;
-    padding-bottom:1rem;
     margin:0;
 }
 
@@ -62,6 +61,7 @@ h6 {
 pre, code {
   font-family: Monaco, Menlo, Consolas, monospace;
   font-size:0.85em;
+  margin:0;
 }
 
 code {
@@ -148,19 +148,6 @@ h6:hover a.anchor {
 
 blockquote code {
     background:#fff;
-}
-
-pre {
-  color:#dbdddf;
-  background-color:#27292b;
-  width:100%;
-  padding:1em;
-  border-radius:0.2em;
-  overflow:auto;
-}
-
-pre .line {
-  display: block;
 }
 
 .content {

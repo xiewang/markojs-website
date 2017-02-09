@@ -14,17 +14,16 @@
     "lasso-cson": "^1.0.0",
     "lasso-less": "^2.4.3",
     "marked": "^0.3.6",
-    "marko": "^4.0.0-rc.2",
+    "marko": "^4.0.0-rc.13",
     "marko-prettyprint": "^1.3.1",
-    "new-marko-app": "github:mlrawlings/new-marko-app",
+    "marko-starter": "git://github.com/philidem/marko-starter.git",
     "octicons": "^5.0.1",
     "purecss": "^0.6.2",
     "resolve-from": "^2.0.0"
   },
   "scripts": {
-    "start": "marko-app start",
-    "build": "marko-app build",
-    "eject": "marko-app eject"
+    "start": "marko-starter server",
+    "build": "marko-starter build"
   },
   "static-repo": "git@github.com:mlrawlings/markojs-website.git#gh-pages",
   "baseurl": "/markojs-website"
