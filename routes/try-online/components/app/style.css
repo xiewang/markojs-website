@@ -18,6 +18,7 @@
     position:relative;
     justify-content: flex-start;
     align-items: stretch;
+    padding: 3px;
 }
 
 .tree-view-container {

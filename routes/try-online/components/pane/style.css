@@ -61,11 +61,13 @@
 
 .pane li.tab.active {
     background-color: #282c34;
+    background-image: linear-gradient(to bottom, #383c44 0%, #282c34 8%);
     border: 1px solid #16191d;
     border-bottom: 1px solid #282c34;
 }
 
 .pane li.tab.focused {
+    background-image: linear-gradient(to bottom, #484c54 0%, #282c34 8%);
     color: #d7dae0;
 }
 

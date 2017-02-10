@@ -1,5 +1,8 @@
 .preview {
-    margin: 0.25em;
+    margin: 0;
     background-color: white;
     padding: 1em;
+    min-height: 100%;
+    border:0.15em solid #282c34;
+    border-radius: 0.2em;
 }

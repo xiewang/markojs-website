@@ -37,7 +37,8 @@ class {
             mode: "Marko",
             lineNumbers: true,
             readOnly: false,
-            indentUnit: 4
+            indentUnit: 4,
+            lineWrapping: true
         };
 
         codeMirrorConfig.theme = 'marko';
@@ -59,9 +60,9 @@ class {
         });
     }
 
-    focusEnd() {
-        this.codeMirror.focus();
-        this.codeMirror.execCommand('goDocEnd');
+    focus() {
+        var file = this.input.file;
+        app.focusFile(file.path);
     }
 
     /*
@@ -75,7 +76,7 @@ class {
 
 var file = input.file;
 
-<div.editor>
+<div.editor on-click('focus')>
     <!-- <textarea style={width: '100%', height: '100%'}
         on-input('handleInput')
         ref='textarea'
