@@ -1,3 +1,7 @@
+html {
+    overflow: hidden;
+}
+
 button::-moz-focus-inner,
 input::-moz-focus-inner {
     border: 0;
@@ -51,7 +55,6 @@ pre {
 
 label {
     display: block;
-    font-size: 0.9em;
 }
 
 button, input, select, textarea {

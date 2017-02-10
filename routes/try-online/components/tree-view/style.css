@@ -1,6 +1,7 @@
 .tree-view {
-    font-size: 14px;
+    font-size: 0.8em;
     background-color: #21252b;
+    user-select: none;
 }
 
 .tree-view li {
@@ -9,15 +10,24 @@
     list-style-type: none;
     line-height: 2em;
     color: #9da5b4;
+    cursor: default;
 }
 
-.tree-view li.focused:before{
+.tree-view li:hover,
+.tree-view li.focused {
+    color: #adb5c4;
+}
+
+.tree-view li:before{
     content: '';
-    background-color: #3a3f4b;
     position: absolute;
     left: 0;
     right: 0;
     height: 2em;
+}
+
+.tree-view li.focused:before{
+    background-color: #3a3f4b;
 }
 
 .tree-view li.focused > span{
@@ -25,5 +35,5 @@
 }
 
 .tree-view ul {
-    padding-left: 20px;
+    padding-left: 1.5em;
 }

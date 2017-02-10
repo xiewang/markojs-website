@@ -3,10 +3,9 @@ import app from '~/routes/try-online/app';
 class {
     handlePaneClick(event) {
         var file = this.input.file;
-
+        app.focusFile(file.path);
+        
         if (event.target === this.el) {
-            app.focusFile(file.path);
-
             this.getWidget('editor-'+file.path).focusEnd();
         }
     }
