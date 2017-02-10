@@ -52,17 +52,6 @@ module.exports = function(el, context) {
 
     context.addDependency(require.resolve('./syntax.css'));
 
-    if (!context.data.markoSyntaxScriptAdded) {
-        el.insertSiblingBefore(builder.html(builder.literal(`<script>
-            if(localStorage.syntax === 'concise') {
-                document.body.classList.add('concise');
-            }
-        </script>`)));
-        context.data.markoSyntaxScriptAdded = true;
-    }
-
-
-
     var prev = getPreviousNonWhitespaceNode(el);
     var prevIsParagraph = prev && prev.tagName === 'p';
     var innerNode = getSingleInnerNode(prev);
@@ -76,16 +65,25 @@ module.exports = function(el, context) {
         prev.replaceWith(fileNameDiv);
     }
 
+    if (!context.data.markoSyntaxScriptAdded) {
+        el.insertSiblingBefore(builder.html(builder.literal(`<script>
+            if(localStorage.syntax === 'concise') {
+                document.body.classList.add('concise');
+            }
+        </script>`)));
+        context.data.markoSyntaxScriptAdded = true;
+    }
+
     function getPreviousNonWhitespaceNode(node) {
         var prev = node.container.getPreviousSibling(node);
-        while(prev.type === 'Text' && prev.argument.type === 'Literal' && /^\s*$/.test(prev.argument.value)) {
+        while(prev && prev.type === 'Text' && prev.argument.type === 'Literal' && /^\s*$/.test(prev.argument.value)) {
             prev = prev.container.getPreviousSibling(prev);
         }
         return prev;
     }
 
     function getSingleInnerNode(node) {
-        var next = node.firstChild;
+        var next = node && node.firstChild;
         while (next) {
             if (node.body.length != 1) return;
             node = next;
