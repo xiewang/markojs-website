@@ -41,6 +41,10 @@ class {
     addCSS() {
         var file = this.input.file;
         var template = getTemplate(file);
+        if (!template.getDependencies) {
+            return;
+        }
+        
         var dependencies = template.getDependencies({
                 require: vmodules.require,
                 resolveFrom: vmodules.resolveFrom

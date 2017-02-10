@@ -1,0 +1,7 @@
+{
+    "dependencies": [
+        "todomvc-common/base.css",
+        "todomvc-app-css/index.css",
+        "./todomvc-overrides.css"
+    ]
+}
