@@ -118,6 +118,21 @@ class VFileSystem extends EventEmitter {
         this.readTreeSync();
         return this._files[filePath] || this._dirs[filePath];
     }
+
+    statSync(filePath) {
+        var file = this.getFile(filePath);
+        if (!file) {
+            var error = new Error('ENOENT: no such file or directory, stat ' + JSON.stringify(filePath));
+            error.code = 'ENOENT';
+            throw error;
+        }
+        return file;
+    }
+
+    existsSync(filePath) {
+        var file = this.getFile(filePath);
+        return file != null;
+    }
 }
 
 module.exports = VFileSystem;

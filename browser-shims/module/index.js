@@ -62,20 +62,30 @@ function resolveMain(dir) {
     return resolvedMain.path;
 }
 
+function safeStatSync(filePath) {
+    var stat;
+
+    try {
+        return fs.statSync(filePath);
+    } catch(e) {
+        return null;
+    }
+}
+
 function tryExtensions(targetModule) {
     var originalExt = path.extname(targetModule);
     var hasExt = originalExt !== '';
-    var stat = fs.statSync(targetModule);
+    var stat = safeStatSync(targetModule);
 
-    if (stat.exists() && !stat.isDirectory()) {
+    if (stat && !stat.isDirectory()) {
         return [targetModule, stat];
     }
 
     if (!hasExt) {
         // Short circuit for the most common case where it is a JS file
         var withJSExt = targetModule + '.js';
-        stat = fs.statSync(withJSExt);
-        if (stat.exists()) {
+        stat = safeStatSync(withJSExt);
+        if (stat) {
             return [withJSExt, stat];
         }
     }
@@ -85,8 +95,8 @@ function tryExtensions(targetModule) {
         var ext = extensions[i];
         if (ext !== originalExt) {
             var targetModuleWithExt = targetModule + ext;
-            stat = fs.statSync(targetModuleWithExt);
-            if (stat.exists()) {
+            stat = safeStatSync(targetModuleWithExt);
+            if (stat) {
                 return [targetModuleWithExt, stat];
             }
         }
@@ -181,11 +191,13 @@ var Module = {
     _nodeModulePaths: nodeModulePaths,
 
     _resolveFilename: function(target, fromModule) {
+        var resolved;
+
         var fromFile = fromModule.filename;
         var paths = fromModule.paths;
         var fromDir = path.dirname(fromFile);
 
-        var resolved = resolveFrom(fromDir, target, paths);
+        resolved = resolveFrom(fromDir, target, paths);
         if (!resolved) {
             throw new Error('Module not found: ' + target + ' (from: ' + fromFile + ')');
         }
@@ -194,4 +206,6 @@ var Module = {
     }
 };
 
-exports.Module = Module;
+module.exports = Module;
+
+Module.Module = Module;

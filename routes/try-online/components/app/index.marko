@@ -1,9 +1,10 @@
 import app from '~/routes/try-online/app';
 
 class {
-    onInput(input) {
-        this.state = input.state;
-        this.state.unmounted = true;
+    onCreate() {
+        this.state = {
+            unmounted: true
+        }
     }
 
     onMount() {
@@ -11,34 +12,43 @@ class {
         // as part of the state for this component. We want our
         // singleton application instance to have access to the
         // application state
-        app.initialize(this.state);
+        app.initialize(this.input);
 
         app.onStateChange((newState) => {
-            this.state = newState;
+            this.input = newState;
         });
 
-        app.focusFile('/get-started');
+        app.focusFile('/get-started/components/number-spinner');
+
+        this.focusedFile = null;
 
         this.state.unmounted = false;
     }
+
+    onUpdate() {
+        if (this.input.focusedFile !== this.focusedFile) {
+            this.focusedFile = this.input.focusedFile;
+            app.emit('focus:change', this.input.focusedFile);
+        }
+    }
 }
 
-var panes = state.panes;
-var visibleTabsByPane = state.visibleTabsByPane;
+var panes = input.panes;
+var visibleTabsByPane = input.visibleTabsByPane;
 
 <macro renderPane(paneName)>
     <div class=paneName if(panes[paneName].length)>
-        <pane files=panes[paneName] focused-file=state.focusedFile/>
+        <pane files=panes[paneName]
+            focused-file=input.focusedFile
+            focused-directory=input.focusedDirectory />
     </div>
 </macro>
 
 <div.try-online>
-    <try-loader if(state.unmounted)/>
+    <try-loader if(input.unmounted)/>
     <div.workspace>
         <div.tree-view-container>
-            <tree-view root-dir=state.rootDir
-                focused-file=state.focusedFile
-                focused-directory=state.focusedDirectory/>
+            <tree-view root-dir=input.rootDir />
         </div>
         <div.divider></div>
         <div.editors-container>

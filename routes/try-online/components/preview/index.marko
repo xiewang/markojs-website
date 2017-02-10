@@ -1,5 +1,6 @@
 import vmodules from '~/routes/try-online/app/vmodules';
 import app from '~/routes/try-online/app';
+import fs from 'fs';
 
 static {
     function getTemplate(file) {
@@ -9,24 +10,77 @@ static {
 }
 
 class {
-    onInput(input) {
-        this.state = {
-            file: input.file
-        };
+    onMount() {
+        var file = this.input.file;
+        this.cssDependencies = [];
+        this.addCSS();
+        this.currentRender = null;
+
+        this.subscribeTo(app)
+            .on('file:modified', (modifiedFile) => {
+
+                this.removeAllCSS();
+                this.addCSS();
+
+                var currentRender = this.currentRender = {};
+
+                var template = getTemplate(file);
+                template.render()
+                    .then((renderResult) => {
+                        if (this.currentRender === currentRender) {
+                            renderResult.replaceChildrenOf(this.el);
+                        }
+                    })
+                    .catch((err) => {
+                        console.error(err.stack || err);
+                    })
+
+            });
     }
 
-    onMount() {
-        this.subscribeTo(app)
-            .on('file:modified', (file) => {
-                if (file.path === this.state.file.path) {
-                    var template = getTemplate(file);
-                    template.renderSync().replaceChildrenOf(this.el);
-                }
+    addCSS() {
+        var file = this.input.file;
+        var template = getTemplate(file);
+        var dependencies = template.getDependencies({
+                require: vmodules.require,
+                resolveFrom: vmodules.resolveFrom
             });
+        dependencies.forEach((dependency) => {
+            if (dependency.type !== 'css') {
+                return;
+            }
+
+            var code = dependency.code;
+            if (!code) {
+                if (dependency.path) {
+                    code = fs.readFileSync(dependency.path);
+                }
+            }
+
+            if (code) {
+                let style = document.createElement('style')
+                style.type = 'text/css'
+                style.innerHTML = dependency.code
+                document.getElementsByTagName('head')[0].appendChild(style);
+                this.cssDependencies.push({
+                    remove() {
+                        style.parentNode.removeChild(style);
+                    }
+                });
+            }
+        });
+    }
+
+    removeAllCSS() {
+        this.cssDependencies.forEach((cssDependency) => {
+            cssDependency.remove();
+        });
+
+        this.cssDependencies = [];
     }
 }
 
-var file = state.file;
+$ var file = input.file;
 
 <div.preview>
     <include(getTemplate(file))/>

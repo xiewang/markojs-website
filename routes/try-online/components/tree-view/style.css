@@ -11,7 +11,7 @@
     color: #9da5b4;
 }
 
-.tree-view li.file.focused:before{
+.tree-view li.focused:before{
     content: '';
     background-color: #3a3f4b;
     position: absolute;
@@ -20,60 +20,10 @@
     height: 2em;
 }
 
-.tree-view li.file.focused > span{
+.tree-view li.focused > span{
     color: #d7dae0;
 }
 
 .tree-view ul {
     padding-left: 20px;
-}
-
-
-.tree-view .dir > label {
-    position: relative;
-}
-
-.tree-view .dir > ul {
-    display: none;
-}
-
-.tree-view .dir.focused > ul {
-    display: block;
-}
-
-.tree-view .dir > label:before {
-    width: 16px;
-    height: 16px;
-    display: inline-block;
-    line-height: 1;
-    vertical-align: middle;
-    background-image: url('octicons/build/svg/chevron-up.svg');
-    background-size: contain;
-    filter: invert(1) brightness(.6);
-    content: '';
-    background-repeat: no-repeat;
-    position: relative;
-}
-
-.tree-view .dir.focused > label:before {
-    background-image: url('octicons/build/svg/chevron-down.svg');
-}
-
-.tree-view .file > span  {
-    position: relative;
-}
-
-.tree-view .file > span:before {
-    width: 20px;
-    height: 16px;
-    background-size: contain;
-    display: inline-block;
-    line-height: 16px;
-    vertical-align: middle;
-    background-image: url('./marko.svg');
-    content: '';
-    background-repeat: no-repeat;
-    filter: invert(1) sepia(1) brightness(.6) saturate(8000%) hue-rotate(160deg);
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
 }

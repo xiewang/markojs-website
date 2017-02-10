@@ -29,3 +29,6 @@
 
 
 .cm-s-marko .cm-entity-name-type { color: #f8d96e; }
+
+.cm-s-marko .cm-property-name { color: #f8d96e; }
+.cm-s-marko .cm-property-value { color: #b0b0b0; }

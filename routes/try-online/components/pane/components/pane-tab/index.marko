@@ -1,0 +1,23 @@
+import app from '~/routes/try-online/app';
+
+class {
+    handleTabClick(index) {
+        var file = this.input.file;
+        app.focusFile(file.path);
+    }
+}
+
+$ var focused = input.focused;
+$ var active = input.active;
+$ var file = input.file;
+
+<li.tab class=[focused && 'focused', active && 'active']
+    on-click('handleTabClick')>
+
+    <if(file.preview)>
+        <span.tab-label>${file.name} (Preview)</span>
+    </if>
+    <else>
+        <span.tab-label>${file.name}</span>
+    </else>
+</li>

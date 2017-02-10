@@ -1,0 +1,35 @@
+import app from '~/routes/try-online/app';
+
+class {
+    onCreate() {
+        this.state = {
+            focused: false
+        }
+    }
+
+    onMount() {
+        var file = this.input.file;
+
+        this.subscribeTo(app)
+            .on('focus:change', (focusedFile) => {
+                this.state.focused = file.path === focusedFile;
+            });
+    }
+
+    handleClick(event) {
+        event.stopPropagation();
+        var file = this.input.file;
+
+        if (!this.state.focused) {
+            app.focusFile(file.path);
+        }
+    }
+}
+
+$ var file = input.file;
+
+<li.file class={focused: state.focused} on-click('handleClick')>
+    <span>
+        ${file.name}
+    </span>
+</li>

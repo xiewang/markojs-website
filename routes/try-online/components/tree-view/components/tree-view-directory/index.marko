@@ -1,0 +1,56 @@
+import app from '~/routes/try-online/app';
+
+class {
+    onCreate() {
+        this.state = {
+            focused: false,
+            expanded: false
+        }
+    }
+
+    onMount() {
+        var dir = this.input.dir;
+
+        this.subscribeTo(app)
+            .on('focus:change', (focusedFile) => {
+                var isFocused = dir.path === focusedFile;
+                if (isFocused !== this.state.focused) {
+                    this.state.expanded = true;
+                }
+
+                if (!isFocused && focusedFile.startsWith(dir.path)) {
+                    this.state.expanded = true;
+                }
+
+                this.state.focused = isFocused;
+
+                // return dir.path === input.focusedDirectory || input.focusedDirectory.startsWith(dir.path + '/');
+            });
+    }
+
+    handleClick(event) {
+        event.stopPropagation();
+
+        if (!this.state.focused) {
+            this.state.focused = true;
+            app.focusFile(this.input.dir.path);
+        }
+
+        this.state.expanded = !this.state.expanded;
+    }
+}
+
+$ var dir = input.dir;
+
+<li.dir class={ focused: state.focused, expanded: state.expanded } on-click('handleClick')>
+    <label>
+        ${dir.name}
+    </label>
+    <if(dir.files)>
+        <ul>
+            <for(file in dir.files)>
+                <tree-view-item file=file key=file.path/>
+            </for>
+        </ul>
+    </if>
+</li>

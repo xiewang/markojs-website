@@ -1,0 +1,27 @@
+import app from '~/routes/try-online/app';
+
+class {
+    handlePaneClick(event) {
+        var file = this.input.file;
+
+        if (event.target === this.el) {
+            app.focusFile(file.path);
+
+            this.getWidget('editor-'+file.path).focusEnd();
+        }
+    }
+}
+
+$ var focused = input.focused;
+$ var active = input.active;
+$ var file = input.file;
+
+<div.pane-body class=[focused && 'focused', active && 'active']
+    on-click('handlePaneClick')>
+    <if(file.preview)>
+        <preview file=file no-update key='preview-'+file.path />
+    </if>
+    <else>
+        <editor file=file no-update key='editor-'+file.path />
+    </else>
+</div>

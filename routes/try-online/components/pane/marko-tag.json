@@ -2,5 +2,6 @@
     "@files <file>[]": {
         "@file": "object"
     },
-    "@focused-file": "string"
+    "@focused-file": "string",
+    "@focused-directory": "string"
 }

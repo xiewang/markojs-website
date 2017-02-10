@@ -1,0 +1,8 @@
+$ var file = input.file;
+
+<if(file.isDirectory())>
+    <tree-view-directory dir=file/>
+</if>
+<else>
+    <tree-view-file file=file/>
+</else>
