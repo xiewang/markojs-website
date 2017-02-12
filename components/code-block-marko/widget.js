@@ -1,4 +1,5 @@
 var getWidgetForEl = require('marko/widgets').getWidgetForEl;
+const localStorageUtil = require('~/util/localStorage');
 
 module.exports = {
     changeSyntax: function() {
@@ -8,11 +9,11 @@ module.exports = {
 
         header.pause();
 
-        if(localStorage.syntax === 'concise') {
-            localStorage.syntax = 'html';
+        if(localStorageUtil.get('syntax') === 'concise') {
+            localStorageUtil.set('syntax', 'html');
             document.body.classList.remove('concise');
         } else {
-            localStorage.syntax = 'concise';
+            localStorageUtil.set('syntax', 'concise');
             document.body.classList.add('concise');
         }
 

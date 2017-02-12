@@ -1,4 +1,5 @@
 import app from '~/routes/try-online/app';
+import localStorageUtil from '~/util/localstorage';
 
 class {
     onCreate() {
@@ -23,7 +24,7 @@ class {
                 }
 
                 this.state.focused = isFocused;
-
+                localStorageUtil.set('focusedFile', focusedFile);
                 // return dir.path === input.focusedDirectory || input.focusedDirectory.startsWith(dir.path + '/');
             });
     }

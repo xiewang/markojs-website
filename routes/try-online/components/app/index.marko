@@ -1,4 +1,5 @@
 import app from '~/routes/try-online/app';
+import localStorageUtil from '~/util/localstorage';
 
 class {
     onCreate() {
@@ -18,10 +19,12 @@ class {
             this.input = newState;
         });
 
-        app.focusFile('/get-started/components/number-spinner');
+        const focusedFile = localStorageUtil.get('focusedFile') ||
+            '/get-started/components/number-spinner';
+
+        app.focusFile(focusedFile);
 
         this.focusedFile = null;
-
         this.state.unmounted = false;
     }
 
