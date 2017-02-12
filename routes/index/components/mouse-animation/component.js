@@ -13,46 +13,50 @@ module.exports = {
         this.state.y = input.y || 0;
     },
 
-	onMount() {
-		let touch = navigator.maxTouchPoints>1;
+    onMount() {
+        let touch = navigator.maxTouchPoints > 1;
         let windowEvents = this.subscribeTo(window);
-		// set mouse position state on move:
-		windowEvents.on(touch?'touchmove':'mousemove', e => {
-			this.setMouse(e.touches ? e.touches[0] : e);
-		});
+        // set mouse position state on move:
+        windowEvents.on(touch?'touchmove':'mousemove', e => {
+            this.setMouse(e.touches ? e.touches[0] : e);
+        });
 
-		// holding the mouse down enables big mode:
-		windowEvents.on(touch?'touchstart':'mousedown', e => { this.setBig(true); e.preventDefault(); });
-		windowEvents.on(touch?'touchend':'mouseup', e => this.setBig(false));
+        // holding the mouse down enables big mode:
+        windowEvents.on(touch ? 'touchstart' : 'mousedown', e => {
+          this.setBig(true);
+          e.preventDefault();
+        });
+
+        windowEvents.on(touch ? 'touchend' : 'mouseup', e => this.setBig(false));
 
         // disable dragging on mobile
         windowEvents.on('touchstart', e => (e.preventDefault(), false));
         windowEvents.on('scroll', e => (e.preventDefault(), false));
 
-		let incrementer = () => {
+        let incrementer = () => {
             this.increment()
             window.requestAnimationFrame(incrementer)
-        }
+        };
 
         incrementer();
-	},
+    },
 
-	// Magic: triggering setState() in onUpdate() creates an animation loop!
-	onUpdate() {
+    // Magic: triggering setState() in onUpdate() creates an animation loop!
+    onUpdate() {
         //window.setTimeout(() => this.increment(), 10000);
-	},
+    },
 
-	increment() {
-		this.state.counter++;
-	},
+    increment() {
+        this.state.counter++;
+    },
 
-	setMouse({ clientX:x, clientY:y }) {
-		this.state.x = x;
+    setMouse({ clientX:x, clientY:y }) {
+        this.state.x = x;
         this.state.y = y;
-		return false;
-	},
+        return false;
+    },
 
-	setBig(big) {
-		this.state.big = big;
-	}
+    setBig(big) {
+        this.state.big = big;
+    }
 }
