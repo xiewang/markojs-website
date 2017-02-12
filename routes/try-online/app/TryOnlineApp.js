@@ -93,6 +93,10 @@ class TryOnlineApp extends EventEmitter {
         this.state.panes = panes;
     }
 
+    fileExists(filePath) {
+        return vfs.getFile(filePath) !== undefined;
+    }
+
     focusFile(filePath) {
         var file = vfs.getFile(filePath);
         if (!file) {
