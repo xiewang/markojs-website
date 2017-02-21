@@ -20,6 +20,11 @@
     padding-top:0;
 }
 
+.doc-content > h1,
+.doc-content > h2 {
+  border-bottom:1px solid #f2f4f6;
+}
+
 .doc-layout {
     flex-direction:row;
     width:100%;

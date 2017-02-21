@@ -58,13 +58,22 @@ const environments = {
 
 const benchmarks = {
     colors: {
-        name:'Colors',
-        description: '',
+        name:'Color picker',
+        description: `
+            <p>This benchmark measures the time it takes to cycle through 133 colors. The selected color index changes every cycle. When the selected color index changes three things happen:</p>
+            <ul>
+                <li>The new selected color is highlighted</li>
+                <li>The old selected color is unhighlighted</li>
+                <li>The selected color is shown at the end</li>
+            </ul>
+            <p>This benchmark measures how well a large render tree is optimized when only a few nodes actually need to be updated.</p>`,
         unit:'ops/s'
     },
     'search-results': {
-        name:'Search Results',
-        description: '',
+        name:'Search results',
+        description: `
+            <p>This benchmark measures the time it takes to render pages of search results. Each page includes 100 search result items. Every iteration renders an entirely new set of search results. As a result of rendering new search results for every cycle, a significant number of DOM nodes must be updated.</p>
+            <p>Because there are many DOM nodes being updated, the DOM itself tends to be the bottleneck in this type of benchmark.</p>`,
         unit:'ops/s'
     }
 }

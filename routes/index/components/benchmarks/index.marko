@@ -6,34 +6,76 @@ class {
             index:0
         }
     }
-    cycle() {
-        this.state.index = (this.state.index+1) % benchData.length;
+    switchBench(index) {
+        this.state.index = index;
     }
 }
 
-<h2.benchmark-title>Re<strong>marko</strong>able performance across the board</h2>
-<button on-click('cycle')>Switch benchmarks</button>
+$ var benchmark = benchData[state.index];
+
 <div.benchmarks>
-    $ var max = Math.max.apply(null, benchData.map(r => r.max));
-    $ var benchmark = benchData[state.index];
-    $ var width = 80 / benchmark.results.length + '%';
-    $ var localMax = (max+benchmark.max)/2;
-    <for(environment in benchmark.results)>
-        <benchmark-chart max=localMax width=width environment=environment results=environment.results/>
-    </for>
+    <h2.title>Re<strong>marko</strong>able performance across the board</h2>
+    <div.tabs>
+        <for(i, bench in benchData)>
+            <button.tab class={ selected:i === state.index } on-click('switchBench', i)>
+                ${bench.name}
+            </button>
+        </for>
+    </div>
+    <div.charts>
+        $ var max = Math.max.apply(null, benchData.map(r => r.max));
+        $ var width = 80 / benchmark.results.length + '%';
+        $ var localMax = (max+benchmark.max)/2;
+        <for(environment in benchmark.results)>
+            <benchmark-chart max=localMax width=width environment=environment results=environment.results/>
+        </for>
+    </div>
+    <h3>${benchmark.name} benchmark explained</h3>
+    <div.description>$!{benchmark.description} <a href="https://github.com/marko-js/isomorphic-ui-benchmarks">View the benchmark on GitHub</a></div>
 </div>
 
 style {
     .benchmarks {
+        width:100%;
+        padding:2em;
+    }
+    .benchmarks .charts {
         flex-direction:row;
         justify-content:space-between;
         width:100%;
         padding:2em;
+        margin-top:4em;
     }
-    h2.benchmark-title {
-        margin-bottom:2em;
+    .benchmarks h2.title {
+        margin-bottom:1em;
+        text-align:center;
     }
-    h2.benchmark-title strong {
+    .benchmarks h2.title strong {
         color:#d04;
+    }
+    .benchmarks .tabs {
+        flex-direction:row;
+        justify-content:flex-start;
+        border-bottom:2px solid #d04;
+        padding:0 1em;
+    }
+    .benchmarks .tab {
+        border:2px solid #d04;
+        font-size:0.8em;
+        margin-left:-2px;
+        margin-bottom:-2px;
+        background:#f3a8bf;
+        color:#b15b76;
+        cursor:pointer;
+        outline:0;
+        padding:1em;
+    }
+    .benchmarks .tab.selected {
+        border-bottom:2px solid #fff;
+        background:#fff;
+        color:#424446;
+    }
+    .benchmarks .description p {
+        margin-top:1em;
     }
 }
