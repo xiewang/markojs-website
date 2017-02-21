@@ -1,4 +1,5 @@
 import app from '~/routes/try-online/app';
+import localStorageUtil from '~/util/localstorage';
 
 class {
     onCreate() {
@@ -8,6 +9,8 @@ class {
     }
 
     onMount() {
+        const DEFAULT_FOCUSED_FILE = '/get-started/components/number-spinner';
+
         // The directory tree is serialized down from the server
         // as part of the state for this component. We want our
         // singleton application instance to have access to the
@@ -18,10 +21,15 @@ class {
             this.input = newState;
         });
 
-        app.focusFile('/get-started/components/number-spinner');
+        const localStorageFocusedFile = localStorageUtil.get('focusedFile');
+
+        if (localStorageFocusedFile && app.fileExists(localStorageFocusedFile)) {
+            app.focusFile(localStorageFocusedFile);
+        } else {
+            app.focusFile(DEFAULT_FOCUSED_FILE);
+        }
 
         this.focusedFile = null;
-
         this.state.unmounted = false;
     }
 
@@ -33,8 +41,8 @@ class {
     }
 }
 
-var panes = input.panes;
-var visibleTabsByPane = input.visibleTabsByPane;
+$ var panes = input.panes;
+$ var visibleTabsByPane = input.visibleTabsByPane;
 
 <macro renderPane(paneName)>
     <div class=paneName if(panes[paneName].length)>

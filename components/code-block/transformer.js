@@ -2,6 +2,8 @@ var fs = require('fs');
 var Highlights = require('highlights');
 var prettyprint = require('marko-prettyprint');
 var resolveFrom = require('resolve-from');
+const localStorageUtil = require('~/util/localstorage');
+
 var highlighter = new Highlights();
 
 highlighter.requireGrammarsSync({
@@ -80,8 +82,9 @@ module.exports = function(el, context) {
     }
 
     if (!context.data.markoSyntaxScriptAdded) {
+        const key = localStorageUtil.getMarkoWebsiteKey('syntax');
         el.insertSiblingBefore(builder.html(builder.literal(`<script>
-            if(localStorage.syntax === 'concise') {
+            if(localStorage.getItem('${key}') === 'concise') {
                 document.body.classList.add('concise');
             }
         </script>`)));
