@@ -20,6 +20,7 @@ highlighter.requireGrammarsSync({
 module.exports = function(el, context) {
     var builder = context.builder;
     var file = el.argument;
+    var lines = el.getAttributeValue('lines') && el.getAttributeValue('lines').value;
     var scopeName;
     var html;
     var code;
@@ -49,6 +50,19 @@ module.exports = function(el, context) {
         fileContents: code,
         scopeName: scopeName
     });
+
+    if (lines) {
+        var currentLine = 0;
+        var currentIndex = 0;
+        lines = parseLineRange(lines);
+        html = html.replace(/<div class="line">/g, (match) => {
+            if (++currentLine === lines[currentIndex]) {
+                currentIndex++;
+                return `<div class="line highlight">`;
+            }
+            return match;
+        });
+    }
 
     context.addDependency(require.resolve('./syntax.css'));
 
@@ -128,3 +142,19 @@ module.exports = function(el, context) {
     el.replaceWith(builder.html(builder.literal(html)));
 }
 
+function parseLineRange(string) {
+    var ranges = string.split(',');
+    var lines = [];
+
+    ranges.forEach(range => {
+        var limits = range.trim().split('-');
+        var start = parseInt(limits[0].trim());
+        var end = limits[1] ? parseInt(limits[1].trim()) : start;
+
+        for (var i = start; i <= end; i++) {
+            lines.push(i);
+        }
+    });
+
+    return lines.sort((a, b) => a - b);
+}

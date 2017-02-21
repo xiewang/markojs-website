@@ -38,7 +38,15 @@ exports.toTemplate = function renderMarkdown(filepath) {
     };
 
     markedRenderer.code = function(code, lang, escaped) {
-        return `<code-block lang="${lang}">${code}</code-block>`;
+        var lines = '';
+        var index = lang && lang.indexOf('{');
+
+        if (index && index !== -1) {
+            lines = lang.slice(index+1, -1);
+            lang = lang.slice(0, index);
+        }
+
+        return `<code-block lang="${lang}" lines="${lines}">${code}</code-block>`;
     };
 
     var html = '-----\n' + marked(markdown, {

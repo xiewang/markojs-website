@@ -22,7 +22,6 @@ body {
 h1, h2, h3, h4, h5, h6 {
     color:#191919;
     line-height:1.25;
-    padding-top:1.5rem;
     margin:0;
 }
 
@@ -56,6 +55,11 @@ h5 {
 h6 {
   font-size:1.0em;
   font-weight:600;
+}
+
+p {
+  margin:0;
+  padding:0;
 }
 
 pre, code {

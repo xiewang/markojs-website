@@ -31,5 +31,10 @@ module.exports = {
             this.el.classList.add('fixed');
             setTimeout(() => this.el.classList.add('transition'), 0);
         });
+
+        if (window.pageYOffset > header.el.offsetHeight) {
+            this.el.classList.add('no-header');
+            this.el.classList.add('fixed');
+        }
     }
 }
