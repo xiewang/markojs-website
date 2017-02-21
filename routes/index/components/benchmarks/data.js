@@ -64,7 +64,7 @@ const benchmarks = {
             <ul>
                 <li>The new selected color is highlighted</li>
                 <li>The old selected color is unhighlighted</li>
-                <li>The selected color is shown at the end</li>
+                <li>The selected color's name is shown at the end</li>
             </ul>
             <p>This benchmark measures how well a large render tree is optimized when only a few nodes actually need to be updated.</p>`,
         unit:'ops/s'
