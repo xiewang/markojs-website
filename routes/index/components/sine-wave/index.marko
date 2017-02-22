@@ -1,4 +1,4 @@
-static var barCount = 200;
+static var barCount = 100;
 static var barWidth = 100/barCount;
 
 style {
@@ -7,12 +7,14 @@ style {
         height: 150px;
         width: 100%;
         background-color: #fff;
+        overflow:hidden;
     }
 
     .animated-sin-wave > .bar {
         position: absolute;
         height: 100%;
         border-radius: 50%;
+        max-width:10px;
     }
 }
 
@@ -22,7 +24,7 @@ class {
             active: false,
             count: 0
         };
-        this.step = 1.5;
+        this.step = .5;
     }
     onMount() {
         this.nextFrame = this.nextFrame.bind(this);
@@ -55,13 +57,14 @@ class {
         $ var translateY = Math.sin(count/10 + i/5) * 100 * .5;
         $ var hue = (360/barCount * i - count) % 360;
         $ var color = 'hsl('+hue+',95%,55%)';
-        $ var rotation = i%4 == 0 ? (count+135)%360 : i%4 == 1 ? (count+90)%360 : i%4 == 2 ? (count+45)%360 : (count+0)%360;
+        $ var rotation = count%360;
+        $ //var rotation = i%4 == 0 ? (135)%360 : i%4 == 1 ? (count+90)%360 : i%4 == 2 ? (45)%360 : (0)%360;
         $ var barX = barWidth * i;
 
         $ var style = {
-            width: '5px',
+            width: barWidth + '%',
             left: barX + '%',
-            transform: 'rotate(' + rotation + 'deg) scale(1,.5) translateY(' + translateY + '%)',
+            transform: 'scale(0.8,.5) translateY(' + translateY + '%) rotate(' + rotation + 'deg)',
             backgroundColor: color
         };
 
