@@ -1,9 +1,9 @@
-var getWidgetForEl = require('marko/widgets').getWidgetForEl;
+const getComponentForEl = require('marko/components').getComponentForEl;
 const localStorageUtil = require('~/util/localStorage');
 
 module.exports = {
     changeSyntax: function() {
-        var header = getWidgetForEl(document.querySelector('.site-header'));
+        var header = getComponentForEl(document.querySelector('.site-header'));
         var beforeScroll = document.body.scrollTop;
         var beforePosition = this.el.offsetTop;
 
