@@ -1,21 +1,21 @@
 import todoApp from '../../app';
 
 style {
-    #todo-list li.pending .toggle, #todo-list li.pending button {
+    .todo-list li.pending .toggle, .todo-list li.pending button {
         visibility: hidden;
     }
 
-    #todo-list li.pending label {
+    .todo-list li.pending label {
         color: #d9d9d9;
     }
 
-    #todo-list li {
+    .todo-list li {
         opacity: 1;
         background-color: #fff;
         overflow: hidden;
     }
 
-    #todo-list li.animate {
+    .todo-list li.animate {
         transition: opacity 250ms ease-in-out, max-height 250ms ease-in-out;
     }
 }

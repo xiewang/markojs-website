@@ -11,36 +11,38 @@ static {
 
 class {
     onMount() {
-        var file = this.input.file;
         this.cssDependencies = [];
+        this.renderToFrame();
+
+        this.subscribeTo(app).on('file:modified', () => this.renderToFrame());
+    }
+
+    renderToFrame() {
+        var file = this.input.file;
+        var template = getTemplate(file);
+
+        this.removeAllCSS();
         this.addCSS();
-        this.currentRender = null;
 
-        this.subscribeTo(app)
-            .on('file:modified', (modifiedFile) => {
+        var currentRender = this.currentRender = {};
 
-                this.removeAllCSS();
-                this.addCSS();
-
-                var currentRender = this.currentRender = {};
-
-                var template = getTemplate(file);
-                template.render()
-                    .then((renderResult) => {
-                        if (this.currentRender === currentRender) {
-                            renderResult.replaceChildrenOf(this.el);
-                        }
-                    })
-                    .catch((err) => {
-                        console.error(err.stack || err);
-                    })
-
-            });
+        template.render()
+            .then((renderResult) => {
+                if (this.currentRender === currentRender) {
+                    var frame = this.getEl('frame');
+                    console.log(frame);
+                    renderResult.replaceChildrenOf(frame.contentDocument.body);
+                }
+            })
+            .catch((err) => {
+                console.error(err.stack || err);
+            })
     }
 
     addCSS() {
         var file = this.input.file;
         var template = getTemplate(file);
+        var doc = this.getEl('frame').contentDocument;
         if (!template.getDependencies) {
             return;
         }
@@ -62,10 +64,10 @@ class {
             }
 
             if (code) {
-                let style = document.createElement('style')
+                let style = doc.createElement('style')
                 style.type = 'text/css'
                 style.innerHTML = dependency.code
-                document.getElementsByTagName('head')[0].appendChild(style);
+                doc.getElementsByTagName('head')[0].appendChild(style);
                 this.cssDependencies.push({
                     remove() {
                         style.parentNode.removeChild(style);
@@ -87,5 +89,5 @@ class {
 $ var file = input.file;
 
 <div.preview>
-    <include(getTemplate(file))/>
+    <iframe.frame key="frame"/>
 </div>

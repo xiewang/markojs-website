@@ -19,18 +19,14 @@ class {
     }
 }
 
-<section id="main">
+<section.main>
 
-    <input id="toggle-all"
+    <input.toggle-all
         type="checkbox"
         checked=isToggleAllChecked(input.todos)
         on-change("handleToggleAllOnChange")/>
 
-    <label for="toggle-all">
-        Mark all as complete
-    </label>
-
-    <ul id="todo-list">
+    <ul.todo-list>
         <for(todo in data.todos)>
             <todomvc-todo-item(todo) key="todo-${todo.id}"/>
         </for>

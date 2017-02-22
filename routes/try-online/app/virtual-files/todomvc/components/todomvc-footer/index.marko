@@ -13,11 +13,11 @@ class {
 
 $ var remainingTodosWord = input.remainingCount > 1 ? 'items' : 'item';
 
-<footer id="footer">
-    <span id="todo-count">
+<footer.footer>
+    <span.todo-count>
         <strong>${input.remainingCount}</strong> ${remainingTodosWord} left
     </span>
-    <ul id="filters">
+    <ul.filters>
         <li>
             <a href="#/" class=(input.filter === "all" && "selected")
                 on-click('setFilter', 'all')>
@@ -45,10 +45,7 @@ $ var remainingTodosWord = input.remainingCount > 1 ? 'items' : 'item';
         </li>
     </ul>
     <if(input.completedCount > 0)>
-        <button
-            id="clear-completed"
-            on-click("clearCompleted")>
-
+        <button.clear-completed on-click("clearCompleted")>
             Clear completed (${input.completedCount})
         </button>
     </if>
