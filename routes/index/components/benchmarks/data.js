@@ -26,33 +26,50 @@ const libraries = {
     }
 };
 
+
 const environments = {
     node: {
-        logo:'https://ih1.redbubble.net/image.109336634.1604/flat,550x550,075,f.u1.jpg',
-        name:'Node.js'
+        logo: 'https://ih1.redbubble.net/image.109336634.1604/flat,550x550,075,f.u1.jpg',
+        name: 'Node.js',
+        type: 'server'
+    },
+    desktop: {
+        logo: 'http://i.imgur.com/Y7EQBOG.png',
+        name: 'Desktop Browsers',
+        type: 'average'
+    },
+    mobile: {
+        logo: 'http://i.imgur.com/L65ZzmB.png',
+        name: 'Mobile Browsers',
+        type: 'average'
     },
     firefox: {
-        logo:'https://www.mozilla.org/media/img/styleguide/identity/firefox/guidelines-logo.7ea045a4e288.png',
-        name:'Firefox'
+        logo: 'https://www.mozilla.org/media/img/styleguide/identity/firefox/guidelines-logo.7ea045a4e288.png',
+        name: 'Firefox',
+        type: 'desktop'
     },
     safari: {
         logo: 'https://nau.edu/uploadedImages/Administrative/ITS/CTSS/PC_Support_-_NEW/Web_Browsers/Safari/Logo.png',
-        name:'Safari'
+        name: 'Safari',
+        type: 'desktop'
     },
     chrome: {
         logo: 'http://img.talkandroid.com/uploads/2015/11/Chrome-Logo.png',
-        name:'Chrome'
+        name: 'Chrome',
+        type: 'desktop'
     },
     edge: {
 
     },
     ios: {
         logo: 'http://i.imgur.com/72qUODI.png',
-        name: 'iOS Safari'
+        name: 'iOS Safari',
+        type: 'mobile'
     },
     android: {
         logo: 'http://i.imgur.com/ZNe84Lr.png',
-        name: 'Chrome for Android'
+        name: 'Chrome for Android',
+        type: 'mobile'
     }
 };
 
@@ -78,7 +95,7 @@ const benchmarks = {
     }
 }
 
-let benchResults = {
+let resultsByBench = {
     "colors": {
         "node": {
             "inferno": 2176,
@@ -169,35 +186,71 @@ let benchResults = {
     }
 };
 
-/*
-benchResults.colors.android = (() => {
-    var results = {};
-    var numEnvironments =Object.keys(benchResults.colors).length;
+Object.entries = Object.entries || function (object) {
+    return Object.keys(object).map(key => [key, object[key]]);
+}
 
-    Object.keys(benchResults.colors).forEach(env => {
-        var libResults = benchResults.colors[env];
-        Object.keys(libResults).forEach(lib => {
-            results[lib] = (results[lib] || 0) + libResults[lib]/numEnvironments;
-        });
+Object.entries(resultsByBench).forEach(entries => {
+    const benchName = entries[0];
+    const benchResultsByEnvironment = entries[1];
+    const environmentEntries = Object.entries(benchResultsByEnvironment);
+    const numDesktop = environmentEntries.filter(entry =>
+        environments[entry[0]].type === 'desktop'
+    ).length;
+    const numMobile = environmentEntries.filter(entry =>
+        environments[entry[0]].type === 'mobile'
+    ).length;
+
+    let desktopResults = benchResultsByEnvironment.desktop = {};
+    let mobileResults = benchResultsByEnvironment.mobile = {};
+
+    environmentEntries.forEach(entry => {
+        const environmentName = entry[0];
+        const environmentResultsByLibrary = entry[1];
+        const environmentType = environments[environmentName].type;
+
+        let results;
+        let count;
+
+        if (environmentType === 'mobile') {
+            results = mobileResults;
+            count = numMobile;
+        } else if (environmentType === 'desktop') {
+            results = desktopResults;
+            count = numDesktop;
+        }
+
+        if (results) {
+            Object.entries(environmentResultsByLibrary).forEach(entries => {
+                const libraryName = entries[0];
+                const libraryResult = entries[1];
+
+                results[libraryName] = results[libraryName] || 0;
+                results[libraryName] += libraryResult/count;
+            });
+        }
     });
+});
 
-    return results;
-})();
-*/
+module.exports = Object.entries(resultsByBench).map(entries => {
+    const benchName = entries[0];
+    const benchResultsByEnvironment = entries[1];
+    const benchmark = benchmarks[benchName];
 
-module.exports = Object.keys(benchResults).map(bench => {
-    const envResults = benchResults[bench];
-    const benchmark = benchmarks[bench];
     let localMax = 0;
     let avergageResults = {};
+
     return Object.assign({}, benchmark, {
-        results: Object.keys(envResults).map(env => {
-            const libResults = envResults[env];
-            const environment = environments[env];
+        results: Object.entries(benchResultsByEnvironment).map(entries => {
+            const envName = entries[0];
+            const envResultsByLibrary = entries[1];
+            const environment = environments[envName];
+
             return Object.assign({}, environment, {
-                results: Object.keys(libResults).map(lib => {
-                    const libResult = libResults[lib];
-                    const library = libraries[lib];
+                results: Object.entries(envResultsByLibrary).map(entries => {
+                    const libName = entries[0];
+                    const libResult = entries[1];
+                    const library = libraries[libName];
 
                     if(libResult > localMax) {
                         localMax = libResult;

@@ -1,0 +1,70 @@
+static var barCount = 200;
+static var barWidth = 100/barCount;
+
+style {
+    .animated-sin-wave {
+        position: relative;
+        height: 150px;
+        width: 100%;
+        background-color: #fff;
+    }
+
+    .animated-sin-wave > .bar {
+        position: absolute;
+        height: 100%;
+        border-radius: 50%;
+    }
+}
+
+class {
+    constructor() {
+        this.state = {
+            active: false,
+            count: 0
+        };
+        this.step = 1.5;
+    }
+    onMount() {
+        this.nextFrame = this.nextFrame.bind(this);
+        this.start();
+    }
+    start() {
+        if (!this.state.active) {
+            this.state.active = true;
+            this.nextFrame();
+        }
+    }
+    stop() {
+        this.state.active = false;
+    }
+    switchDirection() {
+        this.step *= -1;
+    }
+    nextFrame() {
+        if (this.state.active) {
+            this.state.count += this.step;
+            window.requestAnimationFrame(this.nextFrame);
+        }
+    }
+}
+
+<div.animated-sin-wave on-click('switchDirection')>
+    $ var count = state.count;
+
+    <for(var i=0; i<barCount; i++)>
+        $ var translateY = Math.sin(count/10 + i/5) * 100 * .5;
+        $ var hue = (360/barCount * i - count) % 360;
+        $ var color = 'hsl('+hue+',95%,55%)';
+        $ var rotation = i%4 == 0 ? (count+135)%360 : i%4 == 1 ? (count+90)%360 : i%4 == 2 ? (count+45)%360 : (count+0)%360;
+        $ var barX = barWidth * i;
+
+        $ var style = {
+            width: '5px',
+            left: barX + '%',
+            transform: 'rotate(' + rotation + 'deg) scale(1,.5) translateY(' + translateY + '%)',
+            backgroundColor: color
+        };
+
+        <div.bar style=style/>
+    </for>
+</div>

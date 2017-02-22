@@ -1,9 +1,9 @@
-var getWidgetForEl = require('marko/widgets').getWidgetForEl;
+var getComponentForEl = require('marko/components').getComponentForEl;
 var forEach = [].forEach;
 
 module.exports = {
     onMount() {
-        var header = getWidgetForEl(document.querySelector('.site-header'));
+        var header = getComponentForEl(document.querySelector('.site-header'));
         forEach.call(this.el.querySelectorAll('a[href^=\\#]'), (a) => {
             this.subscribeTo(a).on('click', () => {
                 header.hide();
