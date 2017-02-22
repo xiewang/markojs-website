@@ -1,4 +1,6 @@
-var getComponentForEl = require('marko/components').getComponentForEl;
+"use strict";
+
+const getComponentForEl = require('marko/components').getComponentForEl;
 const localStorageUtil = require('~/util/localStorage');
 
 module.exports = {
