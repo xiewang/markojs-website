@@ -99,8 +99,20 @@ module.exports = {
     preventOverscroll() {
         var sidebar = this.getEl('sidebar');
         this.subscribeTo(document.body).on('mousewheel', (e) => {
-            if (sidebar.scrollTop === 0 && e.deltaY < 0 || e.deltaY > 0 && sidebar.scrollTop === sidebar.scrollHeight - sidebar.offsetHeight) {
+            var delta = e.deltaY;
+            var scrollTarget = sidebar.scrollTop + delta;
+            var topY = 0;
+            var bottomY = sidebar.scrollHeight - sidebar.offsetHeight;
+            var atTop = scrollTarget <= topY;
+            var atBottom = scrollTarget >= bottomY;
+
+            if (atTop || atBottom) {
                 if (e.target === sidebar || sidebar.contains(e.target)) {
+                    if (atTop && sidebar.scrollTop != topY) {
+                        sidebar.scrollTop = topY;
+                    } else if (atBottom && sidebar.scrollTop != bottomY) {
+                        sidebar.scrollTop = bottomY;
+                    }
                     e.preventDefault();
                 }
             }
