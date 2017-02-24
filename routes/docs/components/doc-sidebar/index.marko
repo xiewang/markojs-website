@@ -4,9 +4,10 @@ static function formatName(name) {
     return name;
 }
 
-<div.doc-sidebar>
-    <span.section>INTRODUCTION</span>
-    <ul>
+<div.doc-sidebar key="sidebar">
+    <h1>Marko <version-switcher/></h1>
+    <ul.toc-level0>
+        <li.section>INTRODUCTION</li>
         <li for(doc in input.docs)>
             $ var selected = doc === input.name;
             <a class={ selected } href="/docs/${doc}">
@@ -17,14 +18,14 @@ static function formatName(name) {
             </if>
         </li>
     </ul>
-    <span.section>ADVANCED TOPICS</span>
-    <ul>
+    <ul.toc-level0>
+        <li.section>ADVANCED TOPICS</li>
         <li for(doc in input.docs)>
             <a href="/docs/${doc}">${doc}</a>
         </li>
     </ul>
-    <span.section>API REFERENCE</span>
-    <ul>
+    <ul.toc-level0>
+        <li.section>API REFERENCE</li>
         <li for(doc in input.docs)>
             <a href="/docs/${doc}">${doc}</a>
         </li>
