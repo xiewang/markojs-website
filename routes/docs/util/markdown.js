@@ -27,8 +27,9 @@ exports.toTemplate = function renderMarkdown(filepath) {
 
     markedRenderer.heading = function(text, level) {
         var anchorName = getAnchorName(text, anchorCache);
+        var linkText = text.replace(/\([^\)]+\)/g, '()').replace(/\<\/?code\>/g, '').replace(/&amp;lt;/g, '&lt;');
 
-        toc.addHeading(text, anchorName, level);
+        toc.addHeading(linkText, anchorName, level);
 
         return `<h${level} id="${anchorName}">` +
             `<a name="${anchorName}" class="anchor" href="#${anchorName}">` +

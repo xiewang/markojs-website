@@ -1,13 +1,11 @@
-static var barCount = 100;
-static var barWidth = 100/barCount;
+static var barCount;
+static var barWidth;
 
 style {
     .animated-sin-wave {
         position: relative;
         height: 150px;
         width: 100%;
-        background-color: #fff;
-        overflow:hidden;
     }
 
     .animated-sin-wave > .bar {
@@ -15,6 +13,14 @@ style {
         height: 100%;
         border-radius: 50%;
         max-width:10px;
+    }
+
+    .animated-sin-wave-description {
+        width:100%;
+        text-align:center;
+        font-size:0.8em;
+        margin-top:2rem;
+        color:#747678;
     }
 }
 
@@ -28,7 +34,13 @@ class {
     }
     onMount() {
         this.nextFrame = this.nextFrame.bind(this);
+        this.subscribeTo(window).on('resize', () => this.scale());
+        this.scale();
         this.start();
+    }
+    scale() {
+        barCount = Math.min(200, Math.floor(window.innerWidth/15));
+        barWidth = 100/barCount;
     }
     start() {
         if (!this.state.active) {
@@ -57,8 +69,7 @@ class {
         $ var translateY = Math.sin(count/10 + i/5) * 100 * .5;
         $ var hue = (360/barCount * i - count) % 360;
         $ var color = 'hsl('+hue+',95%,55%)';
-        $ var rotation = count%360;
-        $ //var rotation = i%4 == 0 ? (135)%360 : i%4 == 1 ? (count+90)%360 : i%4 == 2 ? (45)%360 : (0)%360;
+        $ var rotation = (count+i)%360;
         $ var barX = barWidth * i;
 
         $ var style = {
@@ -71,3 +82,9 @@ class {
         <div.bar style=style/>
     </for>
 </div>
+
+<p.animated-sin-wave-description>
+    The above animation is ${barCount} <code>&lt;div></code> tags.
+    No SVG, no CSS transitions/animations.
+    It's all powered by Marko which does a full re-render every frame.
+</p>
