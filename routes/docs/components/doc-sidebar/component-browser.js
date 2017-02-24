@@ -98,7 +98,7 @@ module.exports = {
 
     preventOverscroll() {
         var sidebar = this.getEl('sidebar');
-        this.subscribeTo(document.body).on('mousewheel', (e) => {
+        this.subscribeTo(document.body).on('wheel', (e) => {
             var delta = e.deltaY;
             var scrollTarget = sidebar.scrollTop + delta;
             var topY = 0;
@@ -106,7 +106,7 @@ module.exports = {
             var atTop = scrollTarget <= topY;
             var atBottom = scrollTarget >= bottomY;
 
-            if (atTop || atBottom) {
+            if (delta < 0 && atTop || delta > 0 && atBottom) {
                 if (e.target === sidebar || sidebar.contains(e.target)) {
                     if (atTop && sidebar.scrollTop != topY) {
                         sidebar.scrollTop = topY;
