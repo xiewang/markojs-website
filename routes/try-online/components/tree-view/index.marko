@@ -4,7 +4,7 @@ class {
 
 <div.tree-view>
     <ul>
-        <for(file in input.rootDir.files)>
+        <for(file in input.rootDir.sortedFiles)>
             <tree-view-item file=file key=file.path/>
         </for>
     </ul>

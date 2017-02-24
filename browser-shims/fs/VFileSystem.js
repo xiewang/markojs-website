@@ -7,6 +7,7 @@ class FileEntry {
         this.type = type;
         this.text = text;
         this.files = type === 'dir' ? [] : undefined;
+        this._sortedFiles = undefined;
     }
 
     isFile() {
@@ -19,6 +20,25 @@ class FileEntry {
 
     get name() {
         return path.basename(this.path);
+    }
+
+    get sortedFiles() {
+        if (!this._sortedFiles) {
+            this._sortedFiles = [].concat(this.files);
+            this._sortedFiles.sort(function(a, b) {
+                if (a.isDirectory() === b.isDirectory()) {
+                    return (a < b ? -1 : (a > b ? 1 : 0)) ;
+                } else {
+                    if (a.isDirectory()) {
+                        return -1;
+                    } else {
+                        return 1;
+                    }
+                }
+            });
+        }
+
+        return this._sortedFiles;
     }
 }
 

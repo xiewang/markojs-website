@@ -2,7 +2,7 @@ var fs = require('fs');
 var path = require('path');
 
 function readVirtualFiles(vfs) {
-    var rootDir = path.join(__dirname, 'virtual-files');
+    var rootDir = path.join(__dirname, '../virtual-projects');
 
     function addDir(dir) {
         var files = fs.readdirSync(dir);

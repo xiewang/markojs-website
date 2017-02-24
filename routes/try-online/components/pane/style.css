@@ -8,6 +8,7 @@
     height: 2em;
     flex-basis: auto;
     z-index: 10;
+    position: relative;
 }
 
 .pane > .bodies {

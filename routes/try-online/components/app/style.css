@@ -64,3 +64,12 @@
 .outputs-container > .outputBottom {
     flex: 4;
 }
+
+.try-online .pane-container {
+    position: relative;
+}
+
+.try-online .editors-container .pane-container.collapsed {
+    flex: none;
+    flex-basis: 36px;
+}

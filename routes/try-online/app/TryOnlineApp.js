@@ -8,6 +8,8 @@ var readVirtualFiles = require('./readVirtualFiles');
 var path = require('path');
 var EventEmitter = require('events-light');
 
+var projectNameRegExp = /[/]([a-zA-Z0-9_-]+)([/]|$)/;
+
 
 class TryOnlineApp extends EventEmitter {
     constructor() {
@@ -16,11 +18,17 @@ class TryOnlineApp extends EventEmitter {
             readVirtualFiles(vfs);
         }
 
+        let rootDir = vfs.readTreeSync();
+
+
         this.state = {
-            rootDir: vfs.readTreeSync(),
+            rootDir: rootDir,
+            activeProject: undefined,
             focusedFile: undefined,
             openFiles: [],
-            previewFile: undefined
+            previewFile: undefined,
+            projectPreviewFile: undefined,
+            projectLookup: []
         };
 
         this.assignOpenFilesToPanes();
@@ -29,6 +37,44 @@ class TryOnlineApp extends EventEmitter {
             vmodules.clearCache();
             this.emit('file:modified', file);
         });
+    }
+
+    loadProjects() {
+        var projectLookup = {};
+        var projects = [];
+
+        var rootDir = vfs.readTreeSync();
+
+        rootDir.files.forEach((file) => {
+            let packageJsonPath = path.join(file.path, 'package.json');
+            let description = file.name;
+            let name = file.name;
+
+            if (vfs.existsSync(packageJsonPath)) {
+                let pkg = vmodules.require(packageJsonPath);
+                description = pkg.description || description;
+            }
+
+            let previewFile;
+
+            var projectPreviewFilePath = file.path + '/index.marko';
+            if (vfs.existsSync(projectPreviewFilePath)) {
+                previewFile = vfs.getFile(projectPreviewFilePath);
+            }
+
+            var project = {
+                name: name,
+                description: description,
+                rootDir: file,
+                previewFile: previewFile
+            };
+
+            projectLookup[name] = project;
+            projects.push(project);
+        });
+
+        this.state.projectLookup = projectLookup;
+        this.state.projects = projects;
     }
 
     initialize(state) {
@@ -44,13 +90,19 @@ class TryOnlineApp extends EventEmitter {
 
         addFiles(state.rootDir);
 
-        this.state.rootDir = vfs.readTreeSync();
+        this.loadProjects();
+
+        this.state.activeProject = this.state.projects[0];
         this.state.focusedDirectory = state.focusedDirectory;
         this.state.focusedFile = state.focusedFile;
         this.state.openFiles = state.openFiles;
     }
 
-
+    getProjectForPath(filePath) {
+        var projectNameMatches = projectNameRegExp.exec(filePath);
+        var projectName = projectNameMatches[1];
+        return this.state.projectLookup[projectName];
+    }
 
     updateFile(filePath, text) {
         vfs.writeFileSync(filePath, text);
@@ -71,6 +123,12 @@ class TryOnlineApp extends EventEmitter {
             var previewFile = Object.create(state.previewFile);
             previewFile.preview = true;
             panes.outputTop.push(previewFile);
+        }
+
+        if (state.projectPreviewFile) {
+            var projectPreviewFile = Object.create(state.projectPreviewFile);
+            projectPreviewFile.preview = true;
+            panes.outputBottom.push(projectPreviewFile);
         }
 
         openFiles.forEach((openFile) => {
@@ -97,6 +155,11 @@ class TryOnlineApp extends EventEmitter {
         return vfs.getFile(filePath) !== undefined;
     }
 
+    focusProject(projectName) {
+        var project = this.state.projectLookup[projectName];
+        this.focusFile(path.join(project.rootDir.path, 'index.marko'));
+    }
+
     focusFile(filePath) {
         var file = vfs.getFile(filePath);
         if (!file) {
@@ -108,6 +171,8 @@ class TryOnlineApp extends EventEmitter {
         }
 
         this.state.focusedFile = filePath;
+
+        this.state.activeProject = this.getProjectForPath(filePath);
 
         var isDirectory = file.isDirectory();
         var dirPath = filePath;
@@ -154,6 +219,8 @@ class TryOnlineApp extends EventEmitter {
                     }
                 }
             }
+
+            this.state.projectPreviewFile = this.state.activeProject.previewFile;
         } else {
             this.state.openFiles = [];
 
@@ -161,8 +228,12 @@ class TryOnlineApp extends EventEmitter {
                 // Open the first file
 
                 for (let i=0; i<dir.files.length; i++) {
-                    var curFile = dir.files[i];
+                    let curFile = dir.files[i];
                     if (curFile.isFile()) {
+                        if (path.extname(curFile.path) === '.marko') {
+                            this.state.previewFile = curFile;
+                        }
+
                         addOpenFile(curFile);
                         break;
                     }
@@ -170,9 +241,18 @@ class TryOnlineApp extends EventEmitter {
 
             } else {
                 this.state.openFiles = [file];
+
+                if (path.extname(file.path) === '.marko') {
+                    this.state.previewFile = file;
+                }
             }
 
-            this.state.previewFile = this.state.openFiles[0];
+            if (this.state.previewFile === this.state.activeProject.previewFile) {
+                this.state.projectPreviewFile = this.state.previewFile;
+                this.state.previewFile = undefined;
+            }
+
+
         }
 
         this.assignOpenFilesToPanes();

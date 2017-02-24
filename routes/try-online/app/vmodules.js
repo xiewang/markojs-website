@@ -75,6 +75,14 @@ var extensions = {
     },
     '.js': function(src, filePath) {
         return loadSource(src, filePath);
+    },
+    '.json': function(src, filePath) {
+
+        var parsed = JSON.parse(src);
+
+        return {
+            exports: parsed
+        };
     }
 };
 
@@ -90,6 +98,7 @@ function loadFile(filePath) {
     var ext = path.extname(filePath);
     var compiler = extensions[ext];
     var loadedModule = compiler(src, filePath);
+    loadedModule.id = filePath;
     return loadedModule;
 }
 

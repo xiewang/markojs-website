@@ -1,4 +1,5 @@
 import app from '~/routes/try-online/app';
+import path from 'path';
 
 class {
     handleTabClick(index) {
@@ -10,14 +11,15 @@ class {
 $ var focused = input.focused;
 $ var active = input.active;
 $ var file = input.file;
+$ var tabTitle = path.basename(path.dirname(file.path)) + '/' + file.name;
 
 <li.tab class=[focused && 'focused', active && 'active']
     on-click('handleTabClick')>
 
     <if(file.preview)>
-        <span.tab-label>${file.name} (Preview)</span>
+        <span.tab-label>${tabTitle} (Preview)</span>
     </if>
     <else>
-        <span.tab-label>${file.name}</span>
+        <span.tab-label>${tabTitle}</span>
     </else>
 </li>

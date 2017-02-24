@@ -39,40 +39,58 @@ class {
             app.emit('focus:change', this.input.focusedFile);
         }
     }
+
+    handleCollapseToggle(paneName, event) {
+        var isCollapsed = event.isCollapsed;
+        var paneContainerEl = this.getEl(`pane-container-${paneName}`);
+        if (isCollapsed) {
+            paneContainerEl.classList.add('collapsed');
+        } else {
+            paneContainerEl.classList.remove('collapsed');
+        }
+        console.log('isCollapsed', isCollapsed);
+    }
 }
 
 $ var panes = input.panes;
 $ var visibleTabsByPane = input.visibleTabsByPane;
+$ var rootDir = input.activeProject && input.activeProject.rootDir;
 
-<macro renderPane(paneName)>
-    <div class=paneName if(panes[paneName].length)>
+<macro renderPane(paneName, collapseDirection)>
+    <div.pane-container key="pane-container-${paneName}" class=paneName if(panes[paneName].length)>
         <pane files=panes[paneName]
             focused-file=input.focusedFile
-            focused-directory=input.focusedDirectory />
+            focused-directory=input.focusedDirectory/>
+
+        <if(collapseDirection)>
+            <collapse-icon direction=collapseDirection on-toggle('handleCollapseToggle', paneName)/>
+        </if>
     </div>
 </macro>
 
 <div.try-online>
     <try-loader if(input.unmounted)/>
+
     <div.workspace>
         <div.tree-view-container>
-            <tree-view root-dir=input.rootDir />
+            <project-nav(input)/>
+            <tree-view root-dir=rootDir if(rootDir) />
         </div>
         <div.divider></div>
         <div.editors-container>
             <div.inputs-container>
                 <div.divider></div>
-                <renderPane('inputTop')/>
+                <renderPane('inputTop', 'up')/>
                 <div.divider if(panes['inputTop'].length && panes['inputBottom'].length)></div>
-                <renderPane('inputBottom')/>
+                <renderPane('inputBottom', 'down')/>
                 <div.divider></div>
             </div>
             <div.divider></div>
             <div.outputs-container>
                 <div.divider></div>
-                <renderPane('outputTop')/>
+                <renderPane('outputTop', 'up')/>
                 <div.divider if(panes['outputTop'].length && panes['outputBottom'].length)></div>
-                <renderPane('outputBottom')/>
+                <renderPane('outputBottom', 'down')/>
                 <div.divider></div>
             </div>
         </div>

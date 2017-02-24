@@ -1,0 +1,17 @@
+import app from '~/routes/try-online/app';
+
+class {
+    handleProjectChange() {
+        var projectName = this.getEl('projectSelect').value;
+        app.focusProject(projectName);
+    }
+}
+<div.project-nav>
+    <select on-change('handleProjectChange') key="projectSelect">
+        <for(project in input.projects)>
+            <option value=project.name selected=(project.name === input.activeProject.name)>
+                ${project.description}
+            </option>
+        </for>
+    </select>
+</div>
