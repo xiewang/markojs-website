@@ -19,6 +19,11 @@ class {
         this.subscribeTo(app)
             .on('focus:change', (focusedFile) => {
                 var isFocused = dir.path === focusedFile;
+
+                if (isFocused && !this.state.focused) {
+                    this.state.expanded = true;
+                }
+
                 if (isFocused !== this.state.focused) {
                     this.state.expanded = true;
                 }
@@ -38,10 +43,13 @@ class {
 
         if (!this.state.focused) {
             this.state.focused = true;
+            this.state.expanded = true;
             app.focusFile(this.input.dir.path);
+        } else {
+            this.state.expanded = !this.state.expanded;
         }
 
-        this.state.expanded = !this.state.expanded;
+
     }
 }
 

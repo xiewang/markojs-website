@@ -223,6 +223,7 @@ class TryOnlineApp extends EventEmitter {
             this.state.projectPreviewFile = this.state.activeProject.previewFile;
         } else {
             this.state.openFiles = [];
+            this.state.previewFile = undefined;
 
             if (isDirectory) {
                 // Open the first file
@@ -231,7 +232,7 @@ class TryOnlineApp extends EventEmitter {
                     let curFile = dir.files[i];
                     if (curFile.isFile()) {
                         if (path.extname(curFile.path) === '.marko') {
-                            this.state.previewFile = curFile;
+                            this.state.projectPreviewFile = curFile;
                         }
 
                         addOpenFile(curFile);
@@ -243,16 +244,9 @@ class TryOnlineApp extends EventEmitter {
                 this.state.openFiles = [file];
 
                 if (path.extname(file.path) === '.marko') {
-                    this.state.previewFile = file;
+                    this.state.projectPreviewFile = file;
                 }
             }
-
-            if (this.state.previewFile === this.state.activeProject.previewFile) {
-                this.state.projectPreviewFile = this.state.previewFile;
-                this.state.previewFile = undefined;
-            }
-
-
         }
 
         this.assignOpenFilesToPanes();

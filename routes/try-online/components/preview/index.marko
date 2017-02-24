@@ -30,7 +30,6 @@ class {
             .then((renderResult) => {
                 if (this.currentRender === currentRender) {
                     var frame = this.getEl('frame');
-                    console.log(frame);
                     renderResult.replaceChildrenOf(frame.contentDocument.body);
                 }
             })

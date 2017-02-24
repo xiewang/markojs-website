@@ -48,7 +48,6 @@ class {
         } else {
             paneContainerEl.classList.remove('collapsed');
         }
-        console.log('isCollapsed', isCollapsed);
     }
 }
 
@@ -63,7 +62,9 @@ $ var rootDir = input.activeProject && input.activeProject.rootDir;
             focused-directory=input.focusedDirectory/>
 
         <if(collapseDirection)>
-            <collapse-icon direction=collapseDirection on-toggle('handleCollapseToggle', paneName)/>
+            <collapse-icon direction=collapseDirection
+                 key="pane-collapse-${paneName}"
+                on-toggle('handleCollapseToggle', paneName)/>
         </if>
     </div>
 </macro>

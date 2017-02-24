@@ -1,11 +1,17 @@
 
+static function isHiddenFile(file) {
+    return file.name === 'package.json';
+}
+
 class {
 }
 
 <div.tree-view>
     <ul>
         <for(file in input.rootDir.sortedFiles)>
-            <tree-view-item file=file key=file.path/>
+            <if(!isHiddenFile(file))>
+                <tree-view-item file=file key=file.path/>
+            </if>
         </for>
     </ul>
 </div>

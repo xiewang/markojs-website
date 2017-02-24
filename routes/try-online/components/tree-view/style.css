@@ -1,5 +1,5 @@
 .tree-view {
-    font-size: 0.8em;
+    font-size: .8em;
     background-color: #21252b;
     user-select: none;
 }
@@ -8,7 +8,7 @@
     list-style: none;
     list-style-image: none;
     list-style-type: none;
-    line-height: 2em;
+    line-height: 1.7em;
     color: #9da5b4;
     cursor: default;
 }
@@ -23,7 +23,7 @@
     position: absolute;
     left: 0;
     right: 0;
-    height: 2em;
+    height: 1.7em;
 }
 
 .tree-view li.focused:before{
