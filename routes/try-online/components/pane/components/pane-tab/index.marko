@@ -1,6 +1,21 @@
 import app from '~/routes/try-online/app';
 import path from 'path';
 
+static function getTabTitle(file) {
+    var tabTitle = file.name;
+
+    var parentDir = path.dirname(file.path);
+    if (parentDir !== app.focusedDirectory) {
+        tabTitle = path.basename(parentDir) + '/' + tabTitle;
+    }
+
+    if (file.preview) {
+        tabTitle += ' (Preview)';
+    }
+
+    return tabTitle;
+}
+
 class {
     handleTabClick(index) {
         var file = this.input.file;
@@ -11,15 +26,13 @@ class {
 $ var focused = input.focused;
 $ var active = input.active;
 $ var file = input.file;
-$ var tabTitle = path.basename(path.dirname(file.path)) + '/' + file.name;
+
+
+
+$ var tabTitle = getTabTitle(file);
 
 <li.tab class=[focused && 'focused', active && 'active']
     on-click('handleTabClick')>
 
-    <if(file.preview)>
-        <span.tab-label>${tabTitle} (Preview)</span>
-    </if>
-    <else>
-        <span.tab-label>${tabTitle}</span>
-    </else>
+    <span.tab-label>${tabTitle}</span>
 </li>

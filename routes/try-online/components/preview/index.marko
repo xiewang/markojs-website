@@ -11,7 +11,8 @@ static {
 
 class {
     onMount() {
-        this.cssDependencies = [];
+        this.styleCode = null;
+        this.styleEls = null;
         this.renderToFrame();
 
         this.subscribeTo(app).on('file:modified', () => this.renderToFrame());
@@ -21,8 +22,7 @@ class {
         var file = this.input.file;
         var template = getTemplate(file);
 
-        this.removeAllCSS();
-        this.addCSS();
+        this.updateCSS();
 
         var currentRender = this.currentRender = {};
 
@@ -38,13 +38,16 @@ class {
             })
     }
 
-    addCSS() {
+    updateCSS() {
+        var newStyleCode = '';
         var file = this.input.file;
         var template = getTemplate(file);
         var doc = this.getEl('frame').contentDocument;
         if (!template.getDependencies) {
             return;
         }
+
+        var styleCodeList = [];
 
         var dependencies = template.getDependencies({
                 require: vmodules.require,
@@ -63,25 +66,30 @@ class {
             }
 
             if (code) {
-                let style = doc.createElement('style')
-                style.type = 'text/css'
-                style.innerHTML = dependency.code
-                doc.getElementsByTagName('head')[0].appendChild(style);
-                this.cssDependencies.push({
-                    remove() {
-                        style.parentNode.removeChild(style);
-                    }
-                });
+                newStyleCode += '\n' + code;
+                styleCodeList.push(code);
             }
         });
-    }
 
-    removeAllCSS() {
-        this.cssDependencies.forEach((cssDependency) => {
-            cssDependency.remove();
-        });
+        if (newStyleCode !== this.styleCode) {
 
-        this.cssDependencies = [];
+            if (this.styleEls) {
+                this.styleEls.forEach((styleEl) => {
+                    styleEl.parentNode.removeChild(styleEl);
+                });
+            }
+
+            this.styleCode = newStyleCode;
+            this.styleEls = [];
+
+            styleCodeList.forEach((styleCode) => {
+                var styleEl = doc.createElement('style')
+                styleEl.type = 'text/css'
+                styleEl.innerHTML = styleCode;
+                doc.getElementsByTagName('head')[0].appendChild(styleEl);
+                this.styleEls.push(styleEl);
+            });
+        }
     }
 }
 

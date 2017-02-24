@@ -7,6 +7,11 @@ class {
         }
     }
 
+    onInput(input) {
+        var file = input.file;
+        this.state.focused = file.path === app.focusedFile;
+    }
+
     onMount() {
         var file = this.input.file;
 

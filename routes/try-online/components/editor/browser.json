@@ -1,0 +1,6 @@
+{
+    "dependencies": [
+        "codemirror/lib/codemirror.css",
+        "./theme.css"
+    ]
+}

@@ -175,15 +175,17 @@ class TryOnlineApp extends EventEmitter {
         this.state.activeProject = this.getProjectForPath(filePath);
 
         var isDirectory = file.isDirectory();
-        var dirPath = filePath;
+        var dirPath;
 
         var previouslyFocusedDirectory = this.state.focusedDirectory;
 
         if (isDirectory) {
-            this.state.focusedDirectory = dirPath;
+            dirPath = filePath;
         } else {
             dirPath = path.dirname(filePath);
         }
+
+        this.state.focusedDirectory = dirPath;
 
         var dir = vfs.getFile(dirPath);
 
@@ -260,6 +262,14 @@ class TryOnlineApp extends EventEmitter {
 
     onStateChange(callback) {
         this.on('state:change', callback);
+    }
+
+    get focusedFile() {
+        return this.state.focusedFile;
+    }
+
+    get focusedDirectory() {
+        return this.state.focusedDirectory;
     }
 }
 
