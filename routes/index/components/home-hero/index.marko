@@ -10,11 +10,7 @@
             <a.button.get-started href="/docs/01-getting-started">
                 <span>Get started</span>
             </a>
-            <a.button.github href="https://github.com/marko-js/marko">
-                <img src="./github.png"/>
-                <span.text>GitHub</span>
-                <span.stars>1,726</span>
-            </a>
+            <github-link/>
         </div>
     </div>
 </header>
@@ -46,6 +42,7 @@ style {
 
     .home-header img.logo {
         height:8em;
+        width:14.6em;
         margin-right:2em;
         margin-top:1.5em;
     }
@@ -83,34 +80,6 @@ style {
 
     .home-header .actions .button.get-started:hover {
         background-color:#ffc400;
-    }
-
-    .home-header .actions .button.github {
-        border:1px solid #a4a6a8;
-        color:#343638;
-    }
-
-    .home-header .actions .button.github:hover {
-        background-color:#f4f6f8;
-    }
-
-    .home-header .actions .button.github img {
-        height:1.5em;
-        display:block;
-        margin-right:0.75em;
-    }
-
-    .home-header .actions .button.github .text {
-        margin-right:0.75em;
-    }
-
-    .home-header .actions .button.github .stars {
-        color:#545658;
-        font-size:0.9em;
-    }
-    .home-header .actions .button.github .stars:after {
-        content:"\2605";
-        color:#ffc400;
     }
 
     @media (max-width:45em) {
