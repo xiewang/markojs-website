@@ -23,7 +23,8 @@
   },
   "scripts": {
     "start": "marko-starter server",
-    "build": "marko-starter build"
+    "build": "marko-starter build",
+    "publish": "NODE_ENV=production node ./publish.js"
   },
   "static-repo": "git@github.com:mlrawlings/markojs-website.git#gh-pages",
   "baseurl": "/markojs-website"
