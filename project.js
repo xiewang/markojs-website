@@ -1,3 +1,5 @@
+var isProduction = process.env.NODE_ENV === 'production';
+
 module.exports = require('marko-starter').projectConfig({
     routePathPrefix: '/',
 
@@ -8,10 +10,15 @@ module.exports = require('marko-starter').projectConfig({
                 'module': require.resolve('./browser-shims/module')
             }
         },
+        minifyJS: false,
         plugins: [
             'lasso-marko',
             'lasso-cson',
-            'lasso-less'
+            'lasso-less',
+            {
+                plugin: 'lasso-babili',
+                enabled: isProduction
+            }
         ]
     }
 });

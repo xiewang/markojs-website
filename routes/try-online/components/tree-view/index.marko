@@ -10,7 +10,7 @@ class {
     <ul>
         <for(file in input.rootDir.sortedFiles)>
             <if(!isHiddenFile(file))>
-                <tree-view-item file=file key=file.path/>
+                <tree-view-item file=file/>
             </if>
         </for>
     </ul>

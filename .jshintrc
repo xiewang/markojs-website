@@ -1,6 +1,7 @@
 {
     "predef": [
-        "document"
+        "document",
+        "fetch"
     ],
     "node" : true,
     "esnext": true,

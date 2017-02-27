@@ -104,7 +104,7 @@ class TryOnlineApp extends EventEmitter {
         return this.state.projectLookup[projectName];
     }
 
-    updateFile(filePath, text) {
+    saveFile(filePath, text) {
         vfs.writeFileSync(filePath, text);
     }
 
