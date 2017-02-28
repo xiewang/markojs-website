@@ -13,40 +13,54 @@ class {
     onMount() {
         this.styleCode = null;
         this.styleEls = null;
-        this.renderToFrame();
 
         this.subscribeTo(app).on('file:modified', () => {
             setTimeout(() => {
                 this.renderToFrame();
             }, 0);
         });
+
+
+        this.iframeLoaded = new Promise((resolve, reject) => {
+            var iframe = this.iframe = document.createElement('iframe');
+            iframe.src = 'about:blank';
+            iframe.onload = function() {
+                resolve();
+            };
+            this.el.appendChild(iframe);
+        });
+
+
+        this.renderToFrame();
     }
 
     renderToFrame() {
-        var file = this.input.file;
-        var template = getTemplate(file);
+        this.iframeLoaded.then(() => {
+            var file = this.input.file;
+            var template = getTemplate(file);
 
-        this.updateCSS();
+            this.updateCSS();
 
-        var currentRender = this.currentRender = {};
+            var currentRender = this.currentRender = {};
 
-        template.render()
-            .then((renderResult) => {
-                if (this.currentRender === currentRender) {
-                    var frame = this.getEl('frame');
-                    renderResult.replaceChildrenOf(frame.contentDocument.body);
-                }
-            })
-            .catch((err) => {
-                console.error(err.stack || err);
-            })
+            template.render()
+                .then((renderResult) => {
+                    if (this.currentRender === currentRender) {
+                        var frame = this.iframe;
+                        renderResult.replaceChildrenOf(frame.contentDocument.body);
+                    }
+                })
+                .catch((err) => {
+                    console.error(err.stack || err);
+                });
+        });
     }
 
     updateCSS() {
         var newStyleCode = '';
         var file = this.input.file;
         var template = getTemplate(file);
-        var doc = this.getEl('frame').contentDocument;
+        var doc = this.iframe.contentDocument;
         if (!template.getDependencies) {
             return;
         }
@@ -89,7 +103,7 @@ class {
             styleCodeList.forEach((styleCode) => {
                 var styleEl = doc.createElement('style')
                 styleEl.type = 'text/css'
-                styleEl.innerHTML = styleCode;
+                styleEl.innerText = styleCode;
                 doc.getElementsByTagName('head')[0].appendChild(styleEl);
                 this.styleEls.push(styleEl);
             });
@@ -100,5 +114,5 @@ class {
 $ var file = input.file;
 
 <div.preview>
-    <iframe.frame key="frame"/>
+    <!-- <iframe.frame key="frame"/> -->
 </div>

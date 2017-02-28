@@ -145,14 +145,22 @@ function loadSource(src, filePath) {
     return module;
 }
 
-function clearCache() {
+function clearCache(filter) {
     Object.keys(cache).forEach((cacheKey) => {
-        delete cache[cacheKey];
+        var module = cache[cacheKey];
+        if (filter(module.id)) {
+            delete cache[cacheKey];
+        }
     });
+}
+
+function clearFileCache(filePath) {
+    delete cache[filePath];
 }
 
 exports.loadFile = loadFile;
 exports.cache = cache;
 exports.clearCache = clearCache;
+exports.clearFileCache = clearFileCache;
 exports.require = virtualRequire;
 exports.resolveFrom = virtualResolveFrom;

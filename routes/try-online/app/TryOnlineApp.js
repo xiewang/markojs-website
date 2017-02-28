@@ -34,7 +34,18 @@ class TryOnlineApp extends EventEmitter {
         this.assignOpenFilesToPanes();
 
         vfs.on('file:modified', (file) => {
-            vmodules.clearCache();
+            vmodules.clearFileCache(file.path);
+
+            if (file.name === 'marko-tag.json' ||
+                file.name === 'marko-taglib.json') {
+
+                vmodules.clearCache((filePath) => {
+                    if (filePath.endsWith('.marko')) {
+                        return true;
+                    }
+                });
+            }
+
             this.emit('file:modified', file);
         });
     }

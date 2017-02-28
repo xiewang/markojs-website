@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
+    "@pnidem/babel-preset-babili": "0.0.12",
     "codemirror": "^5.23.0",
     "codemirror-atom-modes": "^1.0.1",
     "headspace": "^0.1.1",

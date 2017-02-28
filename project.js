@@ -1,8 +1,26 @@
 var isProduction = process.env.NODE_ENV === 'production';
 
+
+
+function getBabiliConfig() {
+    if (isProduction) {
+        return {
+            babelOptions: {
+                "presets": [
+                    [
+                        require('@pnidem/babel-preset-babili')
+                    ]
+                ]
+            }
+        };
+    } else {
+        return {};
+    }
+}
+
+
 module.exports = require('marko-starter').projectConfig({
     routePathPrefix: '/',
-
     lassoConfig: {
         require: {
             builtins: {
@@ -17,6 +35,7 @@ module.exports = require('marko-starter').projectConfig({
             'lasso-less',
             {
                 plugin: 'lasso-babili',
+                config: getBabiliConfig(),
                 enabled: isProduction
             }
         ]

@@ -2,18 +2,23 @@
     display: flex;
     flex-direction: column;
     height: 100%;
+    position: absolute;
+    width: 100%;
 }
 
 .pane > div.tabs {
-    height: 2em;
-    flex-basis: auto;
+    flex-basis: 2em;
+    flex-shrink: 0;
     z-index: 10;
     position: relative;
 }
 
 .pane > .bodies {
     flex-grow: 1;
+    flex-shrink: 0;
+    /*flex-basis: 400px;*/
     position: relative;
+    /*height: 500px;*/
     background-color: #282c34;
     border: 1px solid #16191d;
     margin-top: -1px;
