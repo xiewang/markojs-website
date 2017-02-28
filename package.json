@@ -11,6 +11,7 @@
     "language-html": "github:atom/language-html",
     "language-javascript": "github:atom/language-javascript",
     "language-marko": "github:marko-js/atom-language-marko",
+    "lasso-babili": "^1.0.0",
     "lasso-cson": "^1.0.0",
     "lasso-less": "^2.4.3",
     "marked": "^0.3.6",
@@ -19,7 +20,8 @@
     "marko-starter": "git://github.com/philidem/marko-starter.git",
     "octicons": "^5.0.1",
     "purecss": "^0.6.2",
-    "resolve-from": "^2.0.0"
+    "resolve-from": "^2.0.0",
+    "whatwg-fetch": "^2.0.2"
   },
   "scripts": {
     "start": "marko-starter server",

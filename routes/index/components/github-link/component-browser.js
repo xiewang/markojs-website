@@ -1,3 +1,5 @@
+require('whatwg-fetch');
+
 var url = 'https://api.github.com/repos/marko-js/marko';
 
 module.exports = {
@@ -8,4 +10,4 @@ module.exports = {
             }
         });
     }
-}
+};

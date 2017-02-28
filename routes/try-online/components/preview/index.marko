@@ -15,7 +15,11 @@ class {
         this.styleEls = null;
         this.renderToFrame();
 
-        this.subscribeTo(app).on('file:modified', () => this.renderToFrame());
+        this.subscribeTo(app).on('file:modified', () => {
+            setTimeout(() => {
+                this.renderToFrame();
+            }, 0);
+        });
     }
 
     renderToFrame() {

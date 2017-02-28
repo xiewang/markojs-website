@@ -50,6 +50,8 @@ class {
 
         var code = file.text;
 
+        this.code = code;
+
         var codeMirrorConfig = {
             value: code || '',
             mode: this.getMode(file),
@@ -68,13 +70,13 @@ class {
 
         this.codeMirror.on('change', (editor) => {
             var source = editor.getValue();
-            app.updateFile(file.path, source);
+            app.saveFile(file.path, source);
         });
 
         app.on('focus:change', (focusedFile) => {
             if (focusedFile === file.path) {
                 this.codeMirror.focus();
-                this.codeMirror.refresh();
+                // this.codeMirror.refresh();
             }
         });
     }
