@@ -20,6 +20,7 @@
     "marko-starter": "git://github.com/philidem/marko-starter.git",
     "octicons": "^5.0.1",
     "purecss": "^0.6.2",
+    "raptor-async": "^1.1.3",
     "resolve-from": "^2.0.0",
     "whatwg-fetch": "^2.0.2"
   },

@@ -29,7 +29,6 @@ img {
 textarea,
 input {
     font-size: 14px;
-    font-family: @font-family;
 }
 
 select {

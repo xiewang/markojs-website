@@ -1,0 +1,48 @@
+import series from 'raptor-async/series';
+
+static {
+    function loadCodeMirror(callback) {
+
+    }
+}
+class {
+    onMount() {
+        var targetEl = this.el;
+        var input = this.input;
+        var app;
+
+        function loadCodeMirror(callback) {
+            require('lasso-loader').load({
+                js: [
+                    "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.24.2/codemirror.min.js"
+                ]
+            }, callback);
+        }
+
+        function loadAndRenderApp(callback) {
+            require('lasso-loader').async(function(err) {
+                    if (err) {
+                        return callback(err);
+
+                    }
+
+                    app = require('../app');
+
+                    callback();
+                });
+        }
+
+        series([
+                loadCodeMirror,
+                loadAndRenderApp
+            ],
+            function(err) {
+                app.renderSync(input)
+                    .replace(targetEl)
+            })
+    }
+}
+
+<div>
+    <spinner/>
+</div>

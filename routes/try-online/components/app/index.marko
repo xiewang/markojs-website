@@ -2,14 +2,8 @@ import app from '~/routes/try-online/app';
 import localStorageUtil from '~/util/localstorage';
 
 class {
-    onCreate() {
-        this.state = {
-            unmounted: true
-        }
-    }
-
     onMount() {
-        const DEFAULT_FOCUSED_FILE = '/get-started/components/number-spinner';
+        const DEFAULT_FOCUSED_FILE = '/get-started';
 
         // The directory tree is serialized down from the server
         // as part of the state for this component. We want our
@@ -30,7 +24,6 @@ class {
         }
 
         this.focusedFile = null;
-        this.state.unmounted = false;
     }
 
     onUpdate() {
@@ -70,8 +63,6 @@ $ var rootDir = input.activeProject && input.activeProject.rootDir;
 </macro>
 
 <div.try-online>
-    <try-loader if(input.unmounted)/>
-
     <div.workspace>
         <div.tree-view-container>
             <project-nav(input)/>

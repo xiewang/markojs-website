@@ -1,7 +1,7 @@
 var fs = require('~/browser-shims/fs');
 var path = require('path');
 var resolveFrom = require('resolve-from');
-var Module = require('module');
+var nativeRequire = require;
 
 function virtualRequire(target) {
     // First see if it is a native module
@@ -9,7 +9,7 @@ function virtualRequire(target) {
 
     try {
         resolved = nativeRequire.resolve(target);
-    } catch(e) {};
+    } catch(e) {}
 
     if (resolved) {
         return nativeRequire(resolved);
@@ -36,7 +36,7 @@ if (typeof window !== 'undefined') {
 
         try {
             resolved = nativeRequire.resolve(absolutePath);
-        } catch(e) {};
+        } catch(e) {}
 
         if (resolved) {
             return resolved;
@@ -53,23 +53,32 @@ if (typeof window !== 'undefined') {
 
 
 var markoCompiler = require('marko/compiler');
-var nativeRequire = require;
-
 var READ_OPTIONS = { encoding: 'utf8' };
-var nativeRequire = require;
 
 var extensions = {
     '.marko': function(src, filePath) {
         var outputFile = filePath + '.js';
-        var compiled = markoCompiler.compileForBrowser(
-            src,
-            filePath,
-            {
-                meta: true
-            });
 
-        var src = compiled.code;
-        var module = loadSource(src, outputFile);
+        var compiled;
+
+        try {
+            compiled = markoCompiler.compileForBrowser(
+                src,
+                filePath,
+                {
+                    meta: true
+                });
+        } catch(err) {
+            return {
+                exports: {
+                    error: err
+                }
+            };
+        }
+
+
+        var compiledSrc = compiled.code;
+        var module = loadSource(compiledSrc, outputFile);
         module.exports.path = filePath;
         return module;
     },

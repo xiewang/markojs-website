@@ -2,14 +2,7 @@ import app from '~/routes/try-online/app';
 import path from 'path';
 
 static {
-    var CodeMirror;
-
     if (typeof window !== 'undefined') {
-        CodeMirror = require('codemirror');
-
-        require('codemirror/mode/css/css.js');
-        require('codemirror/mode/javascript/javascript.js');
-
         require('codemirror-atom-modes').registerGrammars([
                 require('language-css/grammars/css.cson'),
                 require('language-javascript/grammars/javascript.cson'),
@@ -76,7 +69,7 @@ class {
         app.on('focus:change', (focusedFile) => {
             if (focusedFile === file.path) {
                 this.codeMirror.focus();
-                // this.codeMirror.refresh();
+                this.codeMirror.refresh();
             }
         });
     }
