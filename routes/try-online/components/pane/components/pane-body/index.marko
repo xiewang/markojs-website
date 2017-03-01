@@ -3,12 +3,21 @@ import app from '~/routes/try-online/app';
 $ var focused = input.focused;
 $ var active = input.active;
 $ var file = input.file;
+$ var outputMode = input.outputMode;
 
 <div.pane-body class=[focused && 'focused', active && 'active']>
-    <if(file.preview)>
-        <preview file=file no-update key='preview-'+file.path />
+    <if(file.output)>
+        <if(outputMode === 'html')>
+            <editor file=file key='editorHTML-'+file.path output-mode=outputMode no-update />
+        </if>
+        <else if(outputMode === 'compiled')>
+            <editor file=file key='editorCompiled-'+file.path output-mode=outputMode no-update />
+        </else>
+        <else>
+            <preview file=file key='preview-'+file.path no-update />
+        </else>
     </if>
     <else>
-        <editor file=file no-update key='editor-'+file.path />
+        <editor file=file key='editor-'+file.path no-update />
     </else>
 </div>

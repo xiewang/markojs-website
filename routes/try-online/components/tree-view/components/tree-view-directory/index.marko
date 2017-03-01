@@ -6,10 +6,24 @@ static function isHiddenFile(file) {
 }
 
 class {
-    onCreate() {
+    onCreate(input) {
+        var focusedFile = app.focusedFile;
+
+        var expanded = false;
+        var focused = false;
+
+        if (focusedFile) {
+            if (focusedFile === input.dir.path) {
+                expanded = true;
+                focused = true;
+            } else if (focusedFile.startsWith(input.dir.path + '/')) {
+                expanded = true;
+            }
+        }
+
         this.state = {
-            focused: false,
-            expanded: false
+            focused: focused,
+            expanded: expanded
         }
     }
 
@@ -20,20 +34,31 @@ class {
             .on('focus:change', (focusedFile) => {
                 var isFocused = dir.path === focusedFile;
 
-                if (isFocused && !this.state.focused) {
+                if (!isFocused && focusedFile.startsWith(dir.path + '/')) {
                     this.state.expanded = true;
                 }
-
-                if (isFocused !== this.state.focused) {
-                    this.state.expanded = true;
-                }
-
-                if (!isFocused && focusedFile.startsWith(dir.path)) {
-                    this.state.expanded = true;
-                }
+                // if (isFocused) {
+                //     expanded = true;
+                //     focused = true;
+                // } else if (focusedFile.startsWith(input.dir.path + '/')) {
+                //     expanded = true;
+                // }
+                //
+                //
+                // if (isFocused && !this.state.focused) {
+                //     this.state.expanded = true;
+                // }
+                //
+                // if (isFocused !== this.state.focused) {
+                //     this.state.expanded = true;
+                // }
+                //
+                // if (!isFocused && focusedFile.startsWith(dir.path)) {
+                //     this.state.expanded = true;
+                // }
 
                 this.state.focused = isFocused;
-                localStorageUtil.set('focusedFile', focusedFile);
+
                 // return dir.path === input.focusedDirectory || input.focusedDirectory.startsWith(dir.path + '/');
             });
     }
@@ -41,12 +66,14 @@ class {
     handleClick(event) {
         event.stopPropagation();
 
-        if (!this.state.focused) {
+        this.focusedFile
+
+        if (this.state.focused) {
+            this.state.expanded = !this.state.expanded;
+        } else {
             this.state.focused = true;
             this.state.expanded = true;
             app.focusFile(this.input.dir.path);
-        } else {
-            this.state.expanded = !this.state.expanded;
         }
 
 

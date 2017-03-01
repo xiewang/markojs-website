@@ -1,4 +1,5 @@
 import app from '~/routes/try-online/app';
+import path from 'path';
 
 class {
     onCreate() {
@@ -32,8 +33,9 @@ class {
 }
 
 $ var file = input.file;
+$ var ext = path.extname(file.path).substring(1);
 
-<li.file class={focused: state.focused} on-click('handleClick')>
+<li.file class=[state.focused && 'focused', ext] on-click('handleClick')>
     <span>
         ${file.name}
     </span>

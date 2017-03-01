@@ -1,25 +1,69 @@
 import app from '~/routes/try-online/app';
 import path from 'path';
 
-static function getTabTitle(file) {
-    var tabTitle = file.name;
-
-    var parentDir = path.dirname(file.path);
-    if (parentDir !== app.focusedDirectory) {
-        tabTitle = path.basename(parentDir) + '/' + tabTitle;
-    }
-
-    if (file.preview) {
-        tabTitle += ' (Preview)';
-    }
-
-    return tabTitle;
-}
-
 class {
+    onCreate() {
+        this.state = {
+            outputMode: 'preview',
+            menuVisible: false
+        };
+    }
+
+    onInput(input) {
+        this.state.outputMode = input.outputMode || 'preview';
+    }
+
+    onMount() {
+        this.subscribeTo(document.body)
+            .on('click', () => {
+                this.state.menuVisible = false;
+            });
+    }
+
     handleTabClick(index) {
         var file = this.input.file;
         app.focusFile(file.path);
+    }
+
+    getTabTitle() {
+        var file = this.input.file;
+        var tabTitle = file.name;
+
+        var parentDir = path.dirname(file.path);
+        if (parentDir !== app.focusedDirectory) {
+            tabTitle = path.basename(parentDir) + '/' + tabTitle;
+        }
+
+        var outputIcon
+        if (file.output) {
+            var outputMode = this.state.outputMode;
+
+            if (outputMode === 'preview') {
+                tabTitle += ' (Preview)';
+            } else if (outputMode === 'html') {
+                tabTitle += ' (Output HTML)';
+            } else if (outputMode === 'compiled') {
+                tabTitle += ' (Compiled)';
+            }
+
+        }
+
+        return tabTitle;
+    }
+
+    toggleMenu(event) {
+        this.state.menuVisible = !this.state.menuVisible;
+        event.stopImmediatePropagation();
+        event.preventDefault();
+    }
+
+    changeOutputMode(outputMode, event) {
+        if (this.state.outputMode !== outputMode) {
+            this.state.outputMode = outputMode;
+            this.emit('outputModeChange', outputMode);
+        }
+
+        event.preventDefault();
     }
 }
 
@@ -27,12 +71,22 @@ $ var focused = input.focused;
 $ var active = input.active;
 $ var file = input.file;
 
-
-
-$ var tabTitle = getTabTitle(file);
+$ var tabTitle = component.getTabTitle();
 
 <li.tab class=[focused && 'focused', active && 'active']
     on-click('handleTabClick')>
 
-    <span.tab-label>${tabTitle}</span>
+    <span.tab-label>
+        ${tabTitle}
+    </span>
+    <span.configure on-click('toggleMenu') if(file.output)>
+        <span.icon/>
+    </span>
+    <div.menu class=[state.menuVisible && 'visible']>
+        <ul>
+            <li><a href="#Preview" on-click('changeOutputMode', 'preview')>Preview</a></li>
+            <li><a href="#OutputHTML" on-click('changeOutputMode', 'html')>Output HTML</a></li>
+            <li><a href="#Compiled" on-click('changeOutputMode', 'compiled')>Compiled</a></li>
+        </ul>
+    </div>
 </li>

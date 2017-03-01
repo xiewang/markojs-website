@@ -132,13 +132,15 @@ class TryOnlineApp extends EventEmitter {
 
         if (state.previewFile) {
             var previewFile = Object.create(state.previewFile);
-            previewFile.preview = true;
+            previewFile.output = true;
+            previewFile.outputMode = 'preview';
             panes.outputTop.push(previewFile);
         }
 
         if (state.projectPreviewFile) {
             var projectPreviewFile = Object.create(state.projectPreviewFile);
-            projectPreviewFile.preview = true;
+            projectPreviewFile.output = true;
+            projectPreviewFile.outputMode = 'preview';
             panes.outputBottom.push(projectPreviewFile);
         }
 
@@ -238,24 +240,17 @@ class TryOnlineApp extends EventEmitter {
             this.state.openFiles = [];
             this.state.previewFile = undefined;
 
-            if (isDirectory) {
-                // Open the first file
-
-                for (let i=0; i<dir.files.length; i++) {
-                    let curFile = dir.files[i];
-                    if (curFile.isFile()) {
-                        if (path.extname(curFile.path) === '.marko') {
-                            this.state.projectPreviewFile = curFile;
-                        }
-
-                        addOpenFile(curFile);
-                        break;
-                    }
+            dir.files.forEach((curFile) => {
+                if (!curFile.isDirectory() && curFile.name !== 'package.json') {
+                    addOpenFile(curFile);
                 }
 
-            } else {
-                this.state.openFiles = [file];
+                if (!this.state.projectPreviewFile && path.extname(curFile.path) === '.marko') {
+                    this.state.projectPreviewFile = curFile;
+                }
+            });
 
+            if (!isDirectory) {
                 if (path.extname(file.path) === '.marko') {
                     this.state.projectPreviewFile = file;
                 }
@@ -265,6 +260,8 @@ class TryOnlineApp extends EventEmitter {
         this.assignOpenFilesToPanes();
 
         this._emitStateChange();
+
+        this.emit('focus:change', this.state.focusedFile);
     }
 
     _emitStateChange() {

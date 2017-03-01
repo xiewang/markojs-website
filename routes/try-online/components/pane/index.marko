@@ -3,7 +3,8 @@ import app from '~/routes/try-online/app';
 class {
     onCreate() {
         this.state = {
-            activeIndex: 0
+            activeIndex: 0,
+            outputMode: 'preview'
         }
     }
     onInput(input) {
@@ -21,6 +22,10 @@ class {
             }
         });
     }
+
+    changeOutputMode(newOutputMode) {
+        this.state.outputMode = newOutputMode;
+    }
 }
 
 <div.pane>
@@ -30,7 +35,9 @@ class {
                 <pane-tab focused=(input.focusedFile === file.path)
                     active=(state.activeIndex === i)
                     file=file
-                    key='tab-'+file.path />
+                    key='tab-'+file.path
+                    output-mode=state.outputMode
+                    on-outputModeChange('changeOutputMode') />
             </for>
         </ul>
     </div>
@@ -39,7 +46,8 @@ class {
             <pane-body focused=(input.focusedFile === file.path)
                 active=(state.activeIndex === i)
                 file=file
-                key='body-'+file.path/>
+                key='body-'+file.path
+                output-mode=state.outputMode />
         </for>
     </div>
 </div>

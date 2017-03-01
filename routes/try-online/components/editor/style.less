@@ -11,21 +11,44 @@
 }*/
 
 .editor {
-    height:100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
 }
 
-.editor div {
-    display:block;
+.editor .code-mirror-container {
+    position: relative;
+    flex: 1;
+}
+
+.editor .code-mirror-container div {
+    display: block;
+}
+
+.editor .errors-container {
+    position: relative;
+    // flex: initial;
+    // flex-grow: 1;
+    // flex-shrink: 1;
+    flex-basis: auto;
+    height: 6em;
+    overflow: auto;
+    background-color: #21252b;
+}
+
+.editor .errors-container div {
+    display: block;
 }
 
 div.editor .CodeMirror pre {
     font-family: Monaco,Menlo,Consolas,monospace;
-    font-size: 0.75em;
+    font-size: 0.7em;
 }
 
 div.editor .CodeMirror-linenumber {
     font-family: Monaco,Menlo,Consolas,monospace;
-    font-size: 0.75em;
+    font-size: 0.7em;
 }
 
 /*.app-codemirror {

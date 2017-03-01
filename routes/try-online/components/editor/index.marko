@@ -1,5 +1,7 @@
 import app from '~/routes/try-online/app';
 import path from 'path';
+import vmodules from '~/routes/try-online/app/vmodules';
+import debounce from 'lodash.debounce';
 
 static {
     if (typeof window !== 'undefined') {
@@ -25,9 +27,13 @@ static {
 }
 
 class {
-
+    onCreate() {
+        this.state = {
+            error: undefined
+        };
+    }
     getMode(file) {
-        var ext = path.extname(file.name);
+        let ext = path.extname(file.name);
 
         if (ext === '.marko') {
             return 'Marko';
@@ -39,15 +45,26 @@ class {
     }
 
     onMount() {
-        var file = this.input.file;
+        let file = this.input.file;
+        let outputMode = this.input.outputMode;
+        let codeMirrorMode;
+        let code = file.text;
 
-        var code = file.text;
+        if (outputMode === 'compiled') {
+            let module = vmodules.loadFile(this.input.file.path);
+            if (module.error) {
+                this.state.error = error;
+            } else {
+                code = module.source;
+                codeMirrorMode = 'javascript';
+            }
+        }
 
         this.code = code;
 
-        var codeMirrorConfig = {
+        let codeMirrorConfig = {
             value: code || '',
-            mode: this.getMode(file),
+            mode: codeMirrorMode || this.getMode(file),
             lineNumbers: true,
             readOnly: false,
             indentUnit: 4,
@@ -57,14 +74,41 @@ class {
         codeMirrorConfig.theme = 'marko';
 
         /*jshint newcap: false */
-        this.codeMirror = CodeMirror(this.el, codeMirrorConfig);
+        this.codeMirror = CodeMirror(this.getEl('codeMirrorContainer'), codeMirrorConfig);
 
         this.codeMirror.setSize("100%", "100%");
 
-        this.codeMirror.on('change', (editor) => {
-            var source = editor.getValue();
-            app.saveFile(file.path, source);
-        });
+        let error;
+
+        let showError = () => {
+            this.state.error = error;
+        };
+
+        if (outputMode === 'preview') {
+            let reloadTemplate = () => {
+                let module = vmodules.loadFile(this.input.file.path);
+                error = module.error;
+                if (error) {
+                    // We should delay showing errors until there is a pause
+                    // in typing
+                    showError();
+                } else {
+                    // Errors should disappear immediately...
+                    this.state.error = undefined;
+                }
+            }
+
+            reloadTemplate();
+
+            showError = debounce(showError, 500);
+
+            this.codeMirror.on('change', (editor) => {
+                let source = editor.getValue();
+                app.saveFile(file.path, source);
+                reloadTemplate();
+            });
+        }
+
 
         app.on('focus:change', (focusedFile) => {
             if (focusedFile === file.path) {
@@ -75,24 +119,42 @@ class {
     }
 
     focus() {
-        var file = this.input.file;
+        let file = this.input.file;
         app.focusFile(file.path);
+    }
+
+    jumpToError(error) {
+        let pos = error.pos || error.endPos;
+        if (!pos) {
+            return;
+        }
+
+        this.codeMirror.focus();
+
+        this.codeMirror.setCursor({
+            line: pos.line - 1,
+            ch: pos.column
+        });
     }
 
     /*
     handleInput() {
-        var file = file;
-        var source = this.getEl('textarea').value;
+        let file = file;
+        let source = this.getEl('textarea').value;
         app.updateFile(file.path, source);
     }
     */
 }
 
-$ var file = input.file;
+$ let file = input.file;
 
 <div.editor on-click('focus')>
+    <div.code-mirror-container key="codeMirrorContainer" no-update></div>
     <!-- <textarea style={width: '100%', height: '100%'}
         on-input('handleInput')
         key='textarea'
         >${file.text}</textarea> -->
+    <div.errors-container if(state.error)>
+        <editor-errors error=state.error on-errorSelected('jumpToError')/>
+    </div>
 </div>

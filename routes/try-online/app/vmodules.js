@@ -70,27 +70,39 @@ var extensions = {
                 });
         } catch(err) {
             return {
-                exports: {
-                    error: err
-                }
+                error: err,
+                exports: {}
             };
         }
 
-
         var compiledSrc = compiled.code;
-        var module = loadSource(compiledSrc, outputFile);
-        module.exports.path = filePath;
-        return module;
+
+        var templateModule = loadSource(compiledSrc, outputFile);
+        templateModule.exports.path = filePath;
+        return templateModule;
     },
     '.js': function(src, filePath) {
         return loadSource(src, filePath);
     },
     '.json': function(src, filePath) {
 
-        var parsed = JSON.parse(src);
+        var parsed;
+
+        try {
+            parsed = JSON.parse(src);
+        } catch(err) {
+            return {
+                error: err
+            };
+        }
 
         return {
             exports: parsed
+        };
+    },
+    '.css': function(src, filePath) {
+        return {
+            exports: {}
         };
     }
 };
@@ -108,13 +120,25 @@ function loadFile(filePath) {
     var compiler = extensions[ext];
     var loadedModule = compiler(src, filePath);
     loadedModule.id = filePath;
+
+    cache[filePath] = loadedModule;
+
+    if (loadedModule.error) {
+        setTimeout(() => {
+            if (cache[filePath] === loadedModule) {
+                delete cache[filePath];
+            }
+        }, 100);
+    }
+
     return loadedModule;
 }
 
 function loadSource(src, filePath) {
     var dir = path.dirname(filePath);
     var wrappedSource = '(function(require, exports, module, __filename, __dirname) { ' + src + ' })';
-    var factoryFunc = eval(wrappedSource);
+    var factoryFunc;
+
     var exports = {};
     var module = {
         require: function(target) {
@@ -128,6 +152,13 @@ function loadSource(src, filePath) {
             var resolved = resolveFrom(dir, target);
             if (resolved) {
                 var loadedModule = loadFile(resolved);
+                var error = loadedModule.error;
+                if (error) {
+                    if (!error.friendlyLabel) {
+                        error.friendlyLabel = `Unable to import "${resolved}" from "${filePath}"`;
+                    }
+                    throw error;
+                }
                 return loadedModule.exports;
             }
 
@@ -137,9 +168,23 @@ function loadSource(src, filePath) {
         id: filePath
     };
 
-    factoryFunc(module.require, exports, module, filePath, dir);
+    try {
+        factoryFunc = eval(wrappedSource);
+    } catch(err) {
+        err.friendlyMessage = `Unable to load "${filePath}": ${err.toString()}`;
+        module.error = err;
+    }
 
-    cache[filePath] = module;
+    if (!module.error) {
+        try {
+            factoryFunc(module.require, exports, module, filePath, dir);
+        } catch(err) {
+            if (!err.friendlyLabel) {
+                err.friendlyLabel = `Unable to load "${filePath}"`;
+            }
+            module.error = err;
+        }
+    }
 
     module.source = src;
     return module;

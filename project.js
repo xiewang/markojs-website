@@ -22,6 +22,8 @@ function getBabiliConfig() {
 module.exports = require('marko-starter').projectConfig({
     routePathPrefix: '/',
     lassoConfig: {
+        bundlingEnabled: isProduction,
+        fingerprintsEnabled: isProduction,
         require: {
             builtins: {
                 'fs': require.resolve('./browser-shims/fs'),

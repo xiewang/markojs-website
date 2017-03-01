@@ -1,5 +1,6 @@
 import app from '~/routes/try-online/app';
 import localStorageUtil from '~/util/localstorage';
+import querystring from 'querystring';
 
 class {
     onMount() {
@@ -15,22 +16,51 @@ class {
             this.input = newState;
         });
 
-        const localStorageFocusedFile = localStorageUtil.get('focusedFile');
 
-        if (localStorageFocusedFile && app.fileExists(localStorageFocusedFile)) {
-            app.focusFile(localStorageFocusedFile);
-        } else {
-            app.focusFile(DEFAULT_FOCUSED_FILE);
+
+        var firstFocus = true;
+        var baseUrl = window.location.pathname;
+        var focusedFile;
+
+        function getUrlForFocusedFile() {
+            return baseUrl + '?' + querystring.stringify({
+                file: focusedFile
+            });
         }
 
-        this.focusedFile = null;
-    }
+        app.on('focus:change', (filePath) => {
+            if (focusedFile !== filePath) {
+                focusedFile = filePath;
+                history.pushState({ file: filePath }, '', getUrlForFocusedFile());
+                localStorageUtil.set('focusedFile', focusedFile);
+            }
+        });
 
-    onUpdate() {
-        if (this.input.focusedFile !== this.focusedFile) {
-            this.focusedFile = this.input.focusedFile;
-            app.emit('focus:change', this.input.focusedFile);
+        this.subscribeTo(window)
+            .on('popstate', (event) => {
+                var newState = event.state;
+                if (newState && newState.file) {
+                    focusedFile = newState.file;
+                    app.focusFile(focusedFile);
+                }
+            });
+
+        if (window.location.search) {
+            var parsed = querystring.parse(window.location.search);
+            focusedFile = parsed.file;
         }
+
+        if (!focusedFile) {
+            focusedFile = localStorageUtil.get('focusedFile');
+        }
+
+        if (focusedFile && !app.fileExists(focusedFile)) {
+            focusedFile = null;
+        }
+
+        history.replaceState({ file: focusedFile }, '', getUrlForFocusedFile());
+
+        app.focusFile(focusedFile || DEFAULT_FOCUSED_FILE);
     }
 
     handleCollapseToggle(paneName, event) {
