@@ -1,34 +1,23 @@
-static function formatName(name) {
-    name = name.replace(/^\d+-/, '').split('-').join(' ');
-    name = name[0].toUpperCase() + name.slice(1);
-    return name;
+static function formatSlug(name) {
+    return name.replace(/[^\w\d\s]/g, '').replace(/\s+/g, '-').toLowerCase();
 }
 
 <div.doc-sidebar key="sidebar">
     <h1>Marko <version-switcher/></h1>
-    <ul.toc-level0>
-        <li.section>INTRODUCTION</li>
-        <li for(doc in input.docs)>
-            $ var selected = doc === input.name;
-            <a class={ selected } href="/docs/${doc}">
-                ${formatName(doc)}
-            </a>
-            <if(selected)>
-                $!{input.toc}
-            </if>
-        </li>
-    </ul>
-    <ul.toc-level0>
-        <li.section>ADVANCED TOPICS</li>
-        <li for(doc in input.docs)>
-            <a href="/docs/${doc}">${doc}</a>
-        </li>
-    </ul>
-    <ul.toc-level0>
-        <li.section>API REFERENCE</li>
-        <li for(doc in input.docs)>
-            <a href="/docs/${doc}">${doc}</a>
-        </li>
-    </ul>
+    <for(section in input.structure)>
+        <ul.toc-level0>
+            <li.section>${section.title.toUpperCase()}</li>
+            <li for(docTitle in section.docs)>
+                $ var docSlug = formatSlug(docTitle);
+                $ var selected = docSlug === input.name;
+                <a class={ selected } href="/docs/${docSlug}/">
+                    ${docTitle}
+                </a>
+                <if(selected)>
+                    $!{input.toc}
+                </if>
+            </li>
+        </ul>
+    </for>
 </div>
 <div.doc-sidebar-spacer/>

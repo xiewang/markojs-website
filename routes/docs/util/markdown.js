@@ -6,7 +6,15 @@ var TOC = require('./toc');
 
 exports.toTemplate = function renderMarkdown(filepath) {
     var markdown = fs.readFileSync(filepath, 'utf-8');
-    markdown = markdown.replace(/\</g, '&lt;').replace(/\$/g, '&#36;').replace(/https?:\/\/markojs\.com\//g, '/');
+    markdown = markdown
+        .replace(/\</g, '&lt;')
+        .replace(/\$/g, '&#36;')
+        .replace(/https?:\/\/markojs\.com\//g, '/')
+        .replace(/\.\/([\w\d-\/]+)\.md/g, (match) => {
+            var linkpath = path.resolve(path.dirname(filepath), match);
+            var linkmatch = /(\/docs\/.*)\.md/.exec(linkpath);
+            return linkmatch && (linkmatch[1]+'/') || match;
+        });
 
     var markedRenderer = new marked.Renderer();
     var toc = TOC.create();

@@ -4,8 +4,9 @@ const template = require('./index.marko');
 const markdownToTemplate = require('./util/markdown').toTemplate;
 const docsDir = path.join(process.cwd(), 'node_modules', 'marko', 'docs');
 const docs = fs.readdirSync(docsDir).filter(doc => /\.md$/.test(doc)).map(doc => doc.slice(0, -3));
+const structure = require('marko/docs/structure.json');
 
-exports.path = '/docs/:name';
+exports.path = '/docs/:name/';
 exports.params = docs.map(doc => ({ name:doc }));
 
 exports.handler = (input, out) => {
@@ -14,5 +15,5 @@ exports.handler = (input, out) => {
     let toc = doc.toc;
 
     let $global = { dependencies: doc.getDependencies() };
-    template.render({ $global, name, doc, toc, docs }, out);
+    template.render({ $global, name, doc, toc, structure }, out);
 }
