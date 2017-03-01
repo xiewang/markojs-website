@@ -91,6 +91,7 @@ var extensions = {
         try {
             parsed = JSON.parse(src);
         } catch(err) {
+            err.friendlyMessage = err.toString();
             return {
                 error: err
             };
@@ -155,6 +156,7 @@ function loadSource(src, filePath) {
                 var error = loadedModule.error;
                 if (error) {
                     if (!error.friendlyLabel) {
+                        error = Object.create(error);
                         error.friendlyLabel = `Unable to import "${resolved}" from "${filePath}"`;
                     }
                     throw error;
@@ -179,10 +181,14 @@ function loadSource(src, filePath) {
         try {
             factoryFunc(module.require, exports, module, filePath, dir);
         } catch(err) {
-            if (!err.friendlyLabel) {
-                err.friendlyLabel = `Unable to load "${filePath}"`;
+            if (err.friendlyLabel) {
+                module.error = err;
+            } else {
+                var errClone = Object.create(err);
+                errClone.friendlyLabel = `Unable to load "${filePath}"`;
+                module.error = errClone;
             }
-            module.error = err;
+
         }
     }
 
@@ -193,7 +199,7 @@ function loadSource(src, filePath) {
 function clearCache(filter) {
     Object.keys(cache).forEach((cacheKey) => {
         var module = cache[cacheKey];
-        if (filter(module.id)) {
+        if (!filter || filter(module.id)) {
             delete cache[cacheKey];
         }
     });

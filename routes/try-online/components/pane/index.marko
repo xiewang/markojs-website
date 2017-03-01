@@ -1,30 +1,64 @@
 import app from '~/routes/try-online/app';
 
 class {
-    onCreate() {
+    onCreate(input) {
+        var focusedFile = app.focusedFile;
+        var activeIndex = undefined;
+
+        input.files.forEach((file, i) => {
+            if (file.path === focusedFile) {
+                activeIndex = i;
+            }
+        });
+
+        if (activeIndex === undefined) {
+            activeIndex = 0;
+        }
+
         this.state = {
-            activeIndex: 0,
-            outputMode: 'preview'
+            activeIndex: activeIndex,
+            outputModes: {}
         }
     }
     onInput(input) {
-        var directoryChanged = this.focusedDirectory !== input.focusedDirectory;
+        var focusedFile = app.focusedFile;
+        var focusedDirectory = app.focusedDirectory;
+
+        var directoryChanged = this.focusedDirectory !== focusedDirectory;
 
         this.focusedDirectory = input.focusedDirectory;
 
         if (directoryChanged) {
-            this.activeIndex = 0;
+            this.state.activeIndex = 0;
         }
 
-        input.files.forEach((file, i) => {
-            if (file.path === input.focusedFile) {
+        // If there is an active tab file then use that
+        if (input.activeTabFile) {
+            input.files.forEach((file, i) => {
+                if (file.path === input.activeTabFile) {
+                    this.state.activeIndex = i;
+                }
+            });
+        }
+    }
+
+    changeOutputMode(filePath, newOutputMode) {
+        this.state.outputModes = Object.assign({}, this.outputModes);
+        this.state.outputModes[filePath] = newOutputMode;
+    }
+
+    getOutputModeForFile(file) {
+        return this.state.outputModes[file.path] || file.outputMode;
+    }
+
+    showFileTab(activeFile) {
+        this.emit('tabClick', activeFile);
+
+        this.input.files.forEach((file, i) => {
+            if (file.path === activeFile.path) {
                 this.state.activeIndex = i;
             }
         });
-    }
-
-    changeOutputMode(newOutputMode) {
-        this.state.outputMode = newOutputMode;
     }
 }
 
@@ -32,22 +66,23 @@ class {
     <div.tabs>
         <ul.tabs>
             <for(i, file in input.files)>
-                <pane-tab focused=(input.focusedFile === file.path)
+                <pane-tab focused=(app.focusedFile === file.path)
                     active=(state.activeIndex === i)
                     file=file
                     key='tab-'+file.path
-                    output-mode=state.outputMode
+                    output-mode=component.getOutputModeForFile(file)
+                    on-click('showFileTab', file)
                     on-outputModeChange('changeOutputMode') />
             </for>
         </ul>
     </div>
     <div.bodies>
         <for(i, file in input.files)>
-            <pane-body focused=(input.focusedFile === file.path)
+            <pane-body focused=(app.focusedFile === file.path)
                 active=(state.activeIndex === i)
                 file=file
                 key='body-'+file.path
-                output-mode=state.outputMode />
+                output-mode=component.getOutputModeForFile(file) />
         </for>
     </div>
 </div>

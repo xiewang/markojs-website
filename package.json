@@ -8,6 +8,7 @@
     "codemirror-atom-modes": "^1.0.1",
     "headspace": "^0.1.1",
     "highlights": "^1.4.1",
+    "html": "^1.0.0",
     "language-css": "github:atom/language-css",
     "language-html": "github:atom/language-html",
     "language-javascript": "github:atom/language-javascript",

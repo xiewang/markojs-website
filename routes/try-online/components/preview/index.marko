@@ -2,6 +2,16 @@ import vmodules from '~/routes/try-online/app/vmodules';
 import app from '~/routes/try-online/app';
 import fs from 'fs';
 import debounce from 'lodash.debounce';
+import {prettyPrint as htmlPrettyPrint} from 'html';
+
+static function getHtmlCodeFromOutput(output) {
+    var node = output.actualize(document);
+    var containerEl = document.createElement('body');
+    containerEl.appendChild(node);
+    var html = containerEl.innerHTML;
+    html = htmlPrettyPrint(html);
+    return html;
+}
 
 class {
     onCreate() {
@@ -34,20 +44,62 @@ class {
     }
 
     renderToFrame() {
-        this.iframeLoaded.then(() => {
-            var file = this.input.file;
+        var outputMode = this.input.outputMode || 'preview';
+        var file = this.input.file;
+        var templateModule = vmodules.loadFile(file.path);
+        this.state.error = undefined;
 
-            var templateModule = vmodules.loadFile(file.path);
+        if (outputMode === 'preview') {
+            this.iframeLoaded.then(() => {
+                if (templateModule.error) {
+                    this.state.error = undefined;
+                    this.iframe.contentDocument.body.innerHTML = 'Template failed to load';
+                    return;
+                }
+
+                var template = templateModule.exports;
+
+                this.updateCSS();
+
+                var currentRender = this.currentRender = {};
+
+                this.state.error = undefined;
+
+                Promise.resolve()
+                    .then(() => {
+                        return template.render();
+                    })
+                    .then((renderResult) => {
+                        if (this.currentRender === currentRender) {
+                            renderResult.replaceChildrenOf(this.iframe.contentDocument.body);
+                        }
+                    })
+                    .catch((err) => {
+                        if (this.currentRender === currentRender) {
+                            this.iframe.contentDocument.body.innerHTML = '';
+                            this.state.error = err;
+                        }
+                    });
+            });
+        } else if (outputMode === 'compiled') {
+            let code;
 
             if (templateModule.error) {
-                this.state.error = undefined;
-                this.iframe.contentDocument.body.innerHTML = 'Template failed to load';
-                return;
+                code = '// Unable to load template';
+            } else {
+                code = templateModule.source;
             }
 
-            var template = templateModule.exports;
+            this.getComponent('editorCompiled')
+                .setCode(code);
+        } else if (outputMode === 'html') {
+            let code;
 
-            this.updateCSS();
+            if (templateModule.error) {
+                code = '<!-- Unable to load template -->';
+                this.getComponent('editorHTML').setCode(code);
+                return;
+            }
 
             var currentRender = this.currentRender = {};
 
@@ -55,11 +107,13 @@ class {
 
             Promise.resolve()
                 .then(() => {
+                    let template = templateModule.exports;
                     return template.render();
                 })
                 .then((renderResult) => {
                     if (this.currentRender === currentRender) {
-                        renderResult.replaceChildrenOf(this.iframe.contentDocument.body);
+                        let html = getHtmlCodeFromOutput(renderResult.getOutput());
+                        this.getComponent('editorHTML').setCode(html);
                     }
                 })
                 .catch((err) => {
@@ -68,7 +122,8 @@ class {
                         this.state.error = err;
                     }
                 });
-        });
+        }
+
     }
 
     updateCSS() {
@@ -133,10 +188,20 @@ class {
 }
 
 $ var file = input.file;
+$ var outputMode = input.outputMode || 'preview';
+$ var code = state.code;
 
-<div.preview>
+<div.preview class='mode-'+outputMode>
     <div.iframe-container key="iframeContainer" no-update>
     </div>
+
+    <if(outputMode === 'html')>
+        <editor file=file code='' key='editorHTML' read-only mode='htmlmixed' output-mode=outputMode no-update />
+    </if>
+    <else if(outputMode === 'compiled')>
+        <editor file=file code='' key='editorCompiled' read-only mode='javascript' output-mode=outputMode no-update />
+    </else>
+
     <div.errors-container if(state.error)>
         <preview-errors error=state.error file=file/>
     </div>

@@ -46,27 +46,16 @@ class {
 
     onMount() {
         let file = this.input.file;
-        let outputMode = this.input.outputMode;
-        let codeMirrorMode;
-        let code = file.text;
-
-        if (outputMode === 'compiled') {
-            let module = vmodules.loadFile(this.input.file.path);
-            if (module.error) {
-                this.state.error = error;
-            } else {
-                code = module.source;
-                codeMirrorMode = 'javascript';
-            }
-        }
-
-        this.code = code;
+        let outputMode = this.input.outputMode || 'preview';
+        let codeMirrorMode = this.input.mode;
+        let code = this.input.code != null ? this.input.code : file.text;
+        let readOnly = this.input.readOnly === true;
 
         let codeMirrorConfig = {
             value: code || '',
             mode: codeMirrorMode || this.getMode(file),
             lineNumbers: true,
-            readOnly: false,
+            readOnly: readOnly,
             indentUnit: 4,
             lineWrapping: true
         };
@@ -84,36 +73,42 @@ class {
             this.state.error = error;
         };
 
-        if (outputMode === 'preview') {
-            let reloadTemplate = () => {
-                let module = vmodules.loadFile(this.input.file.path);
-                error = module.error;
-                if (error) {
-                    // We should delay showing errors until there is a pause
-                    // in typing
-                    showError();
-                } else {
-                    // Errors should disappear immediately...
-                    this.state.error = undefined;
-                }
+        showError = debounce(showError, 500);
+
+        let loadModule = () => {
+            let module = vmodules.loadFile(this.input.file.path);
+            error = module.error;
+            if (error) {
+                // We should delay showing errors until there is a pause
+                // in typing
+                showError();
+            } else {
+                // Errors should disappear immediately...
+                this.state.error = undefined;
             }
+        }
 
-            reloadTemplate();
-
-            showError = debounce(showError, 500);
-
+        if (!readOnly) {
             this.codeMirror.on('change', (editor) => {
                 let source = editor.getValue();
                 app.saveFile(file.path, source);
-                reloadTemplate();
             });
-        }
 
+            app.on('file:modified', () => {
+                loadModule();
+            });
+
+            loadModule();
+        }
 
         app.on('focus:change', (focusedFile) => {
             if (focusedFile === file.path) {
                 this.codeMirror.focus();
                 this.codeMirror.refresh();
+
+                if (!readOnly) {
+                    loadModule();
+                }
             }
         });
     }
@@ -135,6 +130,12 @@ class {
             line: pos.line - 1,
             ch: pos.column
         });
+    }
+
+    setCode(newCode) {
+        var scrollInfo = this.codeMirror.getScrollInfo();
+        this.codeMirror.setValue(newCode);
+        this.codeMirror.scrollTo(scrollInfo.left, scrollInfo.top);
     }
 
     /*

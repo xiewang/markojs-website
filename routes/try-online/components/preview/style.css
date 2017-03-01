@@ -19,7 +19,11 @@
 }
 
 .preview .iframe-container {
+    display: none;
+}
 
+.preview.mode-preview .iframe-container {
+    display: block;
 }
 
 .preview .errors-container {
@@ -29,4 +33,5 @@
     top: 0px;
     left: 0px;
     background-color: #21252b;
+    z-index: 150;
 }

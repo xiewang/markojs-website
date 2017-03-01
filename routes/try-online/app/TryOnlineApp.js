@@ -2,13 +2,13 @@
 
 require('marko/runtime/dependencies/vdom');
 
-var vfs = require('~/browser-shims/fs');
-var vmodules = require('./vmodules');
-var readVirtualFiles = require('./readVirtualFiles');
-var path = require('path');
-var EventEmitter = require('events-light');
+const vfs = require('~/browser-shims/fs');
+const vmodules = require('./vmodules');
+const readVirtualFiles = require('./readVirtualFiles');
+const path = require('path');
+const EventEmitter = require('events-light');
 
-var projectNameRegExp = /[/]([a-zA-Z0-9_-]+)([/]|$)/;
+const projectNameRegExp = /[/]([a-zA-Z0-9_-]+)([/]|$)/;
 
 
 class TryOnlineApp extends EventEmitter {
@@ -27,7 +27,9 @@ class TryOnlineApp extends EventEmitter {
             focusedFile: undefined,
             openFiles: [],
             previewFile: undefined,
+            demoPreviewFile: undefined,
             projectPreviewFile: undefined,
+            componentPreviewFile: undefined,
             projectLookup: []
         };
 
@@ -44,6 +46,8 @@ class TryOnlineApp extends EventEmitter {
                         return true;
                     }
                 });
+            } else {
+                vmodules.clearCache();
             }
 
             this.emit('file:modified', file);
@@ -51,10 +55,10 @@ class TryOnlineApp extends EventEmitter {
     }
 
     loadProjects() {
-        var projectLookup = {};
-        var projects = [];
+        let projectLookup = {};
+        let projects = [];
 
-        var rootDir = vfs.readTreeSync();
+        let rootDir = vfs.readTreeSync();
 
         rootDir.files.forEach((file) => {
             let packageJsonPath = path.join(file.path, 'package.json');
@@ -68,12 +72,12 @@ class TryOnlineApp extends EventEmitter {
 
             let previewFile;
 
-            var projectPreviewFilePath = file.path + '/index.marko';
+            let projectPreviewFilePath = file.path + '/index.marko';
             if (vfs.existsSync(projectPreviewFilePath)) {
                 previewFile = vfs.getFile(projectPreviewFilePath);
             }
 
-            var project = {
+            let project = {
                 name: name,
                 description: description,
                 rootDir: file,
@@ -110,8 +114,8 @@ class TryOnlineApp extends EventEmitter {
     }
 
     getProjectForPath(filePath) {
-        var projectNameMatches = projectNameRegExp.exec(filePath);
-        var projectName = projectNameMatches[1];
+        let projectNameMatches = projectNameRegExp.exec(filePath);
+        let projectName = projectNameMatches[1];
         return this.state.projectLookup[projectName];
     }
 
@@ -120,10 +124,10 @@ class TryOnlineApp extends EventEmitter {
     }
 
     assignOpenFilesToPanes() {
-        var state = this.state;
-        var openFiles = state.openFiles;
+        let state = this.state;
+        let openFiles = state.openFiles;
 
-        var panes = {
+        let panes = {
             inputTop: [],
             inputBottom: [],
             outputTop: [],
@@ -131,21 +135,35 @@ class TryOnlineApp extends EventEmitter {
         };
 
         if (state.previewFile) {
-            var previewFile = Object.create(state.previewFile);
+            let previewFile = Object.create(state.previewFile);
             previewFile.output = true;
             previewFile.outputMode = 'preview';
             panes.outputTop.push(previewFile);
         }
 
+        if (state.demoPreviewFile) {
+            let previewFile = Object.create(state.demoPreviewFile);
+            previewFile.output = true;
+            previewFile.outputMode = 'preview';
+            panes.outputTop.push(previewFile);
+        }
+
+        if (state.componentPreviewFile) {
+            let previewFile = Object.create(state.componentPreviewFile);
+            previewFile.output = true;
+            previewFile.outputMode = 'compiled';
+            panes.outputBottom.push(previewFile);
+        }
+
         if (state.projectPreviewFile) {
-            var projectPreviewFile = Object.create(state.projectPreviewFile);
+            let projectPreviewFile = Object.create(state.projectPreviewFile);
             projectPreviewFile.output = true;
             projectPreviewFile.outputMode = 'preview';
-            panes.outputBottom.push(projectPreviewFile);
+            panes.outputTop.push(projectPreviewFile);
         }
 
         openFiles.forEach((openFile) => {
-            var targetPane;
+            let targetPane;
 
             if (openFile.name === 'demo.marko') {
                 targetPane = 'inputTop';
@@ -169,12 +187,12 @@ class TryOnlineApp extends EventEmitter {
     }
 
     focusProject(projectName) {
-        var project = this.state.projectLookup[projectName];
+        let project = this.state.projectLookup[projectName];
         this.focusFile(path.join(project.rootDir.path, 'index.marko'));
     }
 
     focusFile(filePath) {
-        var file = vfs.getFile(filePath);
+        let file = vfs.getFile(filePath);
         if (!file) {
             return;
         }
@@ -187,10 +205,10 @@ class TryOnlineApp extends EventEmitter {
 
         this.state.activeProject = this.getProjectForPath(filePath);
 
-        var isDirectory = file.isDirectory();
-        var dirPath;
+        let isDirectory = file.isDirectory();
+        let dirPath;
 
-        var previouslyFocusedDirectory = this.state.focusedDirectory;
+        let previouslyFocusedDirectory = this.state.focusedDirectory;
 
         if (isDirectory) {
             dirPath = filePath;
@@ -200,19 +218,25 @@ class TryOnlineApp extends EventEmitter {
 
         this.state.focusedDirectory = dirPath;
 
-        var dir = vfs.getFile(dirPath);
+        let dir = vfs.getFile(dirPath);
 
-        var index = {};
+        let index = {};
 
         dir.files.forEach((childFile) => {
             index[childFile.name] = childFile;
         });
 
-        var isComponent = 'demo.marko' in index;
+        let isComponent = 'demo.marko' in index;
 
-        var addOpenFile = (file) => {
+        let addOpenFile = (file) => {
             this.state.openFiles.push(file);
         };
+
+        this.state.openFiles = [];
+        this.state.projectPreviewFile = undefined;
+        this.state.demoPreviewFile = undefined;
+        this.state.previewFile = undefined;
+        this.state.componentPreviewFile = undefined;
 
         if (isComponent) {
             if (isDirectory && previouslyFocusedDirectory === dirPath) {
@@ -222,24 +246,21 @@ class TryOnlineApp extends EventEmitter {
                 return;
             }
 
-            this.state.openFiles = [];
-
             for (let i=0; i<dir.files.length; i++) {
-                var curFile = dir.files[i];
+                let curFile = dir.files[i];
                 if (curFile.isFile()) {
                     addOpenFile(curFile);
 
                     if (curFile.name === 'demo.marko') {
-                        this.state.previewFile = index['demo.marko'];
+                        this.state.demoPreviewFile = index['demo.marko'];
+                    } else if (curFile.name === 'index.marko') {
+                        this.state.componentPreviewFile = index['index.marko'];
                     }
                 }
             }
 
             this.state.projectPreviewFile = this.state.activeProject.previewFile;
         } else {
-            this.state.openFiles = [];
-            this.state.previewFile = undefined;
-
             dir.files.forEach((curFile) => {
                 if (!curFile.isDirectory() && curFile.name !== 'package.json') {
                     addOpenFile(curFile);

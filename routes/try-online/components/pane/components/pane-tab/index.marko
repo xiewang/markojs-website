@@ -22,7 +22,11 @@ class {
 
     handleTabClick(index) {
         var file = this.input.file;
-        app.focusFile(file.path);
+        if (file.output) {
+            this.emit('click', this.input);
+        } else {
+            app.focusFile(file.path);
+        }
     }
 
     getTabTitle() {
@@ -53,6 +57,7 @@ class {
 
     toggleMenu(event) {
         this.state.menuVisible = !this.state.menuVisible;
+        event.stopPropagation();
         event.stopImmediatePropagation();
         event.preventDefault();
     }
@@ -60,7 +65,7 @@ class {
     changeOutputMode(outputMode, event) {
         if (this.state.outputMode !== outputMode) {
             this.state.outputMode = outputMode;
-            this.emit('outputModeChange', outputMode);
+            this.emit('outputModeChange', this.input.file.path, outputMode);
         }
 
         event.preventDefault();

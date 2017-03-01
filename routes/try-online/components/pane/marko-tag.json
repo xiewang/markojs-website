@@ -2,6 +2,5 @@
     "@files <file>[]": {
         "@file": "object"
     },
-    "@focused-file": "string",
-    "@focused-directory": "string"
+    "@active-tab-file": "object"
 }
