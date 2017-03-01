@@ -1,4 +1,3 @@
-// Polyfill to support native ES6 promises
 var EventEmitter = require('events');
 
 var nextId = 0;
@@ -9,13 +8,8 @@ var nextId = 0;
  * exports for the "src/app/todo.js" module. The TodoApp instances
  * expose methods can be used to modify the internal application state.
  * When the internal state is changed, a "change" event is emitted
- * along with the new state.
- *
- * The TodoApp constructor should be provided with an object with the
- * initial state. The provided state object is wrapped and normalized
- * by the TodoAppState module.
- *
- * @param {Object} state The initial state for the todo app.
+ * along with the new state. When the top-level UI component receives the
+ * new state it will rerender.
  */
 
 class TodoApp extends EventEmitter {

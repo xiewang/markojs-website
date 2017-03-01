@@ -62,12 +62,16 @@ class TryOnlineApp extends EventEmitter {
 
         rootDir.files.forEach((file) => {
             let packageJsonPath = path.join(file.path, 'package.json');
-            let description = file.name;
-            let name = file.name;
+
+            var project = {
+                name: file.name,
+                description: file.name,
+                defaultOutputMode: 'preview'
+            };
 
             if (vfs.existsSync(packageJsonPath)) {
                 let pkg = vmodules.require(packageJsonPath);
-                description = pkg.description || description;
+                Object.assign(project, pkg);
             }
 
             let previewFile;
@@ -77,14 +81,12 @@ class TryOnlineApp extends EventEmitter {
                 previewFile = vfs.getFile(projectPreviewFilePath);
             }
 
-            let project = {
-                name: name,
-                description: description,
+            Object.assign(project, {
                 rootDir: file,
                 previewFile: previewFile
-            };
+            });
 
-            projectLookup[name] = project;
+            projectLookup[project.name] = project;
             projects.push(project);
         });
 
@@ -135,9 +137,10 @@ class TryOnlineApp extends EventEmitter {
         };
 
         if (state.previewFile) {
+            let project = this.getProjectForPath(state.previewFile.path);
             let previewFile = Object.create(state.previewFile);
             previewFile.output = true;
-            previewFile.outputMode = 'preview';
+            previewFile.outputMode = project.defaultOutputMode || 'preview';
             panes.outputTop.push(previewFile);
         }
 
@@ -156,9 +159,10 @@ class TryOnlineApp extends EventEmitter {
         }
 
         if (state.projectPreviewFile) {
+            let project = this.getProjectForPath(state.projectPreviewFile.path);
             let projectPreviewFile = Object.create(state.projectPreviewFile);
             projectPreviewFile.output = true;
-            projectPreviewFile.outputMode = 'preview';
+            projectPreviewFile.outputMode = project.defaultOutputMode || 'preview';
             panes.outputTop.push(projectPreviewFile);
         }
 
@@ -201,9 +205,14 @@ class TryOnlineApp extends EventEmitter {
             return;
         }
 
-        this.state.focusedFile = filePath;
+        var project = this.state.activeProject = this.getProjectForPath(filePath);
 
-        this.state.activeProject = this.getProjectForPath(filePath);
+        if (filePath === project.rootDir.path) {
+            filePath += '/index.marko';
+            file = vfs.getFile(filePath);
+        }
+
+        this.state.focusedFile = filePath;
 
         let isDirectory = file.isDirectory();
         let dirPath;
@@ -212,6 +221,8 @@ class TryOnlineApp extends EventEmitter {
 
         if (isDirectory) {
             dirPath = filePath;
+
+
         } else {
             dirPath = path.dirname(filePath);
         }
