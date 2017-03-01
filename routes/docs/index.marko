@@ -1,9 +1,10 @@
 <site-layout title="Docs" footer=false>
     <div.doc-layout>
-        <doc-sidebar name=input.name docs=input.docs toc=input.toc />
+        <doc-sidebar name=input.name structure=input.structure toc=input.toc />
         <div.doc-container>
             <div.doc-content>
                 <include(input.doc)/>
+                <edit-on-github name=input.name/>
                 <site-footer/>
             </div>
         </div>

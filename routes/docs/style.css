@@ -3,6 +3,7 @@
     width:100%;
     max-width:45em;
     text-align:left;
+    position: relative;
 }
 
 .doc-content > * {
