@@ -1,0 +1,38 @@
+class {
+    handleErrorClick(error, event) {
+        this.emit('errorSelected', error);
+        event.preventDefault();
+    }
+}
+
+$ var errors = input.error.errors;
+
+<div.editor-errors>
+    <ul if(errors)>
+        <li for(error in errors)>
+            <span.message>${error.message}</span>
+            <a.loc href="#line" on-click('handleErrorClick', error)>
+                at line ${error.pos.line} col ${error.pos.column}
+            </a>
+        </li>
+    </ul>
+    <div else>
+        $ {
+            var error = input.error;
+            var stack;
+            if (error.friendlyMessage) {
+                stack = error.friendlyMessage;
+            } else if (error.stack){
+                stack = error.stack.toString();
+            } else {
+                stack = error.toString();
+            }
+        }
+        <header if(error.friendlyLabel)>
+            ${error.friendlyLabel}:
+        </header>
+
+        <pre.stack>${stack}</pre>
+    </div>
+
+</div>

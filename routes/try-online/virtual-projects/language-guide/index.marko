@@ -6,7 +6,7 @@ $ var colors = ['red', 'green', 'blue'];
 </h1>
 
 <ul if(colors.length)>
-    <li for(color in colors)>
+    <li style={color: color} for(color in colors)>
         ${color}
     </li>
 </ul>

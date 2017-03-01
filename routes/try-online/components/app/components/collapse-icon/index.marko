@@ -4,10 +4,14 @@ static var expandLookup = {
 }
 
 class {
-    constructor() {
+    constructor(input) {
         this.state = {
             collapsed: false
         };
+    }
+
+    onInput(input) {
+        this.state.collapsed = input.collapsed === true;
     }
 
     toggle() {
