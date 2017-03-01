@@ -1,4 +1,5 @@
 .site-search {
+    display:flex;
     flex-direction: row;
     align-items: center;
     height:2em;
