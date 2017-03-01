@@ -1,9 +1,16 @@
 .doc-content {
     display:block;
     width:100%;
-    max-width:45em;
+    max-width:60em;
+    padding-left:16em;
     text-align:left;
     position: relative;
+}
+
+@media (max-width:45em) {
+    .doc-content {
+        padding-left:0;
+    }
 }
 
 .doc-content > * {

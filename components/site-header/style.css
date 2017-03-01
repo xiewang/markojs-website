@@ -28,8 +28,48 @@ body:not(.home) .site-header {
     box-shadow: 0 0 0.7em rgba(0,5,10,0.15);
 }
 
+body {
+    padding-top:4.5em;
+}
+
 .site-logo {
     height:2.2em;
     margin-left:2em;
     display:block;
+}
+
+.site-header button.menu {
+    display:none;
+    border:0;
+    background:transparent;
+    font-size:2em;
+    padding:0.5em;
+    padding-right:1em;
+    cursor:pointer;
+    line-height:1em;
+}
+
+.site-header .stuff {
+    flex-direction: row;
+}
+@media (max-width:45em) {
+    .site-header button.menu {
+        display:block;
+    }
+    /*.site-header {
+        flex-direction:column;
+        height:6.5em;
+        padding-top:1em;
+        border-bottom-color:#dbdddf;
+        box-shadow: 0 0 0.7em rgba(0,5,10,0.15);
+    }
+    .site-header.headspace--hidden {
+        transform:translate3d(0, -6.5em, 0);
+    }
+    .site-logo {
+        margin-left:0;
+    }
+    body {
+        padding-top:6.5em;
+    }*/
 }

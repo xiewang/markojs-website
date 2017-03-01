@@ -2,11 +2,28 @@
     width:16em;
     margin-right:2em;
     position: absolute;
-    padding:2.5em;
+    padding:2.5rem;
     top:0; left:0; bottom:0;
     overflow:auto;
     transform:translateY(4.5em);
+    display:none;
+    z-index: 1;
+}
+
+body.docs .doc-sidebar {
     display:block;
+}
+
+.doc-sidebar button.close {
+    display:none;
+    position:fixed;
+    top:0; right:0;
+    padding:0.75em;
+    padding-right:1em;
+    font-size:2rem;
+    line-height: 1em;
+    border:0;
+    background:transparent;
 }
 
 .doc-sidebar h1 {
@@ -16,12 +33,6 @@
 .doc-sidebar h1 select {
     top:-0.2em;
     position: relative;
-}
-
-.doc-sidebar-spacer {
-    width:16em;
-    flex-basis: 16em;
-    flex-shrink: 0;
 }
 
 .doc-sidebar.fixed {
@@ -109,7 +120,29 @@
 
 @media (max-width:45em) {
     .doc-sidebar,
-    .doc-sidebar-spacer {
-        display: none;
+    body.docs .doc-sidebar {
+        font-size:1.1em;
+        display:block;
+        position: fixed;
+        bottom: 0;
+        transform: translateY(0);
+        pointer-events: none;
+        width:100%;
+        opacity:0;
+        transition: opacity 0.2s;
+        background:#fff;
+        z-index:10;
+    }
+    .doc-sidebar.show,
+    body.docs .doc-sidebar.show {
+        opacity:1;
+        pointer-events: auto;
+    }
+    .doc-sidebar button.close,
+    .doc-sidebar ul.toc ul {
+        display:block;
+    }
+    .doc-sidebar ul a {
+        padding:0.25em;
     }
 }
