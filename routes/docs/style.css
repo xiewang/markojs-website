@@ -46,6 +46,20 @@
 }
 
 
+.doc-content .doc-footer {
+    border:1px solid #dbdddf;
+}
+
+@media (max-width:45em) {
+  .doc-content .doc-footer {
+      border:0;
+      border-top:1px solid #dbdddf;
+      margin: -2em;
+      margin-top:0;
+      width:auto;
+  }
+}
+
 table.markdown-table {
     border-collapse: separate;
     border-spacing: 0;
