@@ -168,3 +168,17 @@ header, footer, section, div, nav {
     justify-content: flex-start;
     align-items: stretch;
 }
+
+/* Tiny Screens */
+@media only screen and (max-width: 670px) {
+    .gitter-open-chat-button {
+        position: static;
+        float: right;
+    }
+}
+
+@media print {
+    .gitter-open-chat-button {
+        display: none;
+    }
+}
