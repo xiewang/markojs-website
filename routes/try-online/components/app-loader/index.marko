@@ -6,50 +6,92 @@ static {
     }
 }
 class {
+    onCreate() {
+        this.state = {
+            loading: false
+        }
+    }
+
     onMount() {
         var targetEl = this.el;
         var input = this.input;
         var app;
 
-        function loadCodeMirror(callback) {
-            require('lasso-loader').load({
-                js: [
-                    "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.24.2/codemirror.min.js"
-                ]
-            }, callback);
+        var isLargeEnough = () => {
+            var windowSize = document.body.clientWidth;
+            return windowSize > 1000;
         }
 
-        function loadSimpleScrollbars(callback) {
-            require('lasso-loader').load({
-                js: [
-                    "https://codemirror.net/addon/scroll/simplescrollbars.js"
-                ]
-            }, callback);
-        }
+        var doLoad = () => {
+            if (this.state.loading) {
+                return;
+            }
 
-        function loadAndRenderApp(callback) {
-            require('lasso-loader').async(function(err) {
-                    if (err) {
-                        return callback(err);
-                    }
+            this.state.loading = true;
 
-                    app = require('../app');
-                    callback();
+            function loadCodeMirror(callback) {
+                require('lasso-loader').load({
+                    js: [
+                        "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.24.2/codemirror.min.js"
+                    ]
+                }, callback);
+            }
+
+            function loadSimpleScrollbars(callback) {
+                require('lasso-loader').load({
+                    js: [
+                        "https://codemirror.net/addon/scroll/simplescrollbars.js"
+                    ]
+                }, callback);
+            }
+
+            function loadAndRenderApp(callback) {
+                require('lasso-loader').async(function(err) {
+                        if (err) {
+                            return callback(err);
+                        }
+
+                        app = require('../app');
+                        callback();
+                    });
+            }
+
+            series([
+                    loadCodeMirror,
+                    loadSimpleScrollbars,
+                    loadAndRenderApp
+                ],
+                function(err) {
+                    app.renderSync(input)
+                        .replace(targetEl)
                 });
         }
 
-        series([
-                loadCodeMirror,
-                loadSimpleScrollbars,
-                loadAndRenderApp
-            ],
-            function(err) {
-                app.renderSync(input)
-                    .replace(targetEl)
-            })
+        if (isLargeEnough()) {
+            doLoad();
+        } else {
+            this.subscribeTo(window)
+                .on('resize', () => {
+                    if (isLargeEnough()) {
+                        this.subscribeTo(window)
+                            .removeAllListeners();
+
+                        doLoad();
+                    }
+                });
+        }
     }
 }
 
-<div>
-    <spinner/>
+<div.app-loader>
+    <spinner if(state.loading)/>
+    <else>
+        <div.too-small>
+            <div.overlay>
+                <h1>Screen width too small</h1>
+                <h2>Please increase the window size or rotate to load.</h2>
+                <h3>If you are on a mobile phone, please open on a desktop</h3>
+            </div>
+        </div>
+    </else>
 </div>
