@@ -169,6 +169,13 @@ header, footer, section, div, nav {
     align-items: stretch;
 }
 
+header.solid-color {
+  padding: 3rem 2rem 4rem;
+}
+header.solid-color h1 {
+  margin-bottom: 0.5rem;
+}
+
 /* Tiny Screens */
 @media only screen and (max-width: 670px) {
     .gitter-open-chat-button {
