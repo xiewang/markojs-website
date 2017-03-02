@@ -18,11 +18,11 @@ $ max = input.max ? Math.pow((Math.sqrt(input.max)+Math.sqrt(max)*4)/5, 2) : max
                     ${result.value.toLocaleString('en', { maximumFractionDigits:result.value > 100 ? 0 : 1 })}
                     <span.unit>${result.unit}</span>
                 </div>
-                <img.logo src=result.logo/>
+                <lasso-img.logo src=result.logo width="auto" height="auto"/>
             </div>
         </for>
     </div>
-    <img.environment src=input.environment.logo/>
+    <lasso-img.environment src=input.environment.logo width="auto" height="auto"/>
     <span.name>${input.environment.name}</span>
     <span.type>(${input.environment.type})</span>
 </div>

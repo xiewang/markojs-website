@@ -1,27 +1,27 @@
 const libraries = {
     inferno: {
         name:'Inferno',
-        logo:'https://avatars2.githubusercontent.com/u/14214240?v=3&s=400',
+        logo:require.resolve('./logos/inferno.png'),
         color:'#e60022'
     },
     marko: {
         name:'Marko',
-        logo:'http://markojs.com/images/logo-header.png',
+        logo:require.resolve('./logos/marko.png'),
         color:'#d04'
     },
     preact: {
         name:'Preact',
-        logo:'http://seeklogo.com/images/P/preact-logo-64E4BF9ABC-seeklogo.com.png',
+        logo:require.resolve('./logos/preact.png'),
         color: '#673ab8'
     },
     react: {
         name:'React',
-        logo:'http://builtwithreact.io/img/share-logo.jpg',
+        logo:require.resolve('./logos/react.jpg'),
         color:'#61dafb'
     },
     vue: {
         name:'Vue',
-        logo:'https://vuejs.org/images/logo.png',
+        logo:require.resolve('./logos/vue.png'),
         color:'#4fc08d'
     }
 };
@@ -29,32 +29,32 @@ const libraries = {
 
 const environments = {
     node: {
-        logo: 'https://ih1.redbubble.net/image.109336634.1604/flat,550x550,075,f.u1.jpg',
+        logo: require.resolve('./logos/node.jpg'),
         name: 'Node.js',
         type: 'server'
     },
     desktop: {
-        logo: 'http://i.imgur.com/Y7EQBOG.png',
+        logo: require.resolve('./logos/desktop.png'),
         name: 'Desktop Browsers',
         type: 'average'
     },
     mobile: {
-        logo: 'http://i.imgur.com/L65ZzmB.png',
+        logo: require.resolve('./logos/mobile.png'),
         name: 'Mobile Browsers',
         type: 'average'
     },
     firefox: {
-        logo: 'https://www.mozilla.org/media/img/styleguide/identity/firefox/guidelines-logo.7ea045a4e288.png',
+        logo: require.resolve('./logos/firefox.png'),
         name: 'Firefox',
         type: 'desktop'
     },
     safari: {
-        logo: 'https://nau.edu/uploadedImages/Administrative/ITS/CTSS/PC_Support_-_NEW/Web_Browsers/Safari/Logo.png',
+        logo: require.resolve('./logos/safari.png'),
         name: 'Safari',
         type: 'desktop'
     },
     chrome: {
-        logo: 'http://img.talkandroid.com/uploads/2015/11/Chrome-Logo.png',
+        logo: require.resolve('./logos/chrome.png'),
         name: 'Chrome',
         type: 'desktop'
     },
@@ -62,12 +62,12 @@ const environments = {
 
     },
     ios: {
-        logo: 'http://i.imgur.com/72qUODI.png',
+        logo: require.resolve('./logos/safari-ios.png'),
         name: 'iOS Safari',
         type: 'mobile'
     },
     android: {
-        logo: 'http://i.imgur.com/ZNe84Lr.png',
+        logo: require.resolve('./logos/chrome-android.png'),
         name: 'Chrome for Android',
         type: 'mobile'
     }

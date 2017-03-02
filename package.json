@@ -13,6 +13,7 @@
     "language-html": "github:atom/language-html",
     "language-javascript": "github:atom/language-javascript",
     "language-marko": "github:marko-js/atom-language-marko",
+    "lasso":"^2.11.0",
     "lasso-babili": "^1.0.0",
     "lasso-cson": "^1.0.0",
     "lasso-less": "^2.4.3",

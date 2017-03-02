@@ -1,30 +1,16 @@
 const fs = require('fs');
+const path = require('path');
 const exec = require('child_process').execSync;
-const gitUrl = 'git@github.com:marko-js/markojs-website.git';
-const gitBranch = 'gh-pages';
-const repoName = 'markojs-website';
-const urlPrefix = '/'+repoName+'/';
+const gitUrl = 'git@github.com:marko-js/marko-js.github.io.git';
+const gitBranch = 'master';
 const buildDir = __dirname + '/dist';
 const publishDir = buildDir + '/__publish';
+const domain = 'markojs.com';
 
 exec('markoc . --clean');
 exec('rm -rf .cache');
 
-require('./project').build({
-  staticUrlPrefix: urlPrefix
-}).then((buildResult) => {
-  // prefix all links with the urlPrefix
-  buildResult.clean().routes.forEach((route) => {
-    const file = buildDir + route.file;
-    let html = fs.readFileSync(file, 'utf-8');
-
-    html = html.replace(/src="\//g, `src="${urlPrefix}`);
-    html = html.replace(/href="\//g, `href="${urlPrefix}`);
-    html = html.replace(new RegExp('\\/'+repoName+'\\/'+repoName+'\\/', 'g'), urlPrefix);
-
-    fs.writeFileSync(file, html, 'utf-8');
-  });
-
+require('./project').build().then((buildResult) => {
   // create publish directory
   exec(`mkdir ${publishDir}`);
 
@@ -41,6 +27,9 @@ require('./project').build({
   // steal the .git directory
   exec(`mv ${publishDir+'/.git'} ${buildDir}`);
   exec(`rm -rf ${publishDir}`);
+
+  // create CNAME file
+  fs.writeFileSync(path.join(buildDir, 'CNAME'), domain, 'utf-8');
 
   // commit and push up the changes
   try {
