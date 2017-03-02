@@ -7,7 +7,12 @@ var TOC = require('./toc');
 exports.toTemplate = function renderMarkdown(filepath) {
     var markdown = fs.readFileSync(filepath, 'utf-8');
     markdown = markdown
-        .replace(/\</g, '&lt;')
+        .replace(/\<./g, (match) => {
+            if(match[1] !== '!') {
+                return '&lt;' + match[1];
+            }
+            return match;
+        })
         .replace(/\$/g, '&#36;')
         .replace(/https?:\/\/markojs\.com\//g, '/')
         .replace(/\.\/([\w\d-\/]+)\.md/g, (match) => {
