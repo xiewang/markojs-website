@@ -67,7 +67,8 @@ module.exports = {
             });
         });
 
-        this.subscribeTo(this.el.querySelector('a.selected')).on('click', (e) => {
+        var selectedLink = this.el.querySelector('a.selected');
+        selectedLink && this.subscribeTo(selectedLink).on('click', (e) => {
             window.scrollTo(0,0);
             header.reset();
             e.preventDefault();
@@ -88,6 +89,13 @@ module.exports = {
                 this.el.classList.add('no-header');
                 this.el.classList.add('fixed');
                 setTimeout(() => this.el.classList.add('transition'), 0);
+            })
+            .on('toggle-menu', () => {
+                if (this.el.classList.contains('show')) {
+                    this.el.classList.remove('show');
+                } else {
+                    this.el.classList.add('show');
+                }
             });
 
         if (window.pageYOffset > header.el.offsetHeight) {
@@ -146,5 +154,9 @@ module.exports = {
         if (!targetIsFullyVisible) {
             sidebar.scrollTop = targetTop + targetHeight/2 - sidebarHeight/2;
         }
+    },
+
+    hide() {
+        this.el.classList.remove('show');
     }
 }

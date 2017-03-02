@@ -2,7 +2,7 @@
     flex-direction:row;
     align-items: center;
 }
-.site-menu a {
+.site-menu > a {
     display:flex;
     justify-content:center;
     align-items:center;
@@ -11,6 +11,12 @@
     text-decoration: none;
     color:#595959;
 }
-.site-menu a:hover {
+.site-menu > a:hover {
     text-decoration: underline;
+}
+
+@media (max-width:45em) {
+    .site-menu > .search {
+        display:none;
+    }
 }

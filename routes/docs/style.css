@@ -1,9 +1,16 @@
 .doc-content {
     display:block;
     width:100%;
-    max-width:45em;
+    max-width:60em;
+    padding-left:16em;
     text-align:left;
     position: relative;
+}
+
+@media (max-width:45em) {
+    .doc-content {
+        padding-left:0;
+    }
 }
 
 .doc-content > * {
@@ -38,6 +45,20 @@
     width:100%;
 }
 
+
+.doc-content .doc-footer {
+    border:1px solid #dbdddf;
+}
+
+@media (max-width:45em) {
+  .doc-content .doc-footer {
+      border:0;
+      border-top:1px solid #dbdddf;
+      margin: -2em;
+      margin-top:0;
+      width:auto;
+  }
+}
 
 table.markdown-table {
     border-collapse: separate;

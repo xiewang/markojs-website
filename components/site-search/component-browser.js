@@ -11,5 +11,11 @@ module.exports = {
     },
     shrink() {
         this.el.classList.remove('large');
+    },
+    search(e) {
+        var value = this.getEl('input').value;
+        value = encodeURIComponent(value.replace(/\s+/g, ' ')).replace(/\%20/g, '+');
+        window.location.href = 'https://google.com/search?q='+value+'+site:markojs.com';
+        e.preventDefault();
     }
 }
