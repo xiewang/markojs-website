@@ -52,7 +52,15 @@ class {
     renderToFrame() {
         var outputMode = this.input.outputMode || 'preview';
         var file = this.input.file;
-        var templateModule = vmodules.loadFile(file.path);
+        var templateModule;
+        var loadError;
+
+        try {
+            templateModule = vmodules.loadFile(file.path);
+        } catch(err) {
+            loadError = err;
+        }
+
         this.state.error = this.error = undefined;
 
         var showError = (error) => {
@@ -62,7 +70,7 @@ class {
 
         if (outputMode === 'preview') {
             this.iframeLoaded.then(() => {
-                if (templateModule.error) {
+                if (loadError) {
                     this.state.error = undefined;
                     this.iframe.contentDocument.body.innerHTML = 'Template failed to load';
                     return;
@@ -92,7 +100,7 @@ class {
         } else if (outputMode === 'compiled') {
             let code;
 
-            if (templateModule.error) {
+            if (loadError) {
                 code = '// Unable to load template';
             } else {
                 code = templateModule.source;
@@ -103,7 +111,7 @@ class {
         } else if (outputMode === 'html') {
             let code;
 
-            if (templateModule.error) {
+            if (loadError) {
                 code = '<!-- Unable to load template -->';
                 this.getComponent('editorHTML').setCode(code);
                 return;
@@ -133,8 +141,11 @@ class {
         var newStyleCode = '';
         var file = this.input.file;
 
-        var templateModule = vmodules.loadFile(file.path);
-        if (templateModule.error) {
+        var templateModule;
+
+        try {
+            templateModule = vmodules.loadFile(file.path);
+        } catch(err) {
             return;
         }
 

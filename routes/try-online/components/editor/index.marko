@@ -76,8 +76,14 @@ class {
         showError = debounce(showError, 500);
 
         let loadModule = () => {
-            let module = vmodules.loadFile(this.input.file.path);
-            error = module.error;
+            let module;
+
+            try {
+                module = vmodules.loadFile(this.input.file.path);
+            } catch(err) {
+                error = err;
+            }
+
             if (error) {
                 // We should delay showing errors until there is a pause
                 // in typing
