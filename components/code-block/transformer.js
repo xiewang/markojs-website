@@ -73,7 +73,7 @@ module.exports = function(el, context) {
     var prevIsParagraph = prev && prev.tagName === 'p';
     var innerNode = getSingleInnerNode(prev);
     var innerIsLiteralText = innerNode && innerNode.type === 'Text' && innerNode.argument.type === 'Literal';
-    var innerIsFileName = innerIsLiteralText && /^[\w-]+\.[\w-]+$/.test(innerNode.argument.value);
+    var innerIsFileName = innerIsLiteralText && /^[\S]+$/.test(innerNode.argument.value);
 
     if (innerIsFileName) {
         var fileNameDiv = context.createNodeForEl('div');
