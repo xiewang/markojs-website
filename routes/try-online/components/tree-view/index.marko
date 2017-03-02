@@ -1,5 +1,9 @@
 import app from '~/routes/try-online/app';
 
+static function isExpanded(file) {
+    return file.name === 'components';
+}
+
 class {
 }
 
@@ -7,7 +11,7 @@ class {
     <ul>
         <for(file in input.rootDir.sortedFiles)>
             <if(!app.isHiddenFile(file))>
-                <tree-view-item file=file/>
+                <tree-view-item file=file expanded=isExpanded(file)/>
             </if>
         </for>
     </ul>
