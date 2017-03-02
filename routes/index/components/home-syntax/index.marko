@@ -1,17 +1,43 @@
 <header.home-syntax style={ background:input.background }>
-    <h1.title>Reactive UI components</h1>
-    <p.description>Change the data backing a view and Marko will automatically and efficiently update the resulting HTML</p>
-    <div.code-example-container>
-        <code-block('../counter-example') no-switch/>
-        <div.running-example>
-            <include('../counter-example')/>
+    <h1.title>Choose a syntax</h1>
+    <p.description>Write in a familiar HTML-like style or drop the angle brackets and use Marko's concise syntax</p>
+    <div.syntaxes>
+        <code-block lang="marko" no-switch>
+            <!doctype html>
+            <html>
+            <head>
+                <title>Hello Marko</title>
+            </head>
+            <body>
+                <h1>My favorite colors</h1>
+                <ul.colors>
+                    <li for(color in input.colors)>
+                        ${color}
+                    </li>
+                </ul>
+            </body>
+            </html>
+        </code-block>
+        <div.either>
+            <span>&#8644;</span>
         </div>
+        <code-block lang="marko" no-switch>
+            <!doctype html>
+            html
+                head
+                    title -- Hello Marko
+                body
+                    h1 -- My favorite colors</h1>
+                    ul.colors
+                        li for(color in input.colors)
+                            -- ${color}
+        </code-block>
     </div>
 </header>
 
 style {
     .home-syntax {
-        background-color:#d04;
+        background-color:#7d0;
         width:100%;
         padding:2em;
         justify-content:center;
@@ -26,9 +52,37 @@ style {
         border:0;
     }
 
+    .home-syntax .syntaxes {
+        flex-direction:row;
+    }
+
+    .home-syntax .syntaxes pre {
+        margin:0 1em;
+        padding:2em;
+    }
+    .home-syntax .syntaxes .either {
+        justify-content:center;
+        align-items:center;
+    }
+    .home-syntax .syntaxes .either span {
+        font-size: 5em;
+        margin-left: -0.5em;
+        color: #fff;
+        margin-right: -0.5em;
+        position: relative;
+        z-index: 1;
+        background-color: #4a0;
+        border: 0.1em solid #7d0;
+        line-height: 1em;
+        width: 1.2em;
+        height: 1.2em;
+        text-align: center;
+        border-radius: 50%;
+    }
+
     .home-syntax p.description {
-        color:rgba(255,255,255,0.9);
-        margin:1em 0;
+        font-size:1.2em;
+        margin-bottom:1em;
     }
 
     .code-example-container {
