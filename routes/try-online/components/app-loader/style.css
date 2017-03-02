@@ -46,4 +46,9 @@
     text-align: center;
     color: white;
     display: block;
+    margin-bottom: 1em;
+}
+
+.too-small .overlay h4 {
+    text-align: center;
 }
