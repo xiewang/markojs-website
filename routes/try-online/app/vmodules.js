@@ -71,6 +71,10 @@ let extensions = {
                     meta: true
                 });
         } catch(err) {
+            if (err.errors) {
+                err.templateFile = filePath;
+                err.templateErrors = err.errors;
+            }
             return {
                 error: err,
                 exports: {}

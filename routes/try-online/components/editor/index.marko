@@ -81,6 +81,7 @@ class {
 
             try {
                 module = vmodules.loadFile(this.input.file.path);
+                error = undefined;
             } catch(err) {
                 error = err;
             }
@@ -165,6 +166,6 @@ $ let file = input.file;
         key='textarea'
         >${file.text}</textarea> -->
     <div.errors-container if(state.error)>
-        <editor-errors error=state.error on-errorSelected('jumpToError')/>
+        <editor-errors file=file error=state.error on-errorSelected('jumpToError')/>
     </div>
 </div>

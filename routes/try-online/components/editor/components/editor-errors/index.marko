@@ -3,13 +3,23 @@ class {
         this.emit('errorSelected', error);
         event.preventDefault();
     }
+
+    getTemplateErrors() {
+        var error = this.input.error;
+        var file = this.input.file;
+        if (error.templateFile !== file.path) {
+            return;
+        }
+
+        return error.templateErrors;
+    }
 }
 
-$ var errors = input.error.errors;
+$ var templateErrors = component.getTemplateErrors();
 
 <div.editor-errors>
-    <ul if(errors)>
-        <li for(error in errors)>
+    <ul if(templateErrors)>
+        <li for(error in templateErrors)>
             <span.message>${error.message}</span>
             <if(error.pos)>
                 <a.loc href="#line" on-click('handleErrorClick', error)>
