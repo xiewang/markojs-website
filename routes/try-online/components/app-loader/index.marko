@@ -19,21 +19,28 @@ class {
             }, callback);
         }
 
+        function loadSimpleScrollbars(callback) {
+            require('lasso-loader').load({
+                js: [
+                    "https://codemirror.net/addon/scroll/simplescrollbars.js"
+                ]
+            }, callback);
+        }
+
         function loadAndRenderApp(callback) {
             require('lasso-loader').async(function(err) {
                     if (err) {
                         return callback(err);
-
                     }
 
                     app = require('../app');
-
                     callback();
                 });
         }
 
         series([
                 loadCodeMirror,
+                loadSimpleScrollbars,
                 loadAndRenderApp
             ],
             function(err) {

@@ -51,6 +51,73 @@ div.editor .CodeMirror-linenumber {
     font-size: 0.7em;
 }
 
+div.editor .CodeMirror-simplescroll-horizontal div, .CodeMirror-simplescroll-vertical div {
+    position: absolute;
+    background: #353B45;
+    border-radius: 10px;
+}
+
+div.editor .CodeMirror-simplescroll-horizontal, .CodeMirror-simplescroll-vertical {
+    position: absolute;
+    z-index: 6;
+    background: #282c34;
+}
+
+div.editor .CodeMirror-simplescroll-horizontal {
+    bottom: 0; left: 0;
+    height: 6px;
+}
+
+div.editor .CodeMirror-simplescroll-horizontal div {
+    bottom: 0;
+    height: 100%;
+}
+
+div.editor .CodeMirror-simplescroll-vertical {
+    right: 0; top: 0;
+    width: 6px;
+}
+
+div.editor .CodeMirror-simplescroll-vertical div {
+    right: 0;
+    width: 100%;
+}
+
+div.editor .CodeMirror-overlayscroll .CodeMirror-scrollbar-filler, .CodeMirror-overlayscroll .CodeMirror-gutter-filler {
+    display: none;
+}
+
+div.editor .CodeMirror-overlayscroll-horizontal div, .CodeMirror-overlayscroll-vertical div {
+    position: absolute;
+    background: #bcd;
+    border-radius: 3px;
+}
+
+div.editor .CodeMirror-overlayscroll-horizontal, .CodeMirror-overlayscroll-vertical {
+    position: absolute;
+    z-index: 6;
+}
+
+div.editor .CodeMirror-overlayscroll-horizontal {
+    bottom: 0; left: 0;
+    height: 6px;
+}
+
+div.editor .CodeMirror-overlayscroll-horizontal div {
+    bottom: 0;
+    height: 100%;
+}
+
+div.editor .CodeMirror-overlayscroll-vertical {
+    right: 0; top: 0;
+    width: 6px;
+}
+
+div.editor .CodeMirror-overlayscroll-vertical div {
+    right: 0;
+    width: 100%;
+}
+
 /*.app-codemirror {
     border: 1px solid #eee;
 }

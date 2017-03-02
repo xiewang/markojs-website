@@ -40,19 +40,22 @@ class {
 
         var outputIcon
         if (file.output) {
-            var outputMode = this.state.outputMode;
-
-            if (outputMode === 'preview') {
-                tabTitle += ' (Preview)';
-            } else if (outputMode === 'html') {
-                tabTitle += ' (Output HTML)';
-            } else if (outputMode === 'compiled') {
-                tabTitle += ' (Compiled)';
-            }
 
         }
 
         return tabTitle;
+    }
+
+    getOutputModeLabel() {
+        var outputMode = this.state.outputMode;
+
+        if (outputMode === 'preview') {
+            return '(Preview)';
+        } else if (outputMode === 'html') {
+            return '(Output HTML)';
+        } else if (outputMode === 'compiled') {
+            return '(Compiled)';
+        }
     }
 
     toggleMenu(event) {
@@ -76,14 +79,16 @@ $ var focused = input.focused;
 $ var active = input.active;
 $ var file = input.file;
 
-$ var tabTitle = component.getTabTitle();
-
 <li.tab class=[focused && 'focused', active && 'active']
     on-click('handleTabClick')>
 
     <span.tab-label>
-        ${tabTitle}
+        ${component.getTabTitle()}
+        <span.output-mode if(file.output)>
+            ${component.getOutputModeLabel()}
+        </span>
     </span>
+    
     <span.configure on-click('toggleMenu') if(file.output)>
         <span.icon/>
     </span>

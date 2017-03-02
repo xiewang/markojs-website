@@ -1,8 +1,8 @@
 .pane .tab .configure .icon {
     display: inline-block;
     background-image: url('./configure.svg');
-    width: 24px;
-    height: 24px;
+    width: 20px;
+    height: 20px;
     background-repeat: no-repeat;
     line-height: 2em;
     vertical-align: middle;
@@ -47,11 +47,15 @@
 }
 
 .pane .tab-label {
-    margin-left: 1em;
-    margin-right: 1em;
-    font-size: 0.8em;
+    padding-left: 8px;
+    padding-right: 8px;
+    font-size: 0.75em;
 }
 
+.pane .output-mode {
+    padding-left: 4px;
+    font-size: 0.8em;
+}
 
 .pane .tab .menu {
     visibility: hidden;
