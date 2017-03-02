@@ -4,6 +4,7 @@ var prettyprint = require('marko-prettyprint');
 var resolveFrom = require('resolve-from');
 var redent = require('redent');
 const localStorageUtil = require('~/util/localstorage');
+const syntaxSwitchEnabled = false;
 
 var highlighter = new Highlights();
 
@@ -82,7 +83,7 @@ module.exports = function(el, context) {
         prev.replaceWith(fileNameDiv);
     }
 
-    if (!context.data.markoSyntaxScriptAdded) {
+    if (syntaxSwitchEnabled && !context.data.markoSyntaxScriptAdded) {
         const key = localStorageUtil.getMarkoWebsiteKey('syntax');
         el.insertSiblingBefore(builder.html(builder.literal(`<script>
             if(localStorage.getItem('${key}') === 'concise') {
@@ -110,7 +111,7 @@ module.exports = function(el, context) {
         return node;
     }
 
-    if(scopeName === 'text.marko' && !el.getAttribute('no-switch')) {
+    if(syntaxSwitchEnabled && scopeName === 'text.marko' && !el.getAttribute('no-switch')) {
         try {
             var next = el.container.getNextSibling(el);
             var nextIsCodeBlock = next && next.tagName === 'code-block';
