@@ -8,7 +8,9 @@ static {
 class {
     onCreate() {
         this.state = {
-            loading: false
+            loading: false,
+            error: undefined,
+            tooSmall: false
         }
     }
 
@@ -17,17 +19,19 @@ class {
         var input = this.input;
         var app;
 
-        var isLargeEnough = () => {
-            var windowSize = document.body.clientWidth;
+        function isLargeEnough() {
+            var windowSize = document.body.innerWidth || document.body.clientWidth;
             return windowSize > 1000;
         }
 
-        var doLoad = () => {
-            if (this.state.loading) {
+        var self = this;
+
+        function doLoad() {
+            if (self.state.loading) {
                 return;
             }
 
-            this.state.loading = true;
+            self.state.loading = true;
 
             function loadCodeMirror(callback) {
                 require('lasso-loader').load({
@@ -62,18 +66,28 @@ class {
                     loadAndRenderApp
                 ],
                 function(err) {
-                    app.renderSync(input)
-                        .replace(targetEl)
+                    if (err) {
+                        if (console) {
+                            console.log(err);
+                        }
+                        self.state.error = err;
+                    } else {
+                        app.renderSync(input)
+                            .replace(targetEl)
+                    }
+
                 });
         }
 
         if (isLargeEnough()) {
             doLoad();
         } else {
+            this.state.tooSmall = true;
+
             this.subscribeTo(window)
-                .on('resize', () => {
+                .on('resize', function() {
                     if (isLargeEnough()) {
-                        this.subscribeTo(window)
+                        self.subscribeTo(window)
                             .removeAllListeners();
 
                         doLoad();
@@ -84,8 +98,12 @@ class {
 }
 
 <div.app-loader>
-    <spinner if(state.loading)/>
-    <else>
+    <if(state.error)>
+        <div>
+            An error has occurred
+        </div>
+    </if>
+    <else if(state.tooSmall)>
         <div.too-small>
             <div.overlay>
                 <h1>Screen width too small</h1>
@@ -93,5 +111,8 @@ class {
                 <h3>If you are on a mobile phone, please open on a desktop</h3>
             </div>
         </div>
+    </else>
+    <else>
+        <spinner/>
     </else>
 </div>
