@@ -71,3 +71,7 @@ button {
 input[type=text] {
     border: 1px solid #c0c0c0;
 }
+
+.gitter-open-chat-button {
+    display:none;
+}
