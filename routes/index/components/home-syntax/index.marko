@@ -57,7 +57,6 @@ style {
     }
 
     .home-syntax .syntaxes pre {
-        margin:0 1em;
         padding:2em;
     }
     .home-syntax .syntaxes .either {
@@ -66,9 +65,9 @@ style {
     }
     .home-syntax .syntaxes .either span {
         font-size: 5em;
-        margin-left: -0.5em;
+        margin-left: -0.55em;
         color: #fff;
-        margin-right: -0.5em;
+        margin-right: -0.55em;
         position: relative;
         z-index: 1;
         background-color: #4a0;
@@ -78,6 +77,12 @@ style {
         height: 1.2em;
         text-align: center;
         border-radius: 50%;
+    }
+
+    @media (max-width:55em) {
+        .home-syntax .syntaxes {
+            font-size:1.9vw;
+        }
     }
 
     .home-syntax p.description {
