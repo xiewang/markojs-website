@@ -240,6 +240,9 @@ class TryOnlineApp extends EventEmitter {
         let isComponent = 'demo.marko' in index;
 
         let addOpenFile = (file) => {
+            if (this.isHiddenFile(file)) {
+                return;
+            }
             this.state.openFiles.push(file);
         };
 
@@ -310,6 +313,31 @@ class TryOnlineApp extends EventEmitter {
 
     get focusedDirectory() {
         return this.state.focusedDirectory;
+    }
+
+    isHiddenFile(file) {
+        if (file.isDirectory()) {
+            return false;
+        }
+
+        if (file.name === 'package.json') {
+            return true;
+        }
+
+        if (file.name.endsWith('.marko.js')) {
+            return true;
+        }
+
+        if (file.name.charAt(0) === '.') {
+            return true;
+        }
+
+        var ext = path.extname(file.name);
+
+        return !(ext === '.css' ||
+            ext === '.js' ||
+            ext === '.marko' ||
+            ext === '.json');
     }
 }
 

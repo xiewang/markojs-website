@@ -59,12 +59,10 @@ function resolveMain(dir) {
         return undefined;
     }
 
-    return resolvedMain.path;
+    return resolvedMain;
 }
 
 function safeStatSync(filePath) {
-    var stat;
-
     try {
         return fs.statSync(filePath);
     } catch(e) {

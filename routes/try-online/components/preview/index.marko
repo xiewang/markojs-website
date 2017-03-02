@@ -40,6 +40,12 @@ class {
             this.getEl('iframeContainer').appendChild(iframe);
         });
 
+        var showError = () => {
+            this.state.error = this.error;
+        }
+
+        this.showError = debounce(showError, 500);
+
         this.renderToFrame();
     }
 
@@ -47,7 +53,12 @@ class {
         var outputMode = this.input.outputMode || 'preview';
         var file = this.input.file;
         var templateModule = vmodules.loadFile(file.path);
-        this.state.error = undefined;
+        this.state.error = this.error = undefined;
+
+        var showError = (error) => {
+            this.error = error;
+            this.showError();
+        };
 
         if (outputMode === 'preview') {
             this.iframeLoaded.then(() => {
@@ -65,10 +76,7 @@ class {
 
                 this.state.error = undefined;
 
-                Promise.resolve()
-                    .then(() => {
-                        return template.render();
-                    })
+                return template.render()
                     .then((renderResult) => {
                         if (this.currentRender === currentRender) {
                             renderResult.replaceChildrenOf(this.iframe.contentDocument.body);
@@ -77,7 +85,7 @@ class {
                     .catch((err) => {
                         if (this.currentRender === currentRender) {
                             this.iframe.contentDocument.body.innerHTML = '';
-                            this.state.error = err;
+                            showError(err);
                         }
                     });
             });
@@ -102,14 +110,9 @@ class {
             }
 
             var currentRender = this.currentRender = {};
+            let template = templateModule.exports;
 
-            this.state.error = undefined;
-
-            Promise.resolve()
-                .then(() => {
-                    let template = templateModule.exports;
-                    return template.render();
-                })
+            template.render()
                 .then((renderResult) => {
                     if (this.currentRender === currentRender) {
                         let html = getHtmlCodeFromOutput(renderResult.getOutput());
@@ -118,8 +121,8 @@ class {
                 })
                 .catch((err) => {
                     if (this.currentRender === currentRender) {
-                        this.iframe.contentDocument.body.innerHTML = '';
-                        this.state.error = err;
+                        this.error;
+                        showError(err);
                     }
                 });
         }
