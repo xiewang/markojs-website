@@ -6,6 +6,16 @@ class {
         app.focusProject(projectName);
     }
 }
+
+style {
+    .project-nav select {
+        border: 1px solid #202428;
+        background: #44484c;
+        color: #d4d8dc;
+        margin: 0.25em;
+    }
+}
+
 <div.project-nav>
     <select on-change('handleProjectChange') key="projectSelect">
         <for(project in input.projects)>
