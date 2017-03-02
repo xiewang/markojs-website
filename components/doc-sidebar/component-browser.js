@@ -160,5 +160,6 @@ module.exports = {
 
     hide() {
         this.el.classList.remove('show');
+        document.body.style.overflow = '';
     }
 }
