@@ -94,23 +94,25 @@ class {
                 app.saveFile(file.path, source);
             });
 
-            app.on('file:modified', () => {
-                loadModule();
-            });
+            this.subscribeTo(app)
+                .on('file:modified', () => {
+                    loadModule();
+                });
 
             loadModule();
         }
 
-        app.on('focus:change', (focusedFile) => {
-            if (focusedFile === file.path) {
-                this.codeMirror.focus();
-                this.codeMirror.refresh();
+        this.subscribeTo(app)
+            .on('focus:change', (focusedFile) => {
+                if (focusedFile === file.path) {
+                    this.codeMirror.focus();
+                    this.codeMirror.refresh();
 
-                if (!readOnly) {
-                    loadModule();
+                    if (!readOnly) {
+                        loadModule();
+                    }
                 }
-            }
-        });
+            });
     }
 
     focus() {

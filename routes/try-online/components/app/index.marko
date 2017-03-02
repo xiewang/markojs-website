@@ -34,15 +34,16 @@ class {
             });
         }
 
-        app.on('focus:change', (filePath) => {
-            this.state.activeTabFile = filePath;
+        this.subscribeTo(app)
+            .on('focus:change', (filePath) => {
+                this.state.activeTabFile = filePath;
 
-            if (focusedFile !== filePath) {
-                focusedFile = filePath;
-                history.pushState({ file: filePath }, '', getUrlForFocusedFile());
-                localStorageUtil.set('focusedFile', focusedFile);
-            }
-        });
+                if (focusedFile !== filePath) {
+                    focusedFile = filePath;
+                    history.pushState({ file: filePath }, '', getUrlForFocusedFile());
+                    localStorageUtil.set('focusedFile', focusedFile);
+                }
+            });
 
         this.subscribeTo(window)
             .on('popstate', (event) => {

@@ -1,9 +1,8 @@
-static function isNegative(val) {
+static function isNegative(value) {
     // Static helper functions do not have
     // access to non-static variables such as "value" and "person"
-    return val < 0 ? 'Yes' : 'No'
+    return value < 0 ? 'Yes' : 'No'
 }
-
 
 $ var value = 123;
 $ var person = {
@@ -13,10 +12,12 @@ $ var person = {
 
 $ function getNameFormatted() {
     // Non-static functions have access to non-static and static variables
-    return person.firstName + ' ' + person.lastName.substring(1) + '.';
+    return person.firstName + ' ' + person.lastName.charAt(0) + '.';
 }
 
 <div>
     Hello ${getNameFormatted()}
-    Is negative? ${isNegative(val)}
+    <span>
+        Is negative? ${isNegative(value)}
+    </span>
 </div>
