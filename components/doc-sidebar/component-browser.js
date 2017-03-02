@@ -15,7 +15,7 @@ module.exports = {
         var headers = slice.call(document.querySelectorAll(headersSelector));
         var waiting = false;
 
-        this.subscribeTo(window).on('scroll', () => {
+        headers.length && this.subscribeTo(window).on('scroll', () => {
             if (!waiting) {
                 waiting = true;
                 setTimeout(() => {

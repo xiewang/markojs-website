@@ -3,6 +3,7 @@
     margin-right:2em;
     position: absolute;
     padding:2.5rem;
+    padding-bottom:6rem;
     top:0; left:0; bottom:0;
     overflow:auto;
     transform:translateY(4.5em);
@@ -38,6 +39,7 @@ body.docs .doc-sidebar {
 .doc-sidebar.fixed {
     position:fixed;
     bottom:4.5em;
+    padding-bottom:2.5rem;
 }
 
 .doc-sidebar.no-header {
@@ -120,12 +122,14 @@ body.docs .doc-sidebar {
 
 @media (max-width:45em) {
     .doc-sidebar,
+    .doc-sidebar.no-header,
+    .doc-sidebar.fixed,
     body.docs .doc-sidebar {
         font-size:1.1em;
         display:block;
         position: fixed;
         bottom: 0;
-        transform: translateY(0);
+        transform: none;
         pointer-events: none;
         width:100%;
         opacity:0;
