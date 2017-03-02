@@ -2,6 +2,7 @@ var fs = require('fs');
 var Highlights = require('highlights');
 var prettyprint = require('marko-prettyprint');
 var resolveFrom = require('resolve-from');
+var redent = require('redent');
 const localStorageUtil = require('~/util/localstorage');
 
 var highlighter = new Highlights();
@@ -47,7 +48,7 @@ module.exports = function(el, context) {
         scopeName = 'text.marko';
     }
 
-    code = code.replace(/&lt;/g, '<').replace(/&#36;/g, '$');
+    code = redent(code.replace(/&lt;/g, '<').replace(/&#36;/g, '$')).trim();
     html = highlighter.highlightSync({
         fileContents: code,
         scopeName: scopeName
