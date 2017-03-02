@@ -8,8 +8,7 @@ var nextId = 0;
  * exports for the "src/app/todo.js" module. The TodoApp instances
  * expose methods can be used to modify the internal application state.
  * When the internal state is changed, a "change" event is emitted
- * along with the new state. When the top-level UI component receives the
- * new state it will rerender.
+ * and the top-level UI component will rerender based on the new app state.
  */
 
 class TodoApp extends EventEmitter {

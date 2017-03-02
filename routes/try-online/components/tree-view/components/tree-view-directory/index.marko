@@ -1,10 +1,6 @@
 import app from '~/routes/try-online/app';
 import localStorageUtil from '~/util/localstorage';
 
-static function isHiddenFile(file) {
-    return file.name === 'package.json';
-}
-
 class {
     onCreate(input) {
         var focusedFile = app.focusedFile;
@@ -19,6 +15,10 @@ class {
             } else if (focusedFile.startsWith(input.dir.path + '/')) {
                 expanded = true;
             }
+        }
+
+        if (input.expanded) {
+            expanded = true;
         }
 
         this.state = {
@@ -89,7 +89,7 @@ $ var dir = input.dir;
     <if(dir.files)>
         <ul>
             <for(file in dir.sortedFiles)>
-                <if(!isHiddenFile(file))>
+                <if(!app.isHiddenFile(file))>
                     <tree-view-item file=file key=file.path/>
                 </if>
             </for>

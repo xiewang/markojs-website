@@ -129,7 +129,7 @@ function loadFile(filePath) {
             if (cache[filePath] === loadedModule) {
                 delete cache[filePath];
             }
-        }, 100);
+        }, 10);
     }
 
     return loadedModule;

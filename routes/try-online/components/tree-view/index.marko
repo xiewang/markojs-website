@@ -1,6 +1,7 @@
+import app from '~/routes/try-online/app';
 
-static function isHiddenFile(file) {
-    return file.name === 'package.json';
+static function isExpanded(file) {
+    return file.name === 'components';
 }
 
 class {
@@ -9,8 +10,8 @@ class {
 <div.tree-view>
     <ul>
         <for(file in input.rootDir.sortedFiles)>
-            <if(!isHiddenFile(file))>
-                <tree-view-item file=file/>
+            <if(!app.isHiddenFile(file))>
+                <tree-view-item file=file expanded=isExpanded(file)/>
             </if>
         </for>
     </ul>

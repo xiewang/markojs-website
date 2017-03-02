@@ -11,9 +11,11 @@ $ var errors = input.error.errors;
     <ul if(errors)>
         <li for(error in errors)>
             <span.message>${error.message}</span>
-            <a.loc href="#line" on-click('handleErrorClick', error)>
-                at line ${error.pos.line} col ${error.pos.column}
-            </a>
+            <if(error.pos)>
+                <a.loc href="#line" on-click('handleErrorClick', error)>
+                    at line ${error.pos.line} col ${error.pos.column}
+                </a>
+            </if>
         </li>
     </ul>
     <div else>
