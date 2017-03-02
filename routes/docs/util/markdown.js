@@ -19,6 +19,7 @@ exports.toTemplate = function renderMarkdown(filepath) {
     var markedRenderer = new marked.Renderer();
     var toc = TOC.create();
     var anchorCache = {};
+    var title;
 
     markedRenderer.table = function(header, body) {
         var output = '<table class="markdown-table">';
@@ -36,6 +37,8 @@ exports.toTemplate = function renderMarkdown(filepath) {
     markedRenderer.heading = function(text, level) {
         var anchorName = getAnchorName(text, anchorCache);
         var linkText = text.replace(/\([^\)]+\)/g, '()').replace(/\<\/?code\>/g, '').replace(/&amp;lt;/g, '&lt;');
+
+        title = title || linkText;
 
         toc.addHeading(linkText, anchorName, level);
 
@@ -72,6 +75,7 @@ exports.toTemplate = function renderMarkdown(filepath) {
     }
 
     template.toc = toc.toHTML();
+    template.title = title;
 
     return template;
 };
