@@ -8,7 +8,7 @@
     overflow:auto;
     transform:translateY(4.5em);
     display:none;
-    z-index: 200;
+    z-index: 50;
     background-color: #fff;
 }
 
@@ -148,7 +148,7 @@ body.docs .doc-sidebar {
     .doc-sidebar button.close,
     .doc-sidebar ul.toc ul {
         display:block;
-        z-index: 350;
+        z-index: 60;
     }
     .doc-sidebar ul a {
         padding:0.25em;
