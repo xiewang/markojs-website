@@ -93,8 +93,10 @@ module.exports = {
             .on('toggle-menu', () => {
                 if (this.el.classList.contains('show')) {
                     this.el.classList.remove('show');
+                    document.body.style.overflow = '';
                 } else {
                     this.el.classList.add('show');
+                    document.body.style.overflow = 'hidden';
                 }
             });
 
