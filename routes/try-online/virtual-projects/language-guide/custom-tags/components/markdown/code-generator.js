@@ -1,4 +1,4 @@
-var snarkdown = require('snarkdown');
+var marked = require('marked');
 
 function removeIndentation(str) {
     var indentMatches = /\s*\n(\s+)/.exec(str);
@@ -8,10 +8,11 @@ function removeIndentation(str) {
     }
     return str;
 }
-
-module.exports = function(el, codegen) {
+function generateCode(el, codegen) {
     var bodyText = removeIndentation(el.bodyText);
     var builder = codegen.builder;
-    var html = snarkdown(bodyText);
+    var html = marked(bodyText);
     return builder.html(builder.literal(html));
-};
+}
+
+module.exports = generateCode;
