@@ -57,6 +57,9 @@ class {
         if (window.location.search) {
             var parsed = querystring.parse(window.location.search.substring(1));
             focusedFile = parsed.file;
+            if (focusedFile.charAt(0) !== '/') {
+                focusedFile = '/' + focusedFile;
+            }
         }
 
         if (!focusedFile) {
