@@ -19,7 +19,10 @@ $ var isIndividual = state.individual;
 $ var benchmark = benchData[state.index];
 
 <div.benchmarks>
-    <h2.title>Re<strong>marko</strong>able performance across the board</h2>
+    <heading.title tag="h2" anchor-name="benchmarks">
+        Re<strong>marko</strong>able performance across the board
+    </heading>
+
     <div.tabs>
         <for(i, bench in benchData)>
             <div.tab class={ selected:i === state.index } on-click('switchBench', i)>
