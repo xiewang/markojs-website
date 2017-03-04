@@ -25,11 +25,15 @@
 .site-search input {
     display:block;
     height:2em;
-    flex:1;
     padding:0.5em;
-    width:0;
+    width: 100%;
     font-size:0.85em;
     border:0;
     outline:0;
     background:transparent;
+    color: transparent;
+}
+
+.site-search.large input {
+    color: initial;
 }
