@@ -1,3 +1,5 @@
+import isElementInViewport from '~/util/isElementInViewport';
+
 static var barCount;
 static var barWidth;
 
@@ -36,8 +38,12 @@ class {
     onMount() {
         this.nextFrame = this.nextFrame.bind(this);
         this.subscribeTo(window).on('resize', () => this.scale());
+        this.registerAnimationViewListener();
         this.scale();
-        this.start();
+
+        if (this.shouldShowAnimation()) {
+            this.start();
+        }
     }
     scale() {
         barCount = Math.min(200, Math.floor(window.innerWidth/15));
@@ -61,9 +67,25 @@ class {
             window.requestAnimationFrame(this.nextFrame);
         }
     }
+    registerAnimationViewListener() {
+        this.subscribeTo(window).on('scroll', () => {
+            const inView = this.shouldShowAnimation();
+            if (!inView) {
+                this.stop();
+            } else if (inView && this.state.active === false) {
+                this.start();
+            }
+        });
+    }
+    shouldShowAnimation() {
+        const el = this.getEl('sine-wave-animation');
+        return isElementInViewport(el, {
+            bottomDiff: 150
+        });
+    }
 }
 
-<div.animated-sin-wave on-click('switchDirection')>
+<div.animated-sin-wave on-click('switchDirection') key='sine-wave-animation'>
     $ var count = state.count;
 
     <for(var i=0; i<barCount; i++)>
