@@ -1,16 +1,16 @@
 /* globals window */
-module.exports = function isElementInViewport (el, options) {
-    options = options || {};
 
-    const rect = el.getBoundingClientRect();
+function elementInRange(x, a, b) {
+    return (x >= a && x <= b);
+}
 
-    const bottomDiff = options.bottomDiff || 0;
-    const rightDiff = options.rightDiff || 0;
-
+module.exports = function isElementInViewport (element, options) {
+    const scrollY = window.scrollY;
+    const scrollBottom = scrollY + window.innerHeight;
+    const elOffsetTop = element.offsetTop;
+    const elBottomPos = elOffsetTop + element.offsetHeight;
     return (
-        rect.top >= 0 &&
-        rect.left >= 0 &&
-        rect.bottom - bottomDiff <= (window.innerHeight || document.documentElement.clientHeight) &&
-        rect.right - rightDiff <= (window.innerWidth || document.documentElement.clientWidth)
+        elementInRange(elOffsetTop, scrollY, scrollBottom) ||
+        elementInRange(elBottomPos, scrollY, scrollBottom)
     );
 };
