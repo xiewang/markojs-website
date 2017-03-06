@@ -1,7 +1,7 @@
 import structure from 'marko/docs/structure.json';
 
 static function formatSlug(name) {
-    return name.replace(/[^\w\d\s]/g, '').replace(/\s+/g, '-').toLowerCase();
+    return name.replace(/[^\w\d\s-]/g, '').replace(/\s+/g, '-').toLowerCase();
 }
 
 <div.doc-sidebar class=input.class key="sidebar">
