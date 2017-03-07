@@ -79,9 +79,7 @@ class {
     }
     shouldShowAnimation() {
         const el = this.getEl('sine-wave-animation');
-        return isElementInViewport(el, {
-            bottomDiff: 150
-        });
+        return isElementInViewport(el);
     }
 }
 
