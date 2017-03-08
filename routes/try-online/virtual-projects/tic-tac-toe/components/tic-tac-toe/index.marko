@@ -42,8 +42,8 @@ $ var winningPlayer = ticTacToe.winningPlayer;
 <div.tic-tac-toe>
     <div.current-player class=currentPlayer>
         <if(!isGameOver)>
-            <player-icon(['current-player', currentPlayer === 'X' && 'active'], currentPlayer)/>
-            <player-icon(['current-player', currentPlayer === 'O' && 'active'], currentPlayer)/>
+            <player-icon(['current-player', currentPlayer === 'X' && 'active'], 'X')/>
+            <player-icon(['current-player', currentPlayer === 'O' && 'active'], 'O')/>
         </if>
     </div>
     <div.board-container>
