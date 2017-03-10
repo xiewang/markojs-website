@@ -1,0 +1,68 @@
+static function isValidHexValue(hexValue) {
+    return /^#[0-9A-F]{6}$/i.test(hexValue);
+}
+
+class {
+    onInput(input) {
+        input.colors = input.colors || ['red', 'green', 'blue'];
+    }
+    onColorSelected(backgroundColor) {
+        this.emit('colorSelected', backgroundColor);
+    }
+    onHexInput() {
+        var hexInput = this.getEl('hexInput').value;
+
+        if (!hexInput.startsWith('#')) {
+            hexInput = '#' + hexInput;
+        }
+
+        if (!isValidHexValue(hexInput)) {
+            hexInput = this.input.colors[0];
+        }
+
+        this.emit('colorSelected', hexInput);
+    }
+}
+
+style {
+    .color-picker-footer {
+        width: 200px;
+        height: 100px;
+        border-radius: 0px 0px 20px 20px;
+        font: 30px Arial;
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        color: white;
+        box-shadow: 0px 3px 5px #888888;
+    }
+    .color-picker-selection-container {
+        width: 75%;
+        margin: 5px 0px 0px 20px;
+    }
+    .hex-input {
+        margin-top: 8px;
+        border-radius: 0px 0px 0px 0px;
+        border-width: 0px 0px 1px 0px;
+        outline: none;
+    }
+}
+
+$ var colors = input.colors;
+
+<div.color-picker-footer>
+    <div.color-picker-selection-container>
+        <for(color in colors)>
+            <div.color-selection style={
+                float: 'left',
+                margin: '5px 0px 0px 5px'
+            }>
+                <color-picker-selection backgroundColor=color on-colorSelected('onColorSelected')/>
+            </div>
+        </for>
+        <input.hex-input
+            key="hexInput"
+            placeholder="Hex value"
+            on-input('onHexInput')/>
+    </div>
+</div>

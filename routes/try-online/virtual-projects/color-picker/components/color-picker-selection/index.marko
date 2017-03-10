@@ -1,0 +1,22 @@
+class {
+    onInput(input) {
+        input.backgroundColor = input.backgroundColor || 'green';
+    }
+    onColorSelected(event) {
+		this.emit('colorSelected', this.input.backgroundColor);
+    }
+}
+
+style {
+    .color-picker-selection {
+        width: 25px;
+        height: 25px;
+        border-radius: 5px 5px 5px 5px;
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+<div.color-picker-selection on-click('onColorSelected') style={
+    backgroundColor: input.backgroundColor
+}></div>
