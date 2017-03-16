@@ -68,7 +68,7 @@ module.exports = function(el, context) {
         });
     }
 
-    context.addDependency(require.resolve('./syntax.css'));
+    context.addDependency(require.resolve('~/global-style/syntax.css'));
 
     var prev = getPreviousNonWhitespaceNode(el);
     var prevIsParagraph = prev && prev.tagName === 'p';
