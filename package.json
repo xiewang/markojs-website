@@ -21,7 +21,7 @@
     "lasso-less": "^2.4.3",
     "lodash.debounce": "^4.0.8",
     "marked": "^0.3.6",
-    "marko": "^4.0.0-rc.20",
+    "marko": "^4.1.2",
     "marko-prettyprint": "^1.3.1",
     "marko-starter": "git://github.com/philidem/marko-starter.git",
     "modify-babel-preset": "^3.2.1",
