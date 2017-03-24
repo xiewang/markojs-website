@@ -2,12 +2,16 @@ import app from '~/routes/try-online/app';
 import localStorageUtil from '~/util/localstorage';
 import querystring from 'querystring';
 import 'marked';
+import 'whatwg-fetch';
+import path from 'path';
 
 class {
     onCreate() {
         this.state = {
             collapsed: {},
-            activeTabFile: undefined
+            loadingGist: false,
+            activeTabFile: undefined,
+            gistId: null
         };
     }
 
@@ -27,10 +31,12 @@ class {
         var firstFocus = true;
         var baseUrl = window.location.pathname;
         var focusedFile;
+        var gistId;
 
         function getUrlForFocusedFile() {
             return baseUrl + '?' + querystring.stringify({
-                file: focusedFile
+                file: focusedFile,
+                gist: gistId
             });
         }
 
@@ -54,25 +60,82 @@ class {
                 }
             });
 
+
+
         if (window.location.search) {
             var parsed = querystring.parse(window.location.search.substring(1));
-            focusedFile = parsed.file;
-            if (focusedFile.charAt(0) !== '/') {
-                focusedFile = '/' + focusedFile;
+            if (parsed.file) {
+                focusedFile = parsed.file;
+                if (focusedFile.charAt(0) !== '/') {
+                    focusedFile = '/' + focusedFile;
+                }
+            }
+
+            if (parsed.gist) {
+                gistId = parsed.gist;
             }
         }
 
-        if (!focusedFile) {
-            focusedFile = localStorageUtil.get('focusedFile');
+        var doFocusFile = () => {
+            if (!focusedFile) {
+                focusedFile = localStorageUtil.get('focusedFile');
+            }
+
+            if (focusedFile && !app.fileExists(focusedFile)) {
+                focusedFile = null;
+            }
+
+            history.replaceState({ file: focusedFile }, '', getUrlForFocusedFile());
+
+            app.focusFile(focusedFile || DEFAULT_FOCUSED_FILE);
+        };
+
+        if (gistId) {
+            this.loadGist(gistId)
+                .then(() => {
+                    focusedFile = '/gist';
+                    doFocusFile();
+                })
+                .catch(doFocusFile);
+        } else {
+            doFocusFile();
         }
+    }
 
-        if (focusedFile && !app.fileExists(focusedFile)) {
-            focusedFile = null;
-        }
+    loadGist(gistId) {
+        this.state.loadingGist = true;
+        this.state.gistId = gistId;
 
-        history.replaceState({ file: focusedFile }, '', getUrlForFocusedFile());
+        var url = 'https://api.github.com/gists/' + gistId;
 
-        app.focusFile(focusedFile || DEFAULT_FOCUSED_FILE);
+        return fetch(url)
+            .then(response => response.json())
+            .then(gist => {
+                var files = gist.files;
+                if (files) {
+                    Object.keys(files).forEach((filePath) => {
+                        var fileInfo = files[filePath];
+                        var filename = fileInfo.filename;
+
+                        var fileContent = fileInfo.content;
+                        var targetPath = path.join('/gist', filename.replace(/\\/g, '/'));
+
+                        app.saveFile(targetPath, fileContent);
+                    });
+
+                    app.saveFile('/gist/package.json', JSON.stringify({
+                        description: 'Imported gist'
+                    }));
+
+                    app.loadProjects();
+
+                    app.focusFile('/gist');
+                }
+                this.state.loadingGist = false;
+            })
+            .catch((err) => {
+                this.state.loadingGist = false;
+            });
     }
 
     handleCollapseToggle(paneName, event) {

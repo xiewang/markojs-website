@@ -10,6 +10,28 @@ const EventEmitter = require('events-light');
 
 const projectNameRegExp = /[/]([a-zA-Z0-9_-]+)([/]|$)/;
 
+function getFirstFile(dir) {
+    var allFiles = [];
+
+    function handleDir(dir) {
+        dir.files.forEach((child) => {
+            if (child.isDirectory())  {
+                handleDir(child);
+            } else  {
+                allFiles.push(child);
+            }
+        });
+    }
+
+    handleDir(dir);
+
+    allFiles.sort(function(a, b) {
+        a = a.path;
+        b = b.path;
+        return a < b ? -1 : (a > b ? 1 : 0);
+    });
+    return allFiles[0];
+}
 
 class TryOnlineApp extends EventEmitter {
     constructor() {
@@ -192,7 +214,7 @@ class TryOnlineApp extends EventEmitter {
 
     focusProject(projectName) {
         let project = this.state.projectLookup[projectName];
-        this.focusFile(path.join(project.rootDir.path, 'index.marko'));
+        this.focusFile(project.rootDir.path);
     }
 
     focusFile(filePath) {
@@ -210,6 +232,15 @@ class TryOnlineApp extends EventEmitter {
         if (filePath === project.rootDir.path) {
             filePath += '/index.marko';
             file = vfs.getFile(filePath);
+
+            if (!file) {
+                file = getFirstFile(project.rootDir);
+                if (!file) {
+                    return;
+                }
+
+                filePath = file.path;
+            }
         }
 
         this.state.focusedFile = filePath;
