@@ -20,6 +20,7 @@
     "lasso-babili": "^1.0.0",
     "lasso-cson": "^1.0.0",
     "lasso-less": "^2.4.3",
+    "lasso-marko": "^2.3.0",
     "lodash.debounce": "^4.0.8",
     "marked": "^0.3.6",
     "marko": "^4.1.2",
