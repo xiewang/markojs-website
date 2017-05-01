@@ -12,6 +12,7 @@ exports.toTemplate = function renderMarkdown(markdownDocument) {
     } = markdownDocument;
 
     markdown = markdown
+        .replace(/\&/g, '&amp;')
         .replace(/\<./g, (match) => {
             if(match[1] !== '!') {
                 return '&lt;' + match[1];

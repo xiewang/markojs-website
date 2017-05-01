@@ -49,7 +49,7 @@ module.exports = function(el, context) {
         scopeName = 'text.marko';
     }
 
-    code = redent(code.replace(/&lt;/g, '<').replace(/&#36;/g, '$')).trim();
+    code = redent(code.replace(/&lt;/g, '<').replace(/&#36;/g, '$').replace(/&amp;/g, '&')).trim();
     html = highlighter.highlightSync({
         fileContents: code,
         scopeName: scopeName
