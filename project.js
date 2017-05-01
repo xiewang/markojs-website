@@ -1,4 +1,6 @@
-var isProduction = process.env.NODE_ENV === 'production';
+const externalMarkdown = require('./util/external-markdown');
+
+const isProduction = process.env.NODE_ENV === 'production';
 
 function getBabiliConfig() {
     if (isProduction) {
@@ -32,6 +34,12 @@ if (isProduction) {
 
 module.exports = require('marko-starter').projectConfig({
     routePathPrefix: '/',
+    beforeBuild() {
+        return externalMarkdown.register();
+    },
+    beforeStartServer() {
+        return externalMarkdown.register();
+    },
     lassoConfig: {
         bundlingEnabled: isProduction,
         fingerprintsEnabled: isProduction,

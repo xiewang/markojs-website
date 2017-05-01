@@ -4,8 +4,13 @@ var marko = require('marko');
 var marked = require('marked');
 var TOC = require('./toc');
 
-exports.toTemplate = function renderMarkdown(filepath) {
-    var markdown = fs.readFileSync(filepath, 'utf-8');
+exports.toTemplate = function renderMarkdown(markdownDocument) {
+    let {
+        markdown,
+        documentName,
+        filePath
+    } = markdownDocument;
+
     markdown = markdown
         .replace(/\<./g, (match) => {
             if(match[1] !== '!') {
@@ -16,9 +21,13 @@ exports.toTemplate = function renderMarkdown(filepath) {
         .replace(/\$/g, '&#36;')
         .replace(/https?:\/\/markojs\.com\//g, '/')
         .replace(/\.\/([\w\d-\/]+)\.md/g, (match) => {
-            var linkpath = path.resolve(path.dirname(filepath), match);
-            var linkmatch = /(\/docs\/.*)\.md/.exec(linkpath);
-            return linkmatch && (linkmatch[1]+'/') || match;
+            // Markdown documents from external sources do not have a file path
+            if (filePath) {
+                const linkpath = path.resolve(path.dirname(filePath), match);
+                const linkmatch = /(\/docs\/.*)\.md/.exec(linkpath);
+                return linkmatch && (linkmatch[1]+'/') || match;
+            }
+            return match;
         });
 
     var markedRenderer = new marked.Renderer();
@@ -70,7 +79,9 @@ exports.toTemplate = function renderMarkdown(filepath) {
         renderer: markedRenderer
     }) + '\n-----\n';
 
-    var templateVirtualPath = path.join(process.cwd(), path.basename(filepath));
+    // The path inside the markojs-website base directory
+    // e.g. ~/markojs-website/webpack.md
+    const templateVirtualPath = path.join(process.cwd(), documentName);
 
     try {
         var template = marko.load(templateVirtualPath, html, { writeToDisk:false })
