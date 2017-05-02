@@ -13,12 +13,6 @@ exports.toTemplate = function renderMarkdown(markdownDocument) {
 
     markdown = markdown
         .replace(/\&/g, '&amp;')
-        .replace(/\<./g, (match) => {
-            if(match[1] !== '!') {
-                return '&lt;' + match[1];
-            }
-            return match;
-        })
         .replace(/\$/g, '&#36;')
         .replace(/https?:\/\/markojs\.com\//g, '/')
         .replace(/\.\/([\w\d-\/]+)\.md/g, (match) => {
