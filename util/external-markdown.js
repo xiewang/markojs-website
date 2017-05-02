@@ -23,10 +23,10 @@ function getMarkdownDocument(doc) {
 }
 
 const markdownDocsToFetch = [
-    // new MarkdownDocument({
-    //    documentName: 'marko-color-picker.md',
-    //    url: 'https://raw.githubusercontent.com/marko-js-samples/marko-color-picker/cd62a14c986666f0dd5622f510a668d40fd3de5f/README.md'
-    // })
+    new MarkdownDocument({
+        documentName: 'color-picker.md',
+        url: 'https://raw.githubusercontent.com/marko-js-samples/marko-color-picker/master/README.md'
+    })
 ];
 
 exports.documents = [];
