@@ -25,6 +25,8 @@ function getMarkdownDocument(doc) {
 const markdownDocsToFetch = [
     new MarkdownDocument({
         documentName: 'color-picker.md',
+        repoFilePath: 'README.md',
+        repo: 'marko-js-samples/marko-color-picker',
         url: 'https://raw.githubusercontent.com/marko-js-samples/marko-color-picker/master/README.md'
     })
 ];

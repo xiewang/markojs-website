@@ -1,15 +1,38 @@
-var gh = require('gh-got');
-var path = require('path');
+const gh = require('gh-got');
+const path = require('path');
+const { documents } = require('~/util/external-markdown');
+
+const DEFAULT_REPO = 'marko-js/marko';
+
+const documentNameToMarkdownDocument = {};
+
+documents.forEach((markdownDocument) => {
+    let documentName = markdownDocument.documentName;
+    documentNameToMarkdownDocument['/docs/' + documentName] = markdownDocument;
+});
+
 module.exports = function getContributorsForFile(file) {
     var contributors = {};
-    return gh('repos/marko-js/marko/commits?path='+file).then(res => {
+
+    const externalMarkdownDocument = documentNameToMarkdownDocument[file];
+
+    let repo;
+
+    if (externalMarkdownDocument) {
+        repo = externalMarkdownDocument.repo;
+        file = externalMarkdownDocument.repoFilePath;
+    } else {
+        repo = DEFAULT_REPO;
+    }
+
+    return gh(`repos/${repo}/commits?path=${file}`).then(res => {
         res.body.forEach(contribution => {
             var author = contribution.author;
             contributors[author.login] = {
                 username: author.login,
                 photo: author.avatar_url,
                 profile: author.html_url,
-                commits: 'https://github.com/marko-js/marko/commits?path='+file+'&author='+author.login
+                commits: `https://github.com/${repo}/commits?path=${file}&author=${author.login}`
             };
         });
         return Object.keys(contributors).sort().map(k => contributors[k]);
