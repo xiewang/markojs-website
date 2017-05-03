@@ -33,7 +33,7 @@ const markdownDocsToFetch = [
 
 const DEFAULT_REPO = 'marko-js/marko';
 
-// Map of /doc/:name.md to MarkdownDocument
+// Map of document name to MarkdownDocument. e.g. 'color-picker'
 let documentNameToMarkdownDocument = {};
 
 exports.register = () => {
@@ -42,7 +42,8 @@ exports.register = () => {
     markdownDocsToFetch.forEach((doc) => {
         let promise = getMarkdownDocument(doc)
             .then((markdownDocument) => {
-                documentNameToMarkdownDocument['/docs/' + markdownDocument.documentName] =
+                const documentName = markdownDocument.documentName.slice(0, -3);
+                documentNameToMarkdownDocument[documentName] =
                     markdownDocument;
             })
             .catch((err) => {
@@ -70,6 +71,7 @@ const getRepoAndPath = exports.getRepoAndPath = (repoFilePath) => {
         repoFilePath = document.repoFilePath;
     } else {
         repo = DEFAULT_REPO;
+        repoFilePath = `docs/${repoFilePath}.md`;
     }
 
     return { repo, repoFilePath };

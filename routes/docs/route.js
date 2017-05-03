@@ -14,9 +14,8 @@ let docNameToMarkdownDocument = Object.assign({}, documents);
 docFileNames.forEach((docFileName) => {
     const filePath = path.join(docsDir, docFileName + '.md');
     const markdown = fs.readFileSync(filePath, 'utf-8');
-    const docName = `/docs/${docFileName}.md`;
 
-    docNameToMarkdownDocument[docName] = new MarkdownDocument({
+    docNameToMarkdownDocument[docFileName] = new MarkdownDocument({
         filePath,
         markdown,
         documentName: path.basename(filePath)
@@ -24,17 +23,17 @@ docFileNames.forEach((docFileName) => {
 });
 
 exports.path = '/docs/:name/';
-exports.params = Object.keys(docNameToMarkdownDocument).map(doc => ({ name: doc }));
+exports.params = Object.keys(docNameToMarkdownDocument).map(docName => ({ name: docName }));
 
 exports.handler = (input, out) => {
     let name = input.params.name;
-    const documentPath = `/docs/${name}.md`;
-    const markdownDocument = docNameToMarkdownDocument[documentPath];
+
+    const markdownDocument = docNameToMarkdownDocument[name];
 
     let doc = markdownToTemplate(markdownDocument);
     let toc = doc.toc;
-    let contributors = getContributors('/docs/'+name+'.md');
+    let contributors = getContributors(name);
 
     let $global = { dependencies: doc.getDependencies() };
     template.render({ $global, name, doc, toc, contributors }, out);
-}
+};
