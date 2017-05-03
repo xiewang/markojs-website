@@ -31,7 +31,10 @@ const markdownDocsToFetch = [
     })
 ];
 
-exports.documents = [];
+const DEFAULT_REPO = 'marko-js/marko';
+
+// Map of /doc/:name.md to MarkdownDocument
+let documentNameToMarkdownDocument = {};
 
 exports.register = () => {
     let promises = [];
@@ -39,7 +42,8 @@ exports.register = () => {
     markdownDocsToFetch.forEach((doc) => {
         let promise = getMarkdownDocument(doc)
             .then((markdownDocument) => {
-               exports.documents.push(markdownDocument);
+                documentNameToMarkdownDocument['/docs/' + markdownDocument.documentName] =
+                    markdownDocument;
             })
             .catch((err) => {
                 throw err;
@@ -49,3 +53,30 @@ exports.register = () => {
 
     return Promise.all(promises);
 };
+
+exports.getDocuments = () => documentNameToMarkdownDocument;
+
+const getMarkdownDocumentByDocumentName = exports.getMarkdownDocumentByDocumentName = (documentName) => {
+    return documentNameToMarkdownDocument[documentName];
+};
+
+const getRepoAndPath = exports.getRepoAndPath = (repoFilePath) => {
+    const document = getMarkdownDocumentByDocumentName(repoFilePath);
+
+    let repo;
+
+    if (document) {
+        repo = document.repo;
+        repoFilePath = document.repoFilePath;
+    } else {
+        repo = DEFAULT_REPO;
+    }
+
+    return { repo, repoFilePath };
+};
+
+exports.getCompleteFileUrl = (filePath) => {
+    let { repo, repoFilePath } = getRepoAndPath(filePath);
+    return `https://github.com/${repo}/blob/master/${repoFilePath}`;
+};
+

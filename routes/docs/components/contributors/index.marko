@@ -1,3 +1,7 @@
+import { getCompleteFileUrl } from '~/util/external-markdown';
+
+$ var editPath = getCompleteFileUrl(`/docs/${input.name}.md`);
+
 style {
     .contributors {
         flex-direction:row;
@@ -44,7 +48,7 @@ style {
     </h2>
     <p>
         Helpful? You can thank these awesome people! You can also
-        <a href="https://github.com/marko-js/marko/blob/master/docs/${input.name}.md">
+        <a href="${editPath}">
             edit this doc
         </a>
         if you see any issues or want to improve it.
@@ -54,7 +58,7 @@ style {
             <img.photo src=contributor.photo/>
             <span.name>${contributor.username}</span>
         </a>
-        <a.contributor.you href="https://github.com/marko-js/marko/blob/master/docs/${input.name}.md">
+        <a.contributor.you href="${editPath}">
             <div.photo>
                 <span class="icon">+</span>
             </div>

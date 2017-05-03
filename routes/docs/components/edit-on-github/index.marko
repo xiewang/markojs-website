@@ -1,4 +1,8 @@
-<a.edit-on-github href="https://github.com/marko-js/marko/blob/master/docs/${input.name}.md">
+import { getCompleteFileUrl } from '~/util/external-markdown';
+
+$ var editPath = getCompleteFileUrl(`/docs/${input.name}.md`);
+
+<a.edit-on-github href="${editPath}">
     EDIT <img src="./github.svg"/>
 </a>
 
