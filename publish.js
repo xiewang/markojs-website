@@ -7,38 +7,42 @@ const buildDir = __dirname + '/dist';
 const publishDir = buildDir + '/__publish';
 const domain = 'markojs.com';
 
-exec('markoc . --clean');
-exec('rm -rf .cache');
+module.exports = (args) => {
+    let { message } = args || {};
 
-require('./project').build().then((buildResult) => {
-  // create publish directory
-  exec(`mkdir ${publishDir}`);
+    exec('markoc . --clean');
+    exec('rm -rf .cache');
 
-  // clone the repo that is the publish target
-  exec(`cd ${publishDir} && git init && git remote add origin ${gitUrl} && git fetch`);
+    require('./project').build().then((buildResult) => {
+      // create publish directory
+      exec(`mkdir ${publishDir}`);
 
-  // switch to the target branch
-  try {
-    exec(`cd ${publishDir} && git checkout -t origin/${gitBranch}`);
-  } catch(e) {
-    exec(`cd ${publishDir} && git checkout -b ${gitBranch}`);
-  }
+      // clone the repo that is the publish target
+      exec(`cd ${publishDir} && git init && git remote add origin ${gitUrl} && git fetch`);
 
-  // steal the .git directory
-  exec(`mv ${publishDir+'/.git'} ${buildDir}`);
-  exec(`rm -rf ${publishDir}`);
+      // switch to the target branch
+      try {
+        exec(`cd ${publishDir} && git checkout -t origin/${gitBranch}`);
+      } catch(e) {
+        exec(`cd ${publishDir} && git checkout -b ${gitBranch}`);
+      }
 
-  // create CNAME file
-  fs.writeFileSync(path.join(buildDir, 'CNAME'), domain, 'utf-8');
+      // steal the .git directory
+      exec(`mv ${publishDir+'/.git'} ${buildDir}`);
+      exec(`rm -rf ${publishDir}`);
 
-  // commit and push up the changes
-  try {
-    exec(`cd ${buildDir} && git add . --all && git commit -m "updated static site"`);
-    exec(`cd ${buildDir} && git push origin ${gitBranch}`);
-    console.log('Static site successfully built and pushed to remote repository.');
-  } catch(e) {
-    if(e.cmd && e.cmd.indexOf('git commit')) {
-      console.log('Static site successfully built. No changes to push.');
-    }
-  }
-});
+      // create CNAME file
+      fs.writeFileSync(path.join(buildDir, 'CNAME'), domain, 'utf-8');
+
+      // commit and push up the changes
+      try {
+        exec(`cd ${buildDir} && git add . --all && git commit -m "${message}"`);
+        exec(`cd ${buildDir} && git push origin ${gitBranch}`);
+        console.log('Static site successfully built and pushed to remote repository.');
+      } catch(e) {
+        if(e.cmd && e.cmd.indexOf('git commit')) {
+          console.log('Static site successfully built. No changes to push.');
+        }
+      }
+    });
+};
