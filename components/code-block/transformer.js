@@ -3,7 +3,7 @@ var Highlights = require('highlights');
 var prettyprint = require('marko-prettyprint');
 var resolveFrom = require('resolve-from');
 var redent = require('redent');
-const localStorageUtil = require('~/util/localstorage');
+const localStorageUtil = require('../../util/localstorage');
 const syntaxSwitchEnabled = true;
 
 var highlighter = new Highlights();
