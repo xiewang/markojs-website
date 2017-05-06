@@ -1,7 +1,7 @@
 "use strict";
 
 const getComponentForEl = require('marko/components').getComponentForEl;
-const localStorageUtil = require('../../util/localStorage');
+const localStorageUtil = require('~/util/localStorage.js');
 
 module.exports = {
     changeSyntax: function() {
