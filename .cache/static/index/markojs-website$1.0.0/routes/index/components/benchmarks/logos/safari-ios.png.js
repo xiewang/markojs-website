@@ -1,0 +1,1 @@
+$_mod.def("/markojs-website$1.0.0/routes/index/components/benchmarks/logos/safari-ios.png", {"width":337,"height":337,"url":"/static/markojs-website$1.0.0/routes/index/components/benchmarks/logos/safari-ios.png"});

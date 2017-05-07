@@ -1,0 +1,1 @@
+$_mod.def("/markojs-website$1.0.0/routes/index/components/benchmarks/logos/vue.png", {"width":400,"height":400,"url":"/static/markojs-website$1.0.0/routes/index/components/benchmarks/logos/vue.png"});

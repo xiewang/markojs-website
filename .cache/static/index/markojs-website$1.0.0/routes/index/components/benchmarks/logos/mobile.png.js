@@ -1,0 +1,1 @@
+$_mod.def("/markojs-website$1.0.0/routes/index/components/benchmarks/logos/mobile.png", {"width":477,"height":477,"url":"/static/markojs-website$1.0.0/routes/index/components/benchmarks/logos/mobile.png"});

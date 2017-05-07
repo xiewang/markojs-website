@@ -1,0 +1,44 @@
+.home-features {
+        flex-direction:row;
+        justify-content:space-between;
+        padding:2em;
+        flex-wrap:wrap;
+        max-width:80em;
+    }
+
+    .home-features .feature {
+        width:23%;
+    }
+
+    @media (max-width:50em) {
+        .home-features .feature {
+            width:47%;
+            margin-bottom:1em;
+        }
+    }
+
+    .home-features h2 {
+        padding:0;
+        border:0;
+    }
+
+    .home-features p {
+        padding:0;
+        margin:0;
+    }
+
+    .blue {
+        color:#09d;
+    }
+
+    .green {
+        color:#7d0;
+    }
+
+    .yellow {
+        color:#ffc400;
+    }
+
+    .red {
+        color:#d04;
+    }

@@ -1,0 +1,29 @@
+.collapse-icon {
+        width: 30px;
+        height: 30px;
+        background-image: url('../../../../../../../../try-online/markojs-website$1.0.0/routes/try-online/components/app/components/collapse-icon/collapse-down.svg');
+        background-repeat: no-repeat;
+        display: inline-block;
+        position: absolute;
+        right: 0px;
+        top: 6px;
+        z-index: 100;
+        opacity: 0.6;
+        cursor: pointer;
+    }
+
+    .collapse-icon.collapse-down {
+        background-image: url('../../../../../../../../try-online/markojs-website$1.0.0/routes/try-online/components/app/components/collapse-icon/collapse-down.svg');
+    }
+
+    .collapse-icon.collapse-up {
+        background-image: url('../../../../../../../../try-online/markojs-website$1.0.0/routes/try-online/components/app/components/collapse-icon/collapse-up.svg');
+    }
+
+    .collapse-icon.expand-down {
+        background-image: url('../../../../../../../../try-online/markojs-website$1.0.0/routes/try-online/components/app/components/collapse-icon/expand-down.svg');
+    }
+
+    .collapse-icon.expand-up {
+        background-image: url('../../../../../../../../try-online/markojs-website$1.0.0/routes/try-online/components/app/components/collapse-icon/expand-up.svg');
+    }

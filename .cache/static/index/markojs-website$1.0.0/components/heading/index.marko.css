@@ -1,0 +1,30 @@
+.heading a.anchor {
+        display: inline-block;
+        cursor: pointer;
+        position: absolute;
+        text-align: center;
+        margin-left: -1.1em;
+        padding: 0 0.3em;
+        opacity: 0;
+        color: #eceef0;
+    }
+
+    .heading:hover a.anchor {
+        opacity: 1;
+    }
+
+    .heading.header-link {
+        display: inline-block;
+        font-family: FontAwesome;
+        font-style: normal;
+        font-weight: normal;
+        line-height: 0.5em;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        font-size: 1em;
+    }
+
+    .heading .header-link:before {
+        content: "#";
+        font-weight: 600;
+    }

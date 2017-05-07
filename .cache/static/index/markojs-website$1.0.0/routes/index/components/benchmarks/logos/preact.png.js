@@ -1,0 +1,1 @@
+$_mod.def("/markojs-website$1.0.0/routes/index/components/benchmarks/logos/preact.png", {"width":173,"height":200,"url":"/static/markojs-website$1.0.0/routes/index/components/benchmarks/logos/preact.png"});

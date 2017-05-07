@@ -1,0 +1,36 @@
+.tree-view .file > span  {
+    position: relative;
+}
+
+.tree-view .file > span:before {
+    width: 20px;
+    height: 16px;
+    background-size: contain;
+    display: inline-block;
+    line-height: 16px;
+    vertical-align: middle;
+    content: '';
+    background-repeat: no-repeat;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+
+.tree-view .file.marko > span:before {
+    background-image: url('../../../../../../../../try-online/markojs-website$1.0.0/routes/try-online/components/tree-view/components/tree-view-file/marko.svg');
+}
+
+.tree-view .file.css > span:before {
+    background-size: 14px;
+    background-image: url('../../../../../../../../try-online/markojs-website$1.0.0/routes/try-online/components/tree-view/components/tree-view-file/css.svg');
+}
+
+.tree-view .file.json > span:before {
+    background-size: 16px;
+    background-image: url('../../../../../../../../try-online/markojs-website$1.0.0/routes/try-online/components/tree-view/components/tree-view-file/json.svg');
+}
+
+.tree-view .file.js > span:before {
+    background-size: 16px;
+    background-image: url('../../../../../../../../try-online/markojs-website$1.0.0/routes/try-online/components/tree-view/components/tree-view-file/js.svg');
+}

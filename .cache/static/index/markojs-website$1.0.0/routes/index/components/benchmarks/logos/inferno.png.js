@@ -1,0 +1,1 @@
+$_mod.def("/markojs-website$1.0.0/routes/index/components/benchmarks/logos/inferno.png", {"width":327,"height":327,"url":"/static/markojs-website$1.0.0/routes/index/components/benchmarks/logos/inferno.png"});

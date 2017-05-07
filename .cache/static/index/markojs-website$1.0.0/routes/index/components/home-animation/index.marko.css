@@ -1,0 +1,18 @@
+.home-animation {
+        width: 100%;
+    }
+
+    .home-animation header{
+        text-align:center;
+        width:100%;
+        padding:2em;
+    }
+
+    .home-animation p {
+        margin-bottom:2em;
+    }
+
+    .home-animation h1 strong {
+        color:#7d0;
+        font-weight:600;
+    }
