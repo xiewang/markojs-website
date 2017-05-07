@@ -3,7 +3,14 @@ var Highlights = require('highlights');
 var prettyprint = require('marko-prettyprint');
 var resolveFrom = require('resolve-from');
 var redent = require('redent');
-const localStorageUtil = require('~/util/localstorage.js');
+function getMarkoWebsiteKey(key) {
+    return `markojs-website:${key}`;
+}
+const localStorageUtil = {
+    get: (key) => localStorage.getItem(getMarkoWebsiteKey(key)),
+    set: (key, value) => localStorage.setItem(getMarkoWebsiteKey(key), value),
+    getMarkoWebsiteKey: getMarkoWebsiteKey
+};
 const syntaxSwitchEnabled = true;
 
 var highlighter = new Highlights();
